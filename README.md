@@ -4,6 +4,16 @@
 
 ![Overview](images/overview.png)
 
+## 3D assembly
+
+[![3D assembly animation](images/assembly-preview.gif)](images/assembly.mp4)
+
+![Exploded assembly](images/exploded.png)
+
+[3D animation](images/assembly.mp4) · [Assembly with hardware (STEP)](cad/assembly_with_hardware.step) · [Render source](video/)
+
+The animation separates the holders, Macs, TPU strips, 9 M4×10 screws and 9 heat-set inserts. Hardware is simplified for illustration; insert dimensions are provisional. Rack screws and cage nuts are not shown.
+
 ## Parts
 
 | File | Material | Qty |
