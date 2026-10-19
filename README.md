@@ -18,6 +18,8 @@ The STLs are already in print orientation. Each holder half is 249.3 mm wide and
 
 `cad/` has the parametric SolidCraft model and a STEP assembly with the Macs.
 
+`orca/` has OrcaSlicer projects for a Bambu Lab P1S (0.2 mm layers, 6 walls, 25 % infill): `MacMini_Rack.3mf` with all plates, and `MacMini_Rack_TPU.3mf` with just the TPU plate. Use the TPU-only project for printing the strips. Each holder half takes about 16 h and 630 g of PETG, and the strips take about 3 h and 95 g of TPU.
+
 ## Hardware
 
 - 9× M4×10 socket head screws
