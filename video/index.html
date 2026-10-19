@@ -11,16 +11,16 @@
   <style>
     @font-face { font-family: "Manrope"; font-style: normal; font-weight: 400; src: url("./node_modules/@fontsource/manrope/files/manrope-latin-400-normal.woff2") format("woff2"); }
     @font-face { font-family: "Manrope"; font-style: normal; font-weight: 600; src: url("./node_modules/@fontsource/manrope/files/manrope-latin-600-normal.woff2") format("woff2"); }
-    :root { --background: #15191e; --foreground: #edf0f2; --muted: #afb8c2; --rule: #46505a; --tpu: #6896b4; --brass: #d6b06a; --silver: #d7dce1; --holder: #84909c; --edge: 80px; --title-size: 52px; --label-size: 24px; --small-size: 22px; --dot-size: 10px; --gap: 16px; --legend-gap: 48px; --legend-bottom: 66px; }
+    :root { --background: #15191e; --foreground: #edf0f2; --muted: #d5dbe1; --scrim-start: rgba(21, 25, 30, 0.9); --scrim-end: rgba(21, 25, 30, 0); --rule: #46505a; --tpu: #6896b4; --brass: #d6b06a; --silver: #d7dce1; --holder: #84909c; --edge: 80px; --title-size: 52px; --label-size: 24px; --small-size: 22px; --dot-size: 10px; --gap: 16px; --legend-gap: 48px; --legend-bottom: 66px; }
     * { box-sizing: border-box; }
     html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: var(--background); }
     #root { position: relative; width: 100%; height: 100%; overflow: hidden; color: var(--foreground); font-family: "Manrope", sans-serif; }
     #assembly-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-    header { position: absolute; top: var(--edge); left: var(--edge); right: var(--edge); display: flex; justify-content: space-between; align-items: start; pointer-events: none; background: var(--background); }
+    header { position: absolute; top: 0; left: 0; right: 0; padding: var(--edge) var(--edge) 80px; display: flex; justify-content: space-between; align-items: start; pointer-events: none; background: linear-gradient(var(--scrim-start), var(--scrim-end)); }
     h1 { font-size: var(--title-size); font-weight: 600; letter-spacing: -0.035em; margin: 0; }
     .spec { color: var(--muted); font-size: var(--label-size); margin-top: var(--gap); }
     #phase { font-size: var(--label-size); color: var(--muted); padding-top: var(--gap); }
-    footer { position: absolute; left: var(--edge); right: var(--edge); bottom: var(--legend-bottom); display: flex; align-items: center; justify-content: space-between; font-size: var(--small-size); color: var(--muted); pointer-events: none; background: var(--background); }
+    footer { position: absolute; left: 0; right: 0; bottom: 0; padding: 80px var(--edge) var(--legend-bottom); display: flex; align-items: center; justify-content: space-between; font-size: var(--small-size); color: var(--muted); pointer-events: none; background: linear-gradient(var(--scrim-end), var(--scrim-start)); }
     .legend { display: flex; gap: var(--legend-gap); }
     .key { display: flex; gap: var(--gap); align-items: center; }
     .dot { width: var(--dot-size); height: var(--dot-size); border-radius: 50%; background: var(--holder); }

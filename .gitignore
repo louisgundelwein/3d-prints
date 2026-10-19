@@ -6,3 +6,5 @@ video/.media/
 video/.cache/
 video/output/
 video/render.log
+output/
+video/.thumbnails/

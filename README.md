@@ -6,7 +6,9 @@
 
 ## 3D assembly
 
-[![Exploded assembly](images/exploded.png)](images/assembly.mp4)
+[![3D assembly animation](images/assembly-preview.gif)](images/assembly.mp4)
+
+![Exploded assembly](images/exploded.png)
 
 [3D animation](images/assembly.mp4) · [Assembly with hardware (STEP)](cad/assembly_with_hardware.step) · [Render source](video/)
 
