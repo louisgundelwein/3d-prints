@@ -33,7 +33,7 @@ function separation(time, outStart, outEnd, inStart, inEnd) {
   return progress(time, outStart, outEnd) * (1 - progress(time, inStart, inEnd));
 }
 
-async function buildScene() {
+export async function buildScene() {
   const response = await fetch('./assets/assembly.json');
   if (!response.ok) throw new Error(`Assembly load failed: HTTP ${response.status}`);
   const assembly = await response.json();
@@ -155,14 +155,8 @@ async function buildScene() {
     renderer.render(scene, camera);
   }
 
-  window.addEventListener('hf-seek', (event) => renderAt(event.detail.time));
   window.renderAssemblyAt = renderAt;
-  renderAt(window.__hfThreeTime ?? 0);
+  renderAt(0);
+  return renderAt;
 }
 
-window.__hf = window.__hf || {};
-window.__hf.buildReady = window.__hf.buildReady || {};
-window.__hf.buildReady['rack-assembly'] = buildScene().catch((error) => {
-  document.getElementById('failure').textContent = error.message;
-  throw error;
-});

@@ -7,6 +7,7 @@ npm ci
 npm run dev
 npm run check
 npm run render -- --quality delivery --output ../images/assembly.mp4
+./export-media.sh
 ```
 
 Rebuild the CAD assembly and render meshes from the repository root:
