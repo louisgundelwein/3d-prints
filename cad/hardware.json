@@ -1,0 +1,211 @@
+{
+  "schemaVersion": 1,
+  "units": "mm",
+  "coordinateSystem": {
+    "x": "left-right",
+    "y": "front-rear",
+    "z": "up",
+    "handedness": "right"
+  },
+  "source": {
+    "path": "cad/assembly_with_mac_minis.step",
+    "sha256": "e13d10afd7614ab32bd8c7c75627c7f86d9af49a28d5583bd169f57436d6e9eb",
+    "solidCount": 26
+  },
+  "illustrative": true,
+  "assumptions": [
+    "Hardware geometry is illustrative for orbit and exploded animation; fit is not validated.",
+    "M4x10 screws: 4 mm shaft diameter, 10 mm under-head length, 7 mm head diameter, 4 mm head height.",
+    "Blind hex recess: 3 mm across flats, 2 mm deep. Screw threads and edge chamfers omitted.",
+    "Assumed brass heat-set inserts: 5.6 mm OD, 8 mm length, 4 mm bore. Threads and knurling omitted.",
+    "P is under-head seating; D is head-to-tip. Head occupies P-4D through P; shaft P through P+10D.",
+    "Insert extends from its entrance along D. Screw withdrawal and suggested insert explosion are -D.",
+    "Top screws attach to left holder and inserts to right; bottom/front screws attach to right and inserts to left."
+  ],
+  "counts": {
+    "screws": 9,
+    "inserts": 9
+  },
+  "placements": [
+    {
+      "name": "top_1",
+      "seatingPoint": [
+        238.7,
+        30.0,
+        128.36
+      ],
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "insertEntrance": [
+        238.7,
+        30.0,
+        125.96
+      ],
+      "screwSide": "left",
+      "insertSide": "right"
+    },
+    {
+      "name": "top_2",
+      "seatingPoint": [
+        238.7,
+        76.0,
+        128.36
+      ],
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "insertEntrance": [
+        238.7,
+        76.0,
+        125.96
+      ],
+      "screwSide": "left",
+      "insertSide": "right"
+    },
+    {
+      "name": "top_3",
+      "seatingPoint": [
+        238.7,
+        122.0,
+        128.36
+      ],
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "insertEntrance": [
+        238.7,
+        122.0,
+        125.96
+      ],
+      "screwSide": "left",
+      "insertSide": "right"
+    },
+    {
+      "name": "bottom_1",
+      "seatingPoint": [
+        243.9,
+        30.0,
+        4.2
+      ],
+      "axis": [
+        0,
+        0,
+        1
+      ],
+      "insertEntrance": [
+        243.9,
+        30.0,
+        6.6
+      ],
+      "screwSide": "right",
+      "insertSide": "left"
+    },
+    {
+      "name": "bottom_2",
+      "seatingPoint": [
+        243.9,
+        76.0,
+        4.2
+      ],
+      "axis": [
+        0,
+        0,
+        1
+      ],
+      "insertEntrance": [
+        243.9,
+        76.0,
+        6.6
+      ],
+      "screwSide": "right",
+      "insertSide": "left"
+    },
+    {
+      "name": "bottom_3",
+      "seatingPoint": [
+        243.9,
+        122.0,
+        4.2
+      ],
+      "axis": [
+        0,
+        0,
+        1
+      ],
+      "insertEntrance": [
+        243.9,
+        122.0,
+        6.6
+      ],
+      "screwSide": "right",
+      "insertSide": "left"
+    },
+    {
+      "name": "front_1",
+      "seatingPoint": [
+        241.3,
+        4.2,
+        20.0
+      ],
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "insertEntrance": [
+        241.3,
+        6.4,
+        20.0
+      ],
+      "screwSide": "right",
+      "insertSide": "left"
+    },
+    {
+      "name": "front_2",
+      "seatingPoint": [
+        241.3,
+        4.2,
+        66.28
+      ],
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "insertEntrance": [
+        241.3,
+        6.4,
+        66.28
+      ],
+      "screwSide": "right",
+      "insertSide": "left"
+    },
+    {
+      "name": "front_3",
+      "seatingPoint": [
+        241.3,
+        4.2,
+        112.56
+      ],
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "insertEntrance": [
+        241.3,
+        6.4,
+        112.56
+      ],
+      "screwSide": "right",
+      "insertSide": "left"
+    }
+  ]
+}

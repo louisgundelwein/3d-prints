@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920, height=1080" />
+  <title>Mac mini rack | Assembly</title>
+  <script type="importmap">
+    {"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}
+  </script>
+  <style>
+    @font-face { font-family: "Manrope"; font-style: normal; font-weight: 400; src: url("./node_modules/@fontsource/manrope/files/manrope-latin-400-normal.woff2") format("woff2"); }
+    @font-face { font-family: "Manrope"; font-style: normal; font-weight: 600; src: url("./node_modules/@fontsource/manrope/files/manrope-latin-600-normal.woff2") format("woff2"); }
+    :root { --background: #15191e; --foreground: #edf0f2; --muted: #afb8c2; --rule: #46505a; --tpu: #6896b4; --brass: #d6b06a; --silver: #d7dce1; --holder: #84909c; --edge: 80px; --title-size: 52px; --label-size: 24px; --small-size: 22px; --dot-size: 10px; --gap: 16px; --legend-gap: 48px; --legend-bottom: 66px; }
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: var(--background); }
+    #root { position: relative; width: 100%; height: 100%; overflow: hidden; color: var(--foreground); font-family: "Manrope", sans-serif; }
+    #assembly-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    header { position: absolute; top: var(--edge); left: var(--edge); right: var(--edge); display: flex; justify-content: space-between; align-items: start; pointer-events: none; }
+    h1 { font-size: var(--title-size); font-weight: 600; letter-spacing: -0.035em; margin: 0; }
+    .spec { color: var(--muted); font-size: var(--label-size); margin-top: var(--gap); }
+    #phase { font-size: var(--label-size); color: var(--muted); padding-top: var(--gap); }
+    footer { position: absolute; left: var(--edge); right: var(--edge); bottom: var(--legend-bottom); display: flex; align-items: center; justify-content: space-between; font-size: var(--small-size); color: var(--muted); pointer-events: none; }
+    .legend { display: flex; gap: var(--legend-gap); }
+    .key { display: flex; gap: var(--gap); align-items: center; }
+    .dot { width: var(--dot-size); height: var(--dot-size); border-radius: 50%; background: var(--holder); }
+    .silver { background: var(--silver); } .blue { background: var(--tpu); } .brass { background: var(--brass); }
+    #failure { position: absolute; inset: 30%; font-size: var(--title-size); color: var(--foreground); }
+    #failure:empty { display: none; }
+  </style>
+</head>
+<body>
+  <main id="root" data-composition-id="rack-assembly" data-start="0" data-duration="20" data-width="1920" data-height="1080">
+    <div class="clip" data-start="0" data-duration="20" data-track-index="0">
+      <canvas id="assembly-canvas" aria-label="3D rack assembly with four Mac minis, TPU pads, nine screws and nine inserts"></canvas>
+      <header>
+        <div><h1>Mac mini rack</h1><div class="spec">19″ / 3U / 4 × M4</div></div>
+        <div id="phase">Assembled</div>
+      </header>
+      <footer>
+        <div class="legend">
+          <span class="key"><i class="dot"></i>PETG holders</span>
+          <span class="key"><i class="dot blue"></i>TPU pads</span>
+          <span class="key"><i class="dot silver"></i>9 × M4×10</span>
+          <span class="key"><i class="dot brass"></i>9 × M4 inserts</span>
+        </div>
+        <span>Hardware simplified</span>
+      </footer>
+      <div id="failure" role="alert"></div>
+    </div>
+  </main>
+  <script type="module" src="./scene.js"></script>
+</body>
+</html>
