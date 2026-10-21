@@ -13,7 +13,7 @@
 | `stl/Rack_rechts.stl` | PETG | 1 |
 | `stl/Riegel.stl` (latch) | PETG | 4 |
 
-All parts are in print orientation and need no supports. `orca/MacMini_Rack.3mf` is the OrcaSlicer project for a Bambu Lab P1S: plate 1 the left half (about 22.0 h, 971 g), plate 2 the right half with the four latches (about 21.2 h, 932 g).
+All parts are in print orientation and need no supports. `orca/MacMini_Rack.3mf` is the OrcaSlicer project for a Bambu Lab P1S: plate 1 the left half (about 22.0 h, 971 g), plate 2 the right half with the four latches (about 21.2 h, 929 g).
 
 ## Hardware
 
@@ -22,8 +22,8 @@ All parts are in print orientation and need no supports. `orca/MacMini_Rack.3mf`
 
 ## Assembly
 
-1. Hold the right half behind the left half and slide it forwards onto the dovetails until it stops (its slots are closed at the back). The dovetails have 0.25 mm clearance on the flanks and the tip (`dt_c`); the closed slot end is the stop.
-2. Screw it into the rack. The rails keep the halves from sliding apart.
+1. Slide the right half onto the left half's dovetails (from the front or the back) until the front faces are flush. The dovetails run the full depth with 0.25 mm clearance on every face (`dt_c`).
+2. Screw it into the rack. The rails keep the halves aligned.
 3. Slide each Mac in from the front until it touches the rear stop.
 4. Screw on the latches. Turned towards the Mac they hold it in, turned the other way it slides out.
 
