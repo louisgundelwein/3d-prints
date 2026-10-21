@@ -13,7 +13,8 @@ Coordinates: X across the rack (0 = left panel edge), Y into the rack (0 = panel
 Z up (0 = panel bottom edge).
 
 The rack is two halves split at X = mid. Each half is one extrusion of its XZ profile along Y
-(walls, plates, gussets in one sketch) plus the faceplate, so it prints standing on its front
+(outer wall, plates, centre wall, dovetail and their fillets in one sketch), the bay wall as its own
+feature from the faceplate to its end behind the body, and the faceplate, so it prints standing on its front
 face without supports. The halves slide together on dovetails; the rack rails fix them in Y.
 """
 import json
@@ -102,6 +103,8 @@ P = {
     "fin_back": ("8 mm", "wall left behind the cable hole"),
     "fin_l": ("fin_e + big_l + fin_back", "the bay wall reaches this far behind the body, for cable routing"),
     "fin_r": ("10 mm", "rounded rear corners of the bay wall's extension"),
+    "root_r": ("2 mm", "fillet at the bay wall's top and bottom step where it leaves the back face (below plate_t / 2)"),
+    "plate_end_r": ("1.5 mm", "fillet where the plates end against the bay wall at the back face (larger is refused: the faces beside it are only a few mm)"),
     "notch_h": ("10 mm", "cable notches through the spines, open to the back"),
     "notch_web": ("3 mm", "material left between a cable notch and the dovetail slot"),
     "notch_l": ("40 mm", "cable notch length from the back"),
@@ -167,6 +170,7 @@ class Side:
 
     def __init__(self, body, right, latches):
         self.body, self.right, self.latches = body, right, latches
+        self.tag = "R" if right else "L"
 
     def x(self, e):
         return f"panel_w - ({e})" if self.right else e
@@ -206,8 +210,9 @@ def mid_edge(side):
 
 
 def profile(side):
-    """Walls, plates, centre wall, dovetail and all their inside roundings: one sketch, one
-    extrusion over the body's depth."""
+    """Outer wall, plates, centre wall, dovetail and their inside roundings: one sketch, one
+    extrusion over the body's depth. Each level is one cell from the outer wall to the centre wall;
+    the bay wall comes from bay_wall()."""
     levels = [(FLOORS[0], "plate_t + bay_h"), (FLOORS[1], "panel_h - plate_t")]
     outer = [("side_x", "0 mm"), ("mid", "0 mm")] + mid_edge(side) + [("mid", "panel_h"), ("side_x", "panel_h")]
     cells = [rect(BAY_X0, FREE_X1, z0, z1) for z0, z1 in levels]     # the bay wall comes from bay_wall()
@@ -222,7 +227,7 @@ def profile(side):
     add("sketch.fillet", points=[c(k, i) for k in (0, 1) for i in (1, 2)], radius="gus_c")  # at the centre wall
     add("sketch.finish")
     wall = [side.num(ev("side_x + wall_t / 2")), ev("panel_h / 2")]
-    add("solid.extrude", distance="depth", direction="negative", operation="new", body_name=side.body, name="Profil",
+    add("solid.extrude", distance="depth", direction="negative", operation="new", body_name=side.body, name=f"Profil_{side.tag}",
         profiles=[{"point": wall}])
 
 
@@ -233,10 +238,10 @@ def faceplate(side):
     add("sketch.line", points=side.pts(rect("0 mm", "side_x + (edge_r + wall_t) / 2", "0 mm", "panel_h")), closed=True, infer=False)
     add("sketch.fillet", points=["l3.end", "l4.end"], radius="ear_r")
     add("sketch.finish")
-    add("solid.extrude", distance="face_t", direction="negative", operation="join", targets=[side.body], name="Frontplatte_Ohr")
+    add("solid.extrude", distance="face_t", direction="negative", operation="join", targets=[side.body], name=f"Frontplatte_Ohr_{side.tag}")
     # ends inside the centre wall, clear of the dovetail slot of the right half
     x0, w = f"{BAY_X1} + bay_wall_t / 2", f"mid - (spine_t + dt_d + dt_c) / 2 - ({BAY_X1} + bay_wall_t / 2)"
-    box(side.body, [side.span(x0, w), "0 mm", "plate_t / 2"], [w, "face_t", "panel_h - plate_t"], name="Frontplatte_Mitte")
+    box(side.body, [side.span(x0, w), "0 mm", "plate_t / 2"], [w, "face_t", "panel_h - plate_t"], name=f"Frontplatte_Mitte_{side.tag}")
 
 
 def bay_wall(side):
@@ -248,7 +253,7 @@ def bay_wall(side):
     add("sketch.line", points=side.pts(rect(BAY_X1, FREE_X0, "0 mm", "depth + fin_l")), closed=True, infer=False)
     add("sketch.finish")
     add("solid.extrude", distance="panel_h - plate_t", operation="join", targets=[side.body],
-        profiles=[{"point": [side.num(ev(f"{BAY_X1} + bay_wall_t / 2")), ev("depth / 2")]}], name="Fachwand")
+        profiles=[{"point": [side.num(ev(f"{BAY_X1} + bay_wall_t / 2")), ev("depth / 2")]}], name=f"Fachwand_{side.tag}")
 
 
 def bosses(side):
@@ -264,7 +269,7 @@ def bosses(side):
                                             (f"{px} + boss_d / 2", "face_t + boss_l"), (px, "face_t + boss_l")]), closed=True, infer=False)
         add("sketch.fillet", points=["l2.end"], radius="boss_end_r")
         add("sketch.finish")
-        add("solid.revolve", axis="l4", operation="join", targets=[side.body], name="Dom")
+        add("solid.revolve", axis="l4", operation="join", targets=[side.body], name=f"Dom_{side.tag}")
         w = f"{px} - ({reach})"
         add("solid.box", length=w, width="latch_t", height="latch_w",
             corner=[side.span(reach, w), "0 mm - latch_t", f"{pz} - latch_w / 2"], body_name=name)
@@ -288,7 +293,7 @@ def stops(side, xl):
         add("sketch.fillet", points=["l2.end"], radius="stop_r")
         add("sketch.finish")
         add("solid.extrude", distance="stop_w", start_offset=f"{xl} + fit + mac_w - mac_r - stop_w",
-            operation="join", targets=[side.body], name="Anschlag")
+            operation="join", targets=[side.body], name=f"Anschlag_{side.tag}")
 
 
 def cuts(side, xl):
@@ -312,7 +317,7 @@ def cuts(side, xl):
         add("sketch.fillet", points=[f"l{6 * k + i}.end" for k in (0, 1) for i in (1, 2, 4, 5)], radius="ws_r")
         add("sketch.finish")
         add("solid.extrude", distance="bay_wall_t + 2 * eps", start_offset=side.span(f"{BAY_X1} - eps", "bay_wall_t + 2 * eps"),
-            operation="cut", targets=[body], profiles="all", name="Fachwand_Schlitze")
+            operation="cut", targets=[body], profiles="all", name=f"Fachwand_Schlitze_{side.tag}")
     # cable hole per level through the bay wall's extension: a half circle at the front, a
     # 45 degree point at the back
     add("sketch.create", plane=YZ)
@@ -322,9 +327,9 @@ def cuts(side, xl):
     add("sketch.finish")
     w = "bay_wall_t + 2 * eps"
     add("solid.extrude", distance=w, start_offset=side.span(f"{BAY_X1} - eps", w), operation="cut",
-        targets=[body], profiles="all", name="Kabelloecher")
-    # cable notches through the centre wall, open to the back, with half-round ends; centred
-    # between the outer dovetails and the fillets of the free space
+        targets=[body], profiles="all", name=f"Kabelloecher_{side.tag}")
+    # cable notches through the centre wall, open to the back, with half-round ends; notch_web
+    # above and below the outer dovetail slots
     zc = "dt_e + dt_root / 2 + dt_s * (dt_d + dt_c) + dt_cv + notch_web + notch_h / 2"
     yr = "depth - notch_l + notch_h / 2"
     add("sketch.create", plane=YZ)
@@ -335,7 +340,7 @@ def cuts(side, xl):
     add("sketch.finish")
     w = "spine_t + dt_d + dt_c + 2 * eps"
     add("solid.extrude", distance=w, start_offset=side.span("mid - spine_t - eps", w), operation="cut", targets=[body],
-        profiles="all", name="Kabelschlitze")
+        profiles="all", name=f"Kabelschlitze_{side.tag}")
     # screw holes in the bosses
     for zf in FLOORS:
         add("solid.cylinder", diameter="screw_core", height="face_t + boss_l", axis="Y",
@@ -350,7 +355,7 @@ def cuts(side, xl):
                                    [f"{cx} - btn_w / 2", "depth + eps"], [f"{cx} - btn_w / 2", yc]], infer=False)
         add("sketch.arc.center_point", center=[cx, yc], start=[f"{cx} - btn_w / 2", yc], end=[f"{cx} + btn_w / 2", yc])
         add("sketch.finish")
-        add("solid.extrude", distance="plate_t + 2 * eps", operation="cut", targets=[body], profiles="all", name="Knopf")
+        add("solid.extrude", distance="plate_t + 2 * eps", operation="cut", targets=[body], profiles="all", name=f"Knopf_{side.tag}")
 
 
 def fillet(body, radius, points, name):
@@ -377,6 +382,12 @@ def fillets():
         fillet(side, "gus", [[bay_x, ym, z] for z in ceilings], f"Fachwand_Decke_{tag}")
         fillet(side, "gus_c", [[free_x, ym, z] for z in floors + ceilings], f"Fachwand_Mitte_{tag}")
         fillet(side, "fin_r", [[mx(x, side), y, z] for x, y, z in wall_corners], f"Fachwand_Ecken_{tag}")
+        # where the wall leaves the back face: its top and bottom step and the plate ends on both sides
+        fillet(side, "root_r", [[mx(wall_c, side), ev("depth"), z] for z in (ev("plate_t / 2"), ev("panel_h - plate_t / 2"))],
+               f"Fachwand_Stufe_{tag}")
+        fillet(side, "plate_end_r", [[x, ev("depth"), z] for x in (bay_x, free_x)
+                                     for z in (ev("plate_t * 3 / 4"), ev("panel_h / 2"), ev("panel_h - plate_t * 3 / 4"))],
+               f"Fachwand_Plattenende_{tag}")
         fillet(side, "ear_root_r", [[mx(ev("side_x"), side), ev("face_t"), ev("panel_h / 2")]], f"Ohr_Uebergang_{tag}")
         x_stop = xl + ev("fit + mac_w - mac_r - stop_w / 2")
         fillet(side, "stop_foot_r", [[x_stop, y_s, ev(zf)] for zf in FLOORS], f"Anschlag_Fuss_{tag}")
