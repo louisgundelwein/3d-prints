@@ -33,7 +33,8 @@ P = {
     "mid": ("panel_w / 2", "split line between the two printed halves"),
     "rail_pitch": ("465 mm", "rail hole spacing across the rack"),
     "rack_open": ("450 mm", "smallest clear width between the rails"),
-    "rail_gap": ("1 mm", "clearance between body and rail"),
+    "fin_lip": ("1.5 mm", "the rib's foot is this much wider than its wall on each side, joined to the wall at 45 degrees"),
+    "rail_gap": ("fin_lip + 1 mm", "clearance between body and rail; the outer rib feet stick out fin_lip"),
     "side_x": ("(panel_w - rack_open) / 2 + rail_gap", "outer face of the body side walls"),
     "hole_x": ("(panel_w - rail_pitch) / 2", "ear hole centre from the panel edge"),
     "hole_e": ("6.35 mm", "EIA-310 hole centre above a unit's bottom"),
@@ -59,6 +60,7 @@ P = {
     "gus_c": ("15 mm", "fillet radius in the free space next to the bays (braces the middle plate)"),
     "edge_r": ("3 mm", "outer edges of the body along its depth"),
     "ear_r": ("5 mm", "faceplate corners"),
+    "ear_root_r": ("edge_r - 0.5 mm", "fillet where the ear meets the outer wall (the ear carries the rack, across print layers)"),
     "ws_r": ("4 mm", "side corners of the cable slots"),
     "ws_h": ("24 mm", "height of the cable slots in the bay walls"),
     "ws_e": ("20 mm", "cable slots' distance from the front and back"),
@@ -98,9 +100,10 @@ P = {
     # cable management
     "fin_back": ("10 mm", "wall left behind the last cable hole"),
     "fin_t": ("3 mm", "cable rib thickness, centred on its wall"),
-    "fin_inset": ("2 mm", "cable ribs stay this far inside the top and bottom faces"),
+    "fin_inset": ("edge_r + 1 mm", "cable ribs stay this far inside the top and bottom faces, clear of the edge roundings"),
     "fin_r": ("10 mm", "rounded rear corners of the cable ribs"),
-    "fin_e": ("6 mm", "first cable hole behind the body"),
+    "fin_flare": ("6 mm", "the rib narrows from its foot to fin_t along concave arcs over this length"),
+    "fin_e": ("fin_lip + fin_flare + 4 mm", "first cable hole behind the body"),
     "big_w": ("22 mm", "large cable hole: height"),
     "big_l": ("32 mm", "large cable hole: length (meant for HDMI, power and LAN plugs; plug sizes not measured)"),
     "small_w": ("10 mm", "small cable hole: height"),
@@ -224,27 +227,52 @@ def drop(y0, y1, zc, w):
             (f"{y1} - {w} / 2", f"{zc} + {w} / 2"), (y0, f"{zc} + {w} / 2")]
 
 
+def rib(centre, wall, name):
+    """Cable rib behind a wall, as a plan outline (XY sketch) extruded over the rib's height. Its
+    foot sits on the wall's last stretch, fin_lip wider than the wall on each side and joined to
+    it at 45 degrees; from there it narrows to fin_t along concave arcs over fin_flare. So the
+    section changes over many print layers instead of stepping at one (Y is up when printing),
+    and none of its faces lies in a plane of the wall."""
+    xa, xb = f"{centre} - {wall} / 2 - fin_lip", f"{centre} + {wall} / 2 + fin_lip"   # foot faces
+    wa, wb = f"{centre} - {wall} / 2", f"{centre} + {wall} / 2"                       # wall faces
+    ra, rb = f"{centre} - fin_t / 2", f"{centre} + fin_t / 2"                         # rib faces
+    step = f"({wall} / 2 + fin_lip - fin_t / 2)"
+    arc_r = f"({step} * {step} + fin_flare * fin_flare) / (2 * {step})"                # through the foot corner
+    # the foot reaches fin_lip into and fin_lip out of the body, so no rib edge lies in the back face
+    y0, yf, y1, y2 = "depth - fin_lip", "depth + fin_lip", "depth + fin_lip + fin_flare", "depth + fin_l"
+    add("sketch.create", plane="XY", offset="fin_inset")
+    # the 45 degree faces run on eps into the wall, so the foot's corners lie inside it, not on its faces
+    add("sketch.line", points=[[xb, yf], [xb, y0], [f"{wb} - eps", f"{y0} - fin_lip - eps"], [f"{wa} + eps", f"{y0} - fin_lip - eps"],
+                               [xa, y0], [xa, yf]], infer=False)
+    add("sketch.arc.center_point", center=[f"{ra} - {arc_r}", y1], start=[xa, yf], end=[ra, y1])
+    add("sketch.line", points=[[ra, y1], [ra, y2], [rb, y2], [rb, y1]], infer=False)
+    add("sketch.arc.center_point", center=[f"{rb} + {arc_r}", y1], start=[rb, y1], end=[xb, yf])
+    add("sketch.finish")
+    add("solid.extrude", distance="panel_h - 2 * fin_inset", operation="join", targets=[L],
+        profiles=[{"point": [ev(centre), ev("depth + fin_l / 2")]}], name=name)
+
+
 def fins():
-    """Left half: a cable rib behind the outer wall and one behind the bay wall. Each is one
-    sketch (outline, rounded rear corners, a large and a small cable hole per level), thinner and
-    shorter than its wall and starting inside it, so none of its faces lies on a face of the body."""
+    """Left half: a cable rib behind the outer wall and one behind the bay wall, then a large and
+    a small cable hole per level through both (pointed at 45 degrees towards the back, up when
+    printing)."""
+    rib("side_x + wall_t / 2", "wall_t", "Kabelrippe_aussen")
+    rib(f"{BAY_X1} + bay_wall_t / 2", "bay_wall_t", "Kabelrippe_Fach")
     y_big, y_small = "depth + fin_e", "depth + fin_e + big_l + hole_gap"
-    for centre, name in (("side_x + wall_t / 2", "Kabelrippe_aussen"), (f"{BAY_X1} + bay_wall_t / 2", "Kabelrippe_Fach")):
-        add("sketch.create", plane=YZ)
-        polys = [rect("depth - eps", "depth + fin_l", "fin_inset", "panel_h - fin_inset")]
-        for zf in FLOORS:
-            zc = f"{zf} + bay_h / 2"
-            polys += [drop(y_big, f"{y_big} + big_l", zc, "big_w"), drop(y_small, f"{y_small} + small_l", zc, "small_w")]
-        for poly in polys:
-            add("sketch.line", points=[list(p) for p in poly], closed=True, infer=False)
-        add("sketch.fillet", points=["l1.end", "l2.end"], radius="fin_r")
-        for k, w in enumerate(["big_w", "small_w", "big_w", "small_w"]):
-            n = 4 + 5 * k     # line ids before this hole
-            add("sketch.fillet", points=[f"l{n + 4}.end", f"l{n + 5}.end"], radius=f"{w} * 0.45")
-            add("sketch.fillet", points=[f"l{n + 1}.end", f"l{n + 3}.end"], radius=f"{w} / 4")
-        add("sketch.finish")
-        add("solid.extrude", distance="fin_t", start_offset=f"{centre} - fin_t / 2", operation="join", targets=[L],
-            profiles=[{"point": [ev("depth + fin_l - fin_r"), ev("panel_h / 2")]}], name=name)
+    add("sketch.create", plane=YZ)
+    polys = []
+    for zf in FLOORS:
+        zc = f"{zf} + bay_h / 2"
+        polys += [drop(y_big, f"{y_big} + big_l", zc, "big_w"), drop(y_small, f"{y_small} + small_l", zc, "small_w")]
+    for poly in polys:
+        add("sketch.line", points=[list(p) for p in poly], closed=True, infer=False)
+    for k, w in enumerate(["big_w", "small_w", "big_w", "small_w"]):
+        n = 5 * k     # line ids before this hole
+        add("sketch.fillet", points=[f"l{n + 4}.end", f"l{n + 5}.end"], radius=f"{w} * 0.45")
+        add("sketch.fillet", points=[f"l{n + 1}.end", f"l{n + 3}.end"], radius=f"{w} / 4")
+    add("sketch.finish")
+    add("solid.extrude", distance=f"{FREE_X0} - side_x + 2 * fin_lip + 2 * eps", start_offset="side_x - fin_lip - eps", operation="cut",
+        targets=[L], profiles="all", name="Kabelloecher")
 
 
 def cable_notches():
@@ -336,9 +364,13 @@ def fillets():
     zs = [ev(f"{zf} + latch_z") for zf in FLOORS]
     px = ev(f"{FREE_X0} + latch_px")
     y_s = ev("mac_y + mac_w - foot_h")
+    rib_corners = [[x, ev("depth + fin_l"), z] for x in (ev("side_x + wall_t / 2"), ev(f"{BAY_X1} + bay_wall_t / 2"))
+                   for z in (ev("fin_inset"), ev("panel_h - fin_inset"))]
     for side, xl in ((L, ev("side_x + wall_t")), (R, ev("panel_w - side_x - wall_t - bay_w"))):
         tag = "L" if side == L else "R"
         fillet(side, "boss_r", [[mx(px, side), ev("face_t"), z + ev("boss_d / 2")] for z in zs], f"Dom_Fuss_{tag}")
+        fillet(side, "fin_r", [[mx(x, side), y, z] for x, y, z in rib_corners], f"Kabelrippe_Ecken_{tag}")
+        fillet(side, "ear_root_r", [[mx(ev("side_x"), side), ev("face_t"), ev("panel_h / 2")]], f"Ohr_Uebergang_{tag}")
         x_stop = xl + ev("fit + mac_w - mac_r - stop_w / 2")
         fillet(side, "stop_foot_r", [[x_stop, y_s, ev(zf)] for zf in FLOORS], f"Anschlag_Fuss_{tag}")
     for k, name in enumerate(["Riegel_1", "Riegel_2", "Riegel_3", "Riegel_4"]):

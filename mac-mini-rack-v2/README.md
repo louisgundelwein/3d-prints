@@ -13,7 +13,7 @@
 | `stl/Rack_rechts.stl` | PETG | 1 |
 | `stl/Riegel.stl` (latch) | PETG | 4 |
 
-All parts are in print orientation and need no supports. `orca/MacMini_Rack.3mf` is the OrcaSlicer project for a Bambu Lab P1S: plate 1 the left half (about 21.9 h, 966 g), plate 2 the right half with the four latches (about 21.1 h, 927 g).
+All parts are in print orientation and need no supports. `orca/MacMini_Rack.3mf` is the OrcaSlicer project for a Bambu Lab P1S: plate 1 the left half (about 22.0 h, 971 g), plate 2 the right half with the four latches (about 21.2 h, 932 g).
 
 ## Hardware
 
@@ -27,7 +27,7 @@ All parts are in print orientation and need no supports. `orca/MacMini_Rack.3mf`
 3. Slide each Mac in from the front until it touches the rear stop.
 4. Screw on the latches. Turned towards the Mac they hold it in, turned the other way it slides out.
 
-Cables: behind the outer walls and the walls beside the bays, 3 mm ribs reach 70 mm out of the body, each with a large (22 × 32 mm) and a small (10 × 16 mm) cable hole per level. The large ones are meant for HDMI, power and LAN plugs; the plug sizes are not measured. Slots in the walls beside the bays lead into the free space next to each stack. Notches open to the back run through both centre walls, so plugged cables drop in from behind.
+Cables: behind the outer walls and the walls beside the bays, 3 mm ribs reach 75 mm out of the body, growing out of a wider foot along large roundings so no print layer takes a sharp step, each with a large (22 × 32 mm) and a small (10 × 16 mm) cable hole per level. The large ones are meant for HDMI, power and LAN plugs; the plug sizes are not measured. Slots in the walls beside the bays lead into the free space next to each stack. Notches open to the back run through both centre walls, so plugged cables drop in from behind.
 
 Power button: each shelf has a round-ended slot under the Mac's rear left corner, open to the back. The button position is an estimate (`btn_x`); check it against a real Mac before printing.
 
