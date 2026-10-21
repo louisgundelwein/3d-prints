@@ -65,7 +65,7 @@ P = {
     "ws_web": ("10 mm", "web between the two cable slots of a bay wall"),
     "stop_h": ("12 mm", "rear stop height; its 45 degree face meets the housing edge at foot_h"),
     "stop_w": ("25 mm", "rear stop width"),
-    "stop_back": ("1 mm", "rear stop ends this far in front of the back face (flush faces upset the kernel)"),
+    "stop_back": ("1 mm", "rear stop ends this far in front of the back face"),
     "stop_r": ("3 mm", "rounded top of the rear stop"),
     "stop_foot_r": ("4 mm", "fillet between the rear stop and the floor"),
     "depth": ("mac_y + mac_w - foot_h + stop_h", "body depth: the stop's slope reaches the back"),
@@ -85,29 +85,31 @@ P = {
     "latch_t": ("4 mm", "latch thickness"),
     "latch_w": ("12 mm", "latch width"),
     "latch_z": ("38 mm", "latch centre above the floor (clear of the headphone jack)"),
-    "latch_px": ("8 mm", "latch pivot beside the bay wall"),
+    "boss_gap": ("1 mm", "room between the screw boss's foot fillet and the bay wall"),
     "latch_over": ("6 mm", "how far the latch reaches over the flat part of the Mac's front"),
     "latch_hole": ("4.4 mm", "M4 clearance in the latch"),
     "screw_core": ("3.4 mm", "hole the M4 screw cuts its own thread in"),
     "boss_d": ("10 mm", "screw boss behind the faceplate"),
     "boss_l": ("12 mm", "screw boss length"),
     "boss_r": ("3 mm", "fillet where the screw boss meets the faceplate"),
+    "latch_px": ("boss_d / 2 + boss_r + boss_gap", "latch pivot beside the bay wall"),
     "boss_end_r": ("1 mm", "rounded end of the screw boss"),
     "latch_r": ("1.5 mm", "rounded front edges of the latch"),
     # cable management
     "fin_back": ("10 mm", "wall left behind the last cable hole"),
-    "fin_r": ("2.5 mm", "rounded rear corners of the wall extensions (below edge_r: they meet those roundings)"),
+    "fin_t": ("3 mm", "cable rib thickness, centred on its wall"),
+    "fin_inset": ("2 mm", "cable ribs stay this far inside the top and bottom faces"),
+    "fin_r": ("10 mm", "rounded rear corners of the cable ribs"),
     "fin_e": ("6 mm", "first cable hole behind the body"),
     "big_w": ("22 mm", "large cable hole: height"),
     "big_l": ("32 mm", "large cable hole: length (meant for HDMI, power and LAN plugs; plug sizes not measured)"),
     "small_w": ("10 mm", "small cable hole: height"),
     "small_l": ("16 mm", "small cable hole: length"),
     "hole_gap": ("6 mm", "web between the large and the small cable hole"),
-    "fin_l": ("fin_e + big_l + hole_gap + small_l + fin_back", "outer and bay walls continue this far behind the body, for cable routing"),
+    "fin_l": ("fin_e + big_l + hole_gap + small_l + fin_back", "cable ribs reach this far behind the body"),
     "notch_h": ("12 mm", "cable notches through the spines, open to the back"),
     "notch_l": ("40 mm", "cable notch length from the back"),
     "eps": ("0.5 mm", "overlap of joins and overshoot of cuts"),
-    "kiss": ("0.05 mm", "a rounded foot sinks this far into the face it joins (flush faces upset the kernel)"),
 }
 
 XZ = {"origin": [0, 0, 0], "x_dir": [1, 0, 0], "y_dir": [0, 0, 1]}   # (x, y) = world (X, Z), normal -Y
@@ -179,12 +181,11 @@ def half():
     add("sketch.fillet", points=[c(k, i) for k in (3, 4) for i in (1, 2, 3, 4)], radius="gus_c")
     add("sketch.finish")
     wall = [ev("side_x + wall_t / 2"), ev("panel_h / 2")]
-    # the profile runs fin_l past the back; fins() then clears everything there but the thin walls
-    add("solid.extrude", distance="depth + fin_l", direction="negative", operation="new", body_name=L, name="Profil",
+    add("solid.extrude", distance="depth", direction="negative", operation="new", body_name=L, name="Profil",
         profiles=[{"point": wall}])
     # faceplate: the ear strip, and a cover over the free space next to the bays
     add("sketch.create", plane=XZ)
-    add("sketch.line", points=[list(p) for p in rect("0 mm", "side_x + wall_t / 2", "0 mm", "panel_h")], closed=True, infer=False)
+    add("sketch.line", points=[list(p) for p in rect("0 mm", "side_x + (edge_r + wall_t) / 2", "0 mm", "panel_h")], closed=True, infer=False)
     add("sketch.fillet", points=["l3.end", "l4.end"], radius="ear_r")
     add("sketch.finish")
     add("solid.extrude", distance="face_t", direction="negative", operation="join", targets=[L], name="Frontplatte_Ohr")
@@ -224,27 +225,26 @@ def drop(y0, y1, zc, w):
 
 
 def fins():
-    """Left half: behind the body only the outer wall and the bay wall go on (the profile was
-    extruded that far), with a large and a small cable hole per level and rounded rear corners."""
-    back = ["depth", "fin_l + eps", "panel_h + 2 * eps"]
-    # kiss off the walls: cut faces flush with the wall faces upset the kernel
-    box(L, [f"{BAY_X0} + kiss", "depth", "0 mm - eps"], [f"bay_w - 2 * kiss"] + back[1:], op="cut", name="Hinten_Fach")
-    box(L, [f"{FREE_X0} + kiss", "depth", "0 mm - eps"], [f"mid + eps - ({FREE_X0} + kiss)"] + back[1:], op="cut", name="Hinten_Mitte")
-    add("sketch.create", plane=YZ)
+    """Left half: a cable rib behind the outer wall and one behind the bay wall. Each is one
+    sketch (outline, rounded rear corners, a large and a small cable hole per level), thinner and
+    shorter than its wall and starting inside it, so none of its faces lies on a face of the body."""
     y_big, y_small = "depth + fin_e", "depth + fin_e + big_l + hole_gap"
-    polys = []
-    for zf in FLOORS:
-        zc = f"{zf} + bay_h / 2"
-        polys += [drop(y_big, f"{y_big} + big_l", zc, "big_w"), drop(y_small, f"{y_small} + small_l", zc, "small_w")]
-    for poly in polys:
-        add("sketch.line", points=[list(p) for p in poly], closed=True, infer=False)
-    for k, w in enumerate(["big_w", "small_w", "big_w", "small_w"]):
-        n = 5 * k     # line ids before this hole
-        add("sketch.fillet", points=[f"l{n + 4}.end", f"l{n + 5}.end"], radius=f"{w} * 0.45")
-        add("sketch.fillet", points=[f"l{n + 1}.end", f"l{n + 3}.end"], radius=f"{w} / 4")
-    add("sketch.finish")
-    add("solid.extrude", distance=f"{FREE_X0} - side_x + 2 * eps", start_offset="side_x - eps", operation="cut",
-        targets=[L], profiles="all", name="Kabelloecher")
+    for centre, name in (("side_x + wall_t / 2", "Kabelrippe_aussen"), (f"{BAY_X1} + bay_wall_t / 2", "Kabelrippe_Fach")):
+        add("sketch.create", plane=YZ)
+        polys = [rect("depth - eps", "depth + fin_l", "fin_inset", "panel_h - fin_inset")]
+        for zf in FLOORS:
+            zc = f"{zf} + bay_h / 2"
+            polys += [drop(y_big, f"{y_big} + big_l", zc, "big_w"), drop(y_small, f"{y_small} + small_l", zc, "small_w")]
+        for poly in polys:
+            add("sketch.line", points=[list(p) for p in poly], closed=True, infer=False)
+        add("sketch.fillet", points=["l1.end", "l2.end"], radius="fin_r")
+        for k, w in enumerate(["big_w", "small_w", "big_w", "small_w"]):
+            n = 4 + 5 * k     # line ids before this hole
+            add("sketch.fillet", points=[f"l{n + 4}.end", f"l{n + 5}.end"], radius=f"{w} * 0.45")
+            add("sketch.fillet", points=[f"l{n + 1}.end", f"l{n + 3}.end"], radius=f"{w} / 4")
+        add("sketch.finish")
+        add("solid.extrude", distance="fin_t", start_offset=f"{centre} - fin_t / 2", operation="join", targets=[L],
+            profiles=[{"point": [ev("depth + fin_l - fin_r"), ev("panel_h / 2")]}], name=name)
 
 
 def cable_notches():
@@ -271,15 +271,14 @@ def latches():
                 operation="join", targets=[name])
         add("solid.cylinder", diameter="latch_hole", height="latch_t + 2 * eps", axis="Y",
             base=[px, "0 mm - latch_t - eps", pz], operation="cut", targets=[name])
-        # boss: a revolved profile carrying its foot fillet and rounded end, so no edge picks
+        # boss: revolved, starting inside the faceplate, its end rounded in the sketch; the foot
+        # fillet comes last (fillets())
         add("sketch.create", plane="XY", offset=pz)
-        add("sketch.line", points=[[px, "face_t - eps"], [f"{px} + boss_d / 2 + boss_r + eps", "face_t - eps"],
-                                   [f"{px} + boss_d / 2 + boss_r + eps", "face_t - kiss"], [f"{px} + boss_d / 2", "face_t - kiss"],
+        add("sketch.line", points=[[px, "face_t / 2"], [f"{px} + boss_d / 2", "face_t / 2"],
                                    [f"{px} + boss_d / 2", "face_t + boss_l"], [px, "face_t + boss_l"]], closed=True, infer=False)
-        add("sketch.fillet", points=["l3.end"], radius="boss_r")
-        add("sketch.fillet", points=["l4.end"], radius="boss_end_r")
+        add("sketch.fillet", points=["l2.end"], radius="boss_end_r")
         add("sketch.finish")
-        add("solid.revolve", axis="l6", operation="join", targets=[L], name=f"Dom{k + 1}")
+        add("solid.revolve", axis="l4", operation="join", targets=[L], name=f"Dom{k + 1}")
         add("solid.cylinder", diameter="screw_core", height="face_t + boss_l", axis="Y", base=[px, "0 mm - eps", pz],
             operation="cut", targets=[L])
 
@@ -292,20 +291,21 @@ def bay_features(body, xl):
         y_s = "mac_y + mac_w - foot_h"
         add("sketch.create", plane=YZ)
         y_e = "depth - stop_back"
-        add("sketch.line", points=[[f"{y_s} - 2 * stop_foot_r", f"{zf} - eps"], [y_e, f"{zf} - eps"], [y_e, f"{zf} + stop_h - stop_back"],
-                                   [y_s, f"{zf} - kiss"], [f"{y_s} - 2 * stop_foot_r", f"{zf} - kiss"]], closed=True, infer=False)
+        # the slope runs on into the plate, so the stop starts inside material; its foot fillet
+        # comes last (fillets())
+        add("sketch.line", points=[[f"{y_s} - plate_t / 2", f"{zf} - plate_t / 2"], [y_e, f"{zf} - plate_t / 2"],
+                                   [y_e, f"{zf} + stop_h - stop_back"]], closed=True, infer=False)
         add("sketch.fillet", points=["l2.end"], radius="stop_r")
-        add("sketch.fillet", points=["l3.end"], radius="stop_foot_r")
         add("sketch.finish")
         add("solid.extrude", distance="stop_w", start_offset=f"{xl} + fit + mac_w - mac_r - stop_w",
             operation="join", targets=[body])
         # power button: slot with a round end, open to the back, clear of the wall and its fillets
         cx = f"{xl} + fit + btn_x"
         add("sketch.create", plane="XY", offset=f"{zf} - plate_t - eps")
-        add("sketch.line", points=[list(p) for p in rect(f"{cx} - btn_w / 2", f"{cx} + btn_w / 2", "mac_y + mac_w - btn_l", "depth + eps")],
-            closed=True, infer=False)
-        # just under half the width: a full half circle leaves the fillets no line to share
-        add("sketch.fillet", points=["l4.end", "l1.end"], radius="btn_w * 0.49")
+        yc = "mac_y + mac_w - btn_l + btn_w / 2"
+        add("sketch.line", points=[[f"{cx} + btn_w / 2", yc], [f"{cx} + btn_w / 2", "depth + eps"],
+                                   [f"{cx} - btn_w / 2", "depth + eps"], [f"{cx} - btn_w / 2", yc]], infer=False)
+        add("sketch.arc.center_point", center=[cx, yc], start=[f"{cx} - btn_w / 2", yc], end=[f"{cx} + btn_w / 2", yc])
         add("sketch.finish")
         add("solid.extrude", distance="plate_t + 2 * eps", operation="cut", targets=[body], profiles="all", name="Knopf")
 
@@ -335,10 +335,12 @@ def fillets():
     mx = lambda x, side: x if side == L else ev("panel_w") - x
     zs = [ev(f"{zf} + latch_z") for zf in FLOORS]
     px = ev(f"{FREE_X0} + latch_px")
-    corners = [[x, ev("depth + fin_l"), z] for x in (ev("side_x + wall_t - eps"), ev(f"{BAY_X1} + bay_wall_t / 2"))
-               for z in (0, ev("panel_h"))]
-    for side in (L, R):
-        fillet(side, "fin_r", [[mx(x, side), y, z] for x, y, z in corners], f"Kabelwand_Ecken_{'L' if side == L else 'R'}")
+    y_s = ev("mac_y + mac_w - foot_h")
+    for side, xl in ((L, ev("side_x + wall_t")), (R, ev("panel_w - side_x - wall_t - bay_w"))):
+        tag = "L" if side == L else "R"
+        fillet(side, "boss_r", [[mx(px, side), ev("face_t"), z + ev("boss_d / 2")] for z in zs], f"Dom_Fuss_{tag}")
+        x_stop = xl + ev("fit + mac_w - mac_r - stop_w / 2")
+        fillet(side, "stop_foot_r", [[x_stop, y_s, ev(zf)] for zf in FLOORS], f"Anschlag_Fuss_{tag}")
     for k, name in enumerate(["Riegel_1", "Riegel_2", "Riegel_3", "Riegel_4"]):
         side = L if k < 2 else R
         z = zs[k % 2]
