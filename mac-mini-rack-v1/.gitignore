@@ -1,0 +1,6 @@
+video/.hyperframes/
+video/.media/
+video/.cache/
+video/output/
+video/render.log
+video/.thumbnails/
