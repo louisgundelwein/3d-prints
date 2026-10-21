@@ -14,6 +14,8 @@ path = sys.argv[1]
 limit = math.radians(float(sys.argv[2]) if len(sys.argv) > 2 else 45)
 data = open(path, "rb").read()
 n = struct.unpack_from("<I", data, 80)[0]
+if len(data) != 84 + 50 * n:
+    raise SystemExit("not a binary STL")
 tris = []
 for i in range(n):
     v = struct.unpack_from("<12f", data, 84 + 50 * i)
@@ -21,7 +23,9 @@ for i in range(n):
     u = [b[k] - a[k] for k in range(3)]
     w = [c[k] - a[k] for k in range(3)]
     nr = [u[1] * w[2] - u[2] * w[1], u[2] * w[0] - u[0] * w[2], u[0] * w[1] - u[1] * w[0]]
-    ln = math.sqrt(sum(x * x for x in nr)) or 1
+    ln = math.sqrt(sum(x * x for x in nr))
+    if ln == 0:
+        continue    # zero-area triangle: no face to hang
     tris.append((a, b, c, [x / ln for x in nr], ln / 2))
 
 hang = [t for t in tris if t[3][2] < -math.sin(limit) and min(p[2] for p in t[:3]) > 0.05]

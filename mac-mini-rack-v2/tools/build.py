@@ -17,6 +17,7 @@ The rack is two halves split at X = mid. Each half is one extrusion of its XZ pr
 face without supports. The halves slide together on dovetails; the rack rails fix them in Y.
 """
 import json
+import math
 import os
 import re
 import sys
@@ -75,7 +76,9 @@ P = {
     "dt_root": ("16 mm", "dovetail width at the split line"),
     "dt_tip": ("24 mm", "dovetail width at its tip"),
     "dt_d": ("10 mm", "dovetail depth"),
-    "dt_c": ("0.2 mm", "dovetail clearance per side"),
+    "dt_c": ("0.25 mm", "dovetail clearance per side, square to every face"),
+    "dt_s": ("(dt_tip - dt_root) / (2 * dt_d)", "dovetail flank slope"),
+    "dt_cv": ("dt_c * sqrt(1 + dt_s * dt_s)", "vertical shift of a flank that moves it dt_c square to itself"),
     "dt_cap": ("5 mm", "solid end of the right half's slots: stop for sliding the halves together"),
     "dt_e": ("22 mm", "outer dovetails' centre from the top and bottom"),
     # latches
@@ -92,14 +95,15 @@ P = {
     "boss_end_r": ("1 mm", "rounded end of the screw boss"),
     "latch_r": ("1.5 mm", "rounded front edges of the latch"),
     # cable management
-    "fin_l": ("70 mm", "outer and bay walls continue this far behind the body, for cable routing"),
+    "fin_back": ("10 mm", "wall left behind the last cable hole"),
     "fin_r": ("2.5 mm", "rounded rear corners of the wall extensions (below edge_r: they meet those roundings)"),
     "fin_e": ("6 mm", "first cable hole behind the body"),
     "big_w": ("22 mm", "large cable hole: height"),
-    "big_l": ("32 mm", "large cable hole: length (fits HDMI, power and LAN plugs)"),
+    "big_l": ("32 mm", "large cable hole: length (meant for HDMI, power and LAN plugs; plug sizes not measured)"),
     "small_w": ("10 mm", "small cable hole: height"),
     "small_l": ("16 mm", "small cable hole: length"),
     "hole_gap": ("6 mm", "web between the large and the small cable hole"),
+    "fin_l": ("fin_e + big_l + hole_gap + small_l + fin_back", "outer and bay walls continue this far behind the body, for cable routing"),
     "notch_h": ("12 mm", "cable notches through the spines, open to the back"),
     "notch_l": ("40 mm", "cable notch length from the back"),
     "eps": ("0.5 mm", "overlap of joins and overshoot of cuts"),
@@ -112,7 +116,7 @@ XY = {"origin": [0, 0, 0], "x_dir": [1, 0, 0], "y_dir": [0, 1, 0]}   # (x, y) = 
 
 def ev(expr):
     """Numeric value in mm of a length expression over the parameters (edge picks only)."""
-    return eval(re.sub(r"\bmm\b", "", expr), {"__builtins__": {}}, V)
+    return eval(re.sub(r"\bmm\b", "", expr), {"__builtins__": {}, "sqrt": math.sqrt}, V)
 
 
 V = {}
@@ -136,12 +140,11 @@ def sketch(plane, polys):
 
 
 def box(body, corner, size, op="join", name=None):
-    """Box joined to or cut from body; returns its feature name."""
+    """Box joined to or cut from body."""
     p = {"length": size[0], "width": size[1], "height": size[2], "corner": list(corner), "operation": op, "targets": [body]}
     if name:
         p["name"] = name
     add("solid.box", **p)
-    return name
 
 
 BAY_X0 = "side_x + wall_t"                              # left half: bay between these two
@@ -308,20 +311,22 @@ def bay_features(body, xl):
 
 
 def dovetails():
-    """Tabs on the left half, slots (closed at the back) in the right half."""
+    """Tabs on the left half, slots (closed at the back) in the right half. The slot is the tab
+    offset by dt_c square to each face; both start eps inside the left half, on the flank's line."""
     zs = ["dt_e", "panel_h / 2", "panel_h - dt_e"]
-    sketch(XZ, [[("mid - eps", f"{z} - dt_root / 2"), ("mid + dt_d", f"{z} - dt_tip / 2"),
-                 ("mid + dt_d", f"{z} + dt_tip / 2"), ("mid - eps", f"{z} + dt_root / 2")] for z in zs])
+    sketch(XZ, [[("mid - eps", f"{z} - dt_root / 2 + dt_s * eps"), ("mid + dt_d", f"{z} - dt_tip / 2"),
+                 ("mid + dt_d", f"{z} + dt_tip / 2"), ("mid - eps", f"{z} + dt_root / 2 - dt_s * eps")] for z in zs])
     add("solid.extrude", distance="depth - dt_cap", direction="negative", operation="join", targets=[L],
         profiles="all", name="Schwalbe_Zapfen")
-    sketch(XZ, [[("mid - eps", f"{z} - dt_root / 2 - dt_c"), ("mid + dt_d + dt_c", f"{z} - dt_tip / 2 - dt_c"),
-                 ("mid + dt_d + dt_c", f"{z} + dt_tip / 2 + dt_c"), ("mid - eps", f"{z} + dt_root / 2 + dt_c")] for z in zs])
+    sketch(XZ, [[("mid - eps", f"{z} - dt_root / 2 + dt_s * eps - dt_cv"), ("mid + dt_d + dt_c", f"{z} - dt_root / 2 - dt_s * (dt_d + dt_c) - dt_cv"),
+                 ("mid + dt_d + dt_c", f"{z} + dt_root / 2 + dt_s * (dt_d + dt_c) + dt_cv"), ("mid - eps", f"{z} + dt_root / 2 - dt_s * eps + dt_cv")]
+                for z in zs])
     add("solid.extrude", distance="depth - dt_cap + eps", start_offset="eps", direction="negative", operation="cut",
         targets=[R], profiles="all", name="Schwalbe_Nut")
 
 
 def fillet(body, radius, points, name):
-    add("solid.fillet", body=body, radius=radius, edges=[[round(v, 4) for v in pt] for pt in points], fit="reduce", name=name)
+    add("solid.fillet", body=body, radius=radius, edges=[[round(v, 4) for v in pt] for pt in points], name=name)
 
 
 def fillets():
