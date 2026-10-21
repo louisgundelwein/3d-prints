@@ -85,13 +85,14 @@ P = {
     "latch_t": ("4 mm", "latch thickness"),
     "latch_w": ("12 mm", "latch width"),
     "latch_z": ("38 mm", "latch centre above the floor (clear of the headphone jack)"),
-    "latch_px": ("8 mm", "latch pivot beside the bay wall"),
+    "boss_gap": ("1 mm", "room between the screw boss's foot fillet and the bay wall"),
     "latch_over": ("6 mm", "how far the latch reaches over the flat part of the Mac's front"),
     "latch_hole": ("4.4 mm", "M4 clearance in the latch"),
     "screw_core": ("3.4 mm", "hole the M4 screw cuts its own thread in"),
     "boss_d": ("10 mm", "screw boss behind the faceplate"),
     "boss_l": ("12 mm", "screw boss length"),
     "boss_r": ("3 mm", "fillet where the screw boss meets the faceplate"),
+    "latch_px": ("boss_d / 2 + boss_r + boss_gap", "latch pivot beside the bay wall"),
     "boss_end_r": ("1 mm", "rounded end of the screw boss"),
     "latch_r": ("1.5 mm", "rounded front edges of the latch"),
     # cable management
@@ -184,7 +185,7 @@ def half():
         profiles=[{"point": wall}])
     # faceplate: the ear strip, and a cover over the free space next to the bays
     add("sketch.create", plane=XZ)
-    add("sketch.line", points=[list(p) for p in rect("0 mm", "side_x + wall_t / 2", "0 mm", "panel_h")], closed=True, infer=False)
+    add("sketch.line", points=[list(p) for p in rect("0 mm", "side_x + (edge_r + wall_t) / 2", "0 mm", "panel_h")], closed=True, infer=False)
     add("sketch.fillet", points=["l3.end", "l4.end"], radius="ear_r")
     add("sketch.finish")
     add("solid.extrude", distance="face_t", direction="negative", operation="join", targets=[L], name="Frontplatte_Ohr")
@@ -228,7 +229,7 @@ def fins():
     sketch (outline, rounded rear corners, a large and a small cable hole per level), thinner and
     shorter than its wall and starting inside it, so none of its faces lies on a face of the body."""
     y_big, y_small = "depth + fin_e", "depth + fin_e + big_l + hole_gap"
-    for centre in ("side_x + wall_t / 2", f"{BAY_X1} + bay_wall_t / 2"):
+    for centre, name in (("side_x + wall_t / 2", "Kabelrippe_aussen"), (f"{BAY_X1} + bay_wall_t / 2", "Kabelrippe_Fach")):
         add("sketch.create", plane=YZ)
         polys = [rect("depth - eps", "depth + fin_l", "fin_inset", "panel_h - fin_inset")]
         for zf in FLOORS:
@@ -243,7 +244,7 @@ def fins():
             add("sketch.fillet", points=[f"l{n + 1}.end", f"l{n + 3}.end"], radius=f"{w} / 4")
         add("sketch.finish")
         add("solid.extrude", distance="fin_t", start_offset=f"{centre} - fin_t / 2", operation="join", targets=[L],
-            profiles=[{"point": [ev("depth + fin_l - fin_r"), ev("panel_h / 2")]}], name="Kabelrippe")
+            profiles=[{"point": [ev("depth + fin_l - fin_r"), ev("panel_h / 2")]}], name=name)
 
 
 def cable_notches():
@@ -301,10 +302,10 @@ def bay_features(body, xl):
         # power button: slot with a round end, open to the back, clear of the wall and its fillets
         cx = f"{xl} + fit + btn_x"
         add("sketch.create", plane="XY", offset=f"{zf} - plate_t - eps")
-        add("sketch.line", points=[list(p) for p in rect(f"{cx} - btn_w / 2", f"{cx} + btn_w / 2", "mac_y + mac_w - btn_l", "depth + eps")],
-            closed=True, infer=False)
-        # just under half the width: a full half circle leaves the fillets no line to share
-        add("sketch.fillet", points=["l4.end", "l1.end"], radius="btn_w * 0.49")
+        yc = "mac_y + mac_w - btn_l + btn_w / 2"
+        add("sketch.line", points=[[f"{cx} + btn_w / 2", yc], [f"{cx} + btn_w / 2", "depth + eps"],
+                                   [f"{cx} - btn_w / 2", "depth + eps"], [f"{cx} - btn_w / 2", yc]], infer=False)
+        add("sketch.arc.center_point", center=[cx, yc], start=[f"{cx} - btn_w / 2", yc], end=[f"{cx} + btn_w / 2", yc])
         add("sketch.finish")
         add("solid.extrude", distance="plate_t + 2 * eps", operation="cut", targets=[body], profiles="all", name="Knopf")
 
