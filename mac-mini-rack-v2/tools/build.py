@@ -250,7 +250,7 @@ def fins():
 def cable_notches():
     """Notches through the left half's spine, open to the back, so plugged cables drop in from
     behind; centred between the outer dovetails' slots and the gussets of the free space."""
-    zc = "(dt_e + dt_tip / 2 + dt_c + plate_t + bay_h - gus_c) / 2"
+    zc = "(dt_e + dt_root / 2 + dt_s * (dt_d + dt_c) + dt_cv + plate_t + bay_h - gus_c) / 2"
     for k, z in enumerate([zc, f"panel_h - ({zc})"]):
         box(L, ["mid - spine_t - eps", "depth - notch_l", f"{z} - notch_h / 2"], ["spine_t + 2 * eps", "notch_l + eps", "notch_h"],
             op="cut", name=f"Kabelschlitz{k}")

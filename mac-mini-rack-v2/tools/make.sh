@@ -2,6 +2,13 @@
 # Rebuilds everything from tools/build.py: cad/rack.solidcraft, the STLs in print orientation and
 # orca/MacMini_Rack.3mf. With --macs MAC.step it also writes work/rack_with_macs.solidcraft to check the fit.
 set -euo pipefail
+macs=""
+if [ $# -eq 2 ] && [ "$1" = "--macs" ]; then
+  macs=$(realpath -e "$2")
+elif [ $# -ne 0 ]; then
+  echo "usage: $0 [--macs MAC.step]" >&2
+  exit 2
+fi
 cd "$(dirname "$0")/.."
 mkdir -p work
 python3 -I tools/build.py work/rack.json
@@ -20,7 +27,7 @@ python3 -I tools/orient_stl.py work/Rack_rechts.stl stl/Rack_rechts.stl 1,0,0,0,
 python3 -I tools/orient_stl.py work/Riegel_1.stl stl/Riegel.stl 1,0,0,0,0,1,0,-1,0
 tools/orca_project.sh
 rm -f orca/settings/*.log
-if [ "${1:-}" = "--macs" ]; then
-  python3 -I tools/build.py work/rack_with_macs.json --macs "$2"
+if [ -n "$macs" ]; then
+  python3 -I tools/build.py work/rack_with_macs.json --macs "$macs"
   solidcraft-cli run work/rack_with_macs.json --save work/rack_with_macs.solidcraft --quiet
 fi

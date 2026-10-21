@@ -22,7 +22,7 @@ All parts are in print orientation and need no supports. `orca/MacMini_Rack.3mf`
 
 ## Assembly
 
-1. Hold the right half behind the left half and slide it forwards onto the dovetails until it stops (its slots are closed at the back). The dovetails have 0.25 mm clearance on every face (`dt_c`).
+1. Hold the right half behind the left half and slide it forwards onto the dovetails until it stops (its slots are closed at the back). The dovetails have 0.25 mm clearance on the flanks and the tip (`dt_c`); the closed slot end is the stop.
 2. Screw it into the rack. The rails keep the halves from sliding apart.
 3. Slide each Mac in from the front until it touches the rear stop.
 4. Screw on the latches. Turned towards the Mac they hold it in, turned the other way it slides out.
