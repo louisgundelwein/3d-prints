@@ -96,21 +96,14 @@ P = {
     "boss_end_r": ("1 mm", "rounded end of the screw boss"),
     "latch_r": ("1.5 mm", "rounded front edges of the latch"),
     # cable management
-    "fin_back": ("10 mm", "wall left behind the last cable hole"),
-    "fin_t": ("3 mm", "cable rib thickness, centred on its wall"),
-    "fin_inset": ("edge_r + 1 mm", "cable ribs stay this far inside the top and bottom faces, clear of the edge roundings"),
-    "fin_r": ("10 mm", "rounded rear corners of the cable ribs"),
-    "fin_lip": ("gus_floor / 2", "the rib's foot is this much wider than its wall on each side, joined to the wall at 45 degrees (never equal to gus_floor: its face would run along the fillet's edge)"),
-    "fin_clear": ("1 mm", "the outer rib's foot stays this far inside the body's side face"),
-    "fin_flare": ("6 mm", "the rib narrows from its foot to fin_t along concave arcs over this length"),
-    "fin_e": ("fin_lip + fin_flare + 4 mm", "first cable hole behind the body"),
-    "big_w": ("22 mm", "large cable hole: height"),
-    "big_l": ("32 mm", "large cable hole: length (meant for HDMI, power and LAN plugs; plug sizes not measured)"),
-    "small_w": ("10 mm", "small cable hole: height"),
-    "small_l": ("16 mm", "small cable hole: length"),
-    "hole_gap": ("6 mm", "web between the large and the small cable hole"),
-    "fin_l": ("fin_e + big_l + hole_gap + small_l + fin_back", "cable ribs reach this far behind the body"),
-    "notch_h": ("12 mm", "cable notches through the spines, open to the back"),
+    "fin_e": ("5 mm", "cable hole behind the body"),
+    "big_w": ("22 mm", "cable hole height"),
+    "big_l": ("32 mm", "cable hole length (meant for HDMI, power and LAN plugs; plug sizes not measured)"),
+    "fin_back": ("8 mm", "wall left behind the cable hole"),
+    "fin_l": ("fin_e + big_l + fin_back", "the bay wall reaches this far behind the body, for cable routing"),
+    "fin_r": ("10 mm", "rounded rear corners of the bay wall's extension"),
+    "notch_h": ("10 mm", "cable notches through the spines, open to the back"),
+    "notch_web": ("3 mm", "material left between a cable notch and the dovetail slot"),
     "notch_l": ("40 mm", "cable notch length from the back"),
     "eps": ("0.5 mm", "overlap of joins and overshoot of cuts"),
 }
@@ -148,7 +141,6 @@ BAY_X0 = "side_x + wall_t"                              # left half: bay between
 BAY_X1 = "side_x + wall_t + bay_w"
 FREE_X0 = "side_x + wall_t + bay_w + bay_wall_t"         # free space between these two
 FREE_X1 = "mid - spine_t"
-OUTER_RIB = "side_x + fin_clear + fin_lip + wall_t / 2"   # left half: centre of the outer cable rib
 
 
 def rect(x0, x1, z0, z1):
@@ -218,16 +210,16 @@ def profile(side):
     extrusion over the body's depth."""
     levels = [(FLOORS[0], "plate_t + bay_h"), (FLOORS[1], "panel_h - plate_t")]
     outer = [("side_x", "0 mm"), ("mid", "0 mm")] + mid_edge(side) + [("mid", "panel_h"), ("side_x", "panel_h")]
-    cells = [rect(BAY_X0, BAY_X1, z0, z1) for z0, z1 in levels] + [rect(FREE_X0, FREE_X1, z0, z1) for z0, z1 in levels]
+    cells = [rect(BAY_X0, FREE_X1, z0, z1) for z0, z1 in levels]     # the bay wall comes from bay_wall()
     add("sketch.create", plane=XZ)
     for poly in [outer] + cells:
         add("sketch.line", points=side.pts(poly), closed=True, infer=False)
     n = len(outer)
     c = lambda k, i: f"l{n + 4 * k + i}.end"     # cell k's corners: bottom-right, top-right, top-left, bottom-left
     add("sketch.fillet", points=[f"l{n - 1}.end", f"l{n}.end"], radius="edge_r")       # outer, rail side
-    add("sketch.fillet", points=[c(0, 1), c(0, 4), c(1, 1), c(1, 4)], radius="gus_floor")  # bay floors
-    add("sketch.fillet", points=[c(0, 2), c(0, 3), c(1, 2), c(1, 3)], radius="gus")        # bay ceilings
-    add("sketch.fillet", points=[c(k, i) for k in (2, 3) for i in (1, 2, 3, 4)], radius="gus_c")
+    add("sketch.fillet", points=[c(0, 4), c(1, 4)], radius="gus_floor")                 # bay floors at the outer wall
+    add("sketch.fillet", points=[c(0, 3), c(1, 3)], radius="gus")                       # bay ceilings at the outer wall
+    add("sketch.fillet", points=[c(k, i) for k in (0, 1) for i in (1, 2)], radius="gus_c")  # at the centre wall
     add("sketch.finish")
     wall = [side.num(ev("side_x + wall_t / 2")), ev("panel_h / 2")]
     add("solid.extrude", distance="depth", direction="negative", operation="new", body_name=side.body, name="Profil",
@@ -247,40 +239,16 @@ def faceplate(side):
     box(side.body, [side.span(x0, w), "0 mm", "plate_t / 2"], [w, "face_t", "panel_h - plate_t"], name="Frontplatte_Mitte")
 
 
-def rib(side, centre, foot_w, wa, wb, name, out_a, out_b):
-    """Cable rib behind a wall (faces wa, wb), as a plan outline (XY sketch) extruded over the
-    rib's height. Its foot (foot_w wide, centred on the rib) reaches fin_lip into and out of the
-    body; where it sticks out past a wall face, a 45 degree face takes it back into the wall, so it
-    prints without support. From the foot the rib narrows to fin_t along concave arcs over
-    fin_flare: the section changes over many print layers instead of stepping at one (Y is up when
-    printing), and none of its faces lies in a plane of the wall or the back face. out_a / out_b:
-    whether the foot sticks out past wall face wa / wb."""
-    xa, xb = f"({centre}) - ({foot_w}) / 2", f"({centre}) + ({foot_w}) / 2"
-    ra, rb = f"({centre}) - fin_t / 2", f"({centre}) + fin_t / 2"
-    step = f"(({foot_w}) / 2 - fin_t / 2)"
-    arc_r = f"({step} * {step} + fin_flare * fin_flare) / (2 * {step})"      # through the foot corner
-    y0, yf, y1, y2 = "depth - fin_lip", "depth + fin_lip", "depth + fin_lip + fin_flare", "depth + fin_l"
-    # a 45 degree face takes an outstanding side eps into the wall; the base runs at the depth of
-    # the deeper one (both stick out equally where both do)
-    drop = f"({xb} - ({wb}) + eps)" if out_b else f"({wa} - ({xa}) + eps)"
-    base = f"{y0} - {drop}"
-    corner_b = (f"({wb}) - eps", base) if out_b else (xb, base)
-    corner_a = (f"({wa}) + eps", base) if out_a else (xa, base)
-    add("sketch.create", plane="XY", offset="fin_inset")
-    add("sketch.line", points=side.pts([(xb, yf), (xb, y0), corner_b, corner_a, (xa, y0), (xa, yf)]), infer=False)
-    side.arc((f"{ra} - {arc_r}", y1), (xa, yf), (ra, y1))
-    add("sketch.line", points=side.pts([(ra, y1), (ra, y2), (rb, y2), (rb, y1)]), infer=False)
-    side.arc((f"{rb} + {arc_r}", y1), (rb, y1), (xb, yf))
+def bay_wall(side):
+    """The wall between bay and free space, from the faceplate to fin_l behind the body: one plan
+    sketch extruded between the mid-planes of the bottom and top plate, so its faces run through
+    without a step (Y is up when printing). Its fillets to the plates and its rounded rear corners
+    come last (fillets())."""
+    add("sketch.create", plane="XY", offset="plate_t / 2")
+    add("sketch.line", points=side.pts(rect(BAY_X1, FREE_X0, "0 mm", "depth + fin_l")), closed=True, infer=False)
     add("sketch.finish")
-    add("solid.extrude", distance="panel_h - 2 * fin_inset", operation="join", targets=[side.body],
-        profiles=[{"point": [side.num(ev(centre)), ev("depth + fin_l / 2")]}], name=name)
-
-
-def ribs(side):
-    """A cable rib behind the outer wall (moved inwards so its foot stays fin_clear inside the
-    side face) and one behind the bay wall."""
-    rib(side, OUTER_RIB, "wall_t + 2 * fin_lip", "side_x", "side_x + wall_t", "Kabelrippe_aussen", out_a=False, out_b=True)
-    rib(side, f"{BAY_X1} + bay_wall_t / 2", "bay_wall_t + 2 * fin_lip", BAY_X1, FREE_X0, "Kabelrippe_Fach", out_a=True, out_b=True)
+    add("solid.extrude", distance="panel_h - plate_t", operation="join", targets=[side.body],
+        profiles=[{"point": [side.num(ev(f"{BAY_X1} + bay_wall_t / 2")), ev("depth / 2")]}], name="Fachwand")
 
 
 def bosses(side):
@@ -345,24 +313,19 @@ def cuts(side, xl):
         add("sketch.finish")
         add("solid.extrude", distance="bay_wall_t + 2 * eps", start_offset=side.span(f"{BAY_X1} - eps", "bay_wall_t + 2 * eps"),
             operation="cut", targets=[body], profiles="all", name="Fachwand_Schlitze")
-    # cable holes through both ribs: a half circle at the front, a 45 degree point at the back
-    y_big, y_small = "depth + fin_e", "depth + fin_e + big_l + hole_gap"
+    # cable hole per level through the bay wall's extension: a half circle at the front, a
+    # 45 degree point at the back
     add("sketch.create", plane=YZ)
-    widths = []
-    for zf in FLOORS:
-        zc = f"{zf} + bay_h / 2"
-        drop(y_big, f"{y_big} + big_l", zc, "big_w")
-        drop(y_small, f"{y_small} + small_l", zc, "small_w")
-        widths += ["big_w", "small_w"]
-    for k, w in enumerate(widths):
-        add("sketch.fillet", points=[f"l{4 * k + 1}.end", f"l{4 * k + 3}.end"], radius=f"{w} / 4")
+    for k, zf in enumerate(FLOORS):
+        drop("depth + fin_e", "depth + fin_e + big_l", f"{zf} + bay_h / 2", "big_w")
+        add("sketch.fillet", points=[f"l{4 * k + 1}.end", f"l{4 * k + 3}.end"], radius="big_w / 4")
     add("sketch.finish")
-    w = f"{FREE_X0} - side_x + 2 * fin_lip + 2 * eps"
-    add("solid.extrude", distance=w, start_offset=side.span("side_x - fin_lip - eps", w), operation="cut",
+    w = "bay_wall_t + 2 * eps"
+    add("solid.extrude", distance=w, start_offset=side.span(f"{BAY_X1} - eps", w), operation="cut",
         targets=[body], profiles="all", name="Kabelloecher")
     # cable notches through the centre wall, open to the back, with half-round ends; centred
     # between the outer dovetails and the fillets of the free space
-    zc = "(dt_e + dt_root / 2 + dt_s * (dt_d + dt_c) + dt_cv + plate_t + bay_h - gus_c) / 2"
+    zc = "dt_e + dt_root / 2 + dt_s * (dt_d + dt_c) + dt_cv + notch_web + notch_h / 2"
     yr = "depth - notch_l + notch_h / 2"
     add("sketch.create", plane=YZ)
     for z in (zc, f"panel_h - ({zc})"):
@@ -401,12 +364,19 @@ def fillets():
     zs = [ev(f"{zf} + latch_z") for zf in FLOORS]
     px = ev(f"{FREE_X0} + latch_px")
     y_s = ev("mac_y + mac_w - foot_h")
-    rib_corners = [[x, ev("depth + fin_l"), z] for x in (ev(OUTER_RIB), ev(f"{BAY_X1} + bay_wall_t / 2"))
-                   for z in (ev("fin_inset"), ev("panel_h - fin_inset"))]
+    wall_c = ev(f"{BAY_X1} + bay_wall_t / 2")
+    wall_corners = [[wall_c, ev("depth + fin_l"), z] for z in (ev("plate_t / 2"), ev("panel_h - plate_t / 2"))]
+    floors = [ev(z) for z in FLOORS]
+    ceilings = [ev("plate_t + bay_h"), ev("panel_h - plate_t")]
+    ym = ev("depth / 2")
     for side, xl in ((L, ev("side_x + wall_t")), (R, ev("panel_w - side_x - wall_t - bay_w"))):
         tag = "L" if side == L else "R"
         fillet(side, "boss_r", [[mx(px, side), ev("face_t"), z + ev("boss_d / 2")] for z in zs], f"Dom_Fuss_{tag}")
-        fillet(side, "fin_r", [[mx(x, side), y, z] for x, y, z in rib_corners], f"Kabelrippe_Ecken_{tag}")
+        bay_x, free_x = mx(ev(BAY_X1), side), mx(ev(FREE_X0), side)
+        fillet(side, "gus_floor", [[bay_x, ym, z] for z in floors], f"Fachwand_Boden_{tag}")
+        fillet(side, "gus", [[bay_x, ym, z] for z in ceilings], f"Fachwand_Decke_{tag}")
+        fillet(side, "gus_c", [[free_x, ym, z] for z in floors + ceilings], f"Fachwand_Mitte_{tag}")
+        fillet(side, "fin_r", [[mx(x, side), y, z] for x, y, z in wall_corners], f"Fachwand_Ecken_{tag}")
         fillet(side, "ear_root_r", [[mx(ev("side_x"), side), ev("face_t"), ev("panel_h / 2")]], f"Ohr_Uebergang_{tag}")
         x_stop = xl + ev("fit + mac_w - mac_r - stop_w / 2")
         fillet(side, "stop_foot_r", [[x_stop, y_s, ev(zf)] for zf in FLOORS], f"Anschlag_Fuss_{tag}")
@@ -440,7 +410,7 @@ def build(mac_step=None):
     for side, xl in halves:
         profile(side)
         faceplate(side)
-        ribs(side)
+        bay_wall(side)
         bosses(side)
         stops(side, xl)
         cuts(side, xl)
