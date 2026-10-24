@@ -58,10 +58,14 @@ P = {
     "ledge_t": ("1.2 mm", "height of the ledge's front face (original)"),
     "ledge_a": ("36 deg", "ledge underside slope from horizontal (original; 54 degrees from vertical)"),
     "ledge_r": ("2 mm", "rounding where the ledge's underside meets the back wall"),
-    "text_h": ("7.5 mm", "capital height of the label"),
+    "text_h": ("7.5 mm", "capital height of the label (make.py shrinks it where a label would come nearer than text_clear to the lip)"),
+    "text_x": ("0 mm - (cx - 1) / 2 * pitch", "text centre: over the first cell"),
+    "text_y": ("D / 2 - wall_t - ledge_d / 2 - text_h / 2", "text baseline: capitals centred on the ledge"),
+    "text_dx": ("0 mm", "text shift along X, set by make.py so the text's measured outline is centred"),
+    "text_dy": ("0 mm", "text shift along Y, set by make.py so the text's measured outline is centred"),
     "text_t": ("1 mm", "raised height of the label (5 layers of 0.2 mm)"),
     # Gridfinity Refined magnet pockets: a bore with a slot to the side, the magnet slides in
-    "mag_d": ("5.86 mm", "magnet pocket width (6 mm magnet, press fit)"),
+    "mag_d": ("5.86 mm", "magnet pocket width, press fit for a 6 mm magnet (gridfinity-rebuilt-openscad holes.scad, Refined holes)"),
     "mag_h": ("1.9 mm", "magnet pocket height (2 mm magnet)"),
     "mag_z": ("0.4 mm", "material under the magnet pocket"),
     "mag_off": ("13 mm", "magnet centre from the cell centre along X and Y"),
@@ -71,8 +75,9 @@ P = {
     "eps": ("0.5 mm", "overshoot of cuts and overlap of joins"),
 }
 
-# the bins this set adds to Louis's drawer (he has M3 and M4 from 6 to 50 mm already)
-LABELS = [f"M{d}x{n}" for d in (5, 6) for n in (8, 10, 12, 14, 16, 18, 20, 25, 30)] + ["M5 HSI", "M6 HSI", "M3 HSI", "M4 HSI"]
+# the bins this set adds: M5 and M6 screws up to 30 mm, and heat-set inserts (HSI) M3 to M6
+LABELS = [f"M{d}x{n}" for d in (5, 6) for n in (8, 10, 12, 14, 16, 18, 20, 25, 30)] + [f"M{d} HSI" for d in (3, 4, 5, 6)]
+TEXT_CLEAR = 1.0    # mm the text keeps from the lip's inner faces
 SCREW_CLEAR = 2.0   # mm a lying screw needs beyond its overall length
 
 
@@ -161,13 +166,15 @@ def cells(cx, cy):
     return [(f"({i} - (cx - 1) / 2) * pitch", f"({j} - (cy - 1) / 2) * pitch") for i in range(cx) for j in range(cy)]
 
 
-def steps(label, cx=1, cy=1, magnets=True):
+def steps(label, cx=1, cy=1, magnets=True, text=None):
+    """Named command steps for one bin. text: overrides for text_h, text_dx, text_dy (expressions)."""
+    over = {"cx": str(cx), "cy": str(cy), **(text or {})}
     V = values(cx, cy)
     s = Steps()
 
     s.step("Parameter")
     for k, (e, c) in P.items():
-        e = {"cx": str(cx), "cy": str(cy)}.get(k, e)
+        e = over.get(k, e)
         unit = {"cx": "", "cy": "", "units": ""}.get(k)
         s.add("parameters.add", name=k, expression=e, comment=c, **({"unit": unit} if unit is not None else {}))
 
@@ -274,21 +281,57 @@ def steps(label, cx=1, cy=1, magnets=True):
     s.add("solid.fillet", body="Bin", radius="tip_r", edges=[[0, -V["D"] / 2, V["top"]]], name="Lippe_Spitze")
 
     s.step("Beschriftung")
-    s.add("sketch.create", plane=XY, offset="ledge_z")
-    s.add("sketch.text", text=shown(label), at=["0 mm - (cx - 1) / 2 * pitch", f"D / 2 - wall_t - ledge_d / 2 - text_h / 2"], height="text_h", font="Noto Sans", bold=True, align="center")
-    s.add("sketch.finish")
-    s.add("solid.extrude", distance="text_t", operation="new", body_name="Label", profiles="all", name="Beschriftung")
-    # every glyph comes out as its own body (the labels have no dotted letters); join them into one
-    glyphs = len(label.replace(" ", ""))
-    if glyphs > 1:
-        s.add("solid.combine", target="Label", tools=[f"Label ({k})" for k in range(2, glyphs + 1)], operation="join")
+    for c in label_commands(label):
+        s.add(c["command"], **c["params"])
     s.add("appearance.assign", bodies=["Label"], color="#f2f2f2")
     s.add("appearance.assign", bodies=["Bin"], color="#8c8f94")
     return s.steps
 
 
-def script(label, cx=1, cy=1, magnets=True):
-    return {"commands": [c for _, cs in steps(label, cx, cy, magnets) for c in cs]}
+def label_commands(label):
+    """The raised text on the ledge as body "Label", centred over the first cell."""
+    return [
+        {"command": "sketch.create", "params": {"plane": XY, "offset": "ledge_z"}},
+        {"command": "sketch.text", "params": {"text": shown(label), "at": ["text_x + text_dx", "text_y + text_dy"], "height": "text_h",
+                                              "font": "Noto Sans", "bold": True, "align": "center"}},
+        {"command": "sketch.finish", "params": {}},
+        {"command": "solid.extrude", "params": {"distance": "text_t", "operation": "new", "body_name": "Label", "profiles": "all", "name": "Beschriftung"}},
+    ] + ([] if len(glyphs(label)) < 2 else [
+        # every glyph comes out as its own body; make.py checks that no other body is left
+        {"command": "solid.combine", "params": {"target": "Label", "tools": [f"Label ({k})" for k in range(2, len(glyphs(label)) + 1)], "operation": "join"}}])
+
+
+def glyphs(label):
+    """Glyphs of the shown text that come out as separate pieces (the labels have no dotted letters)."""
+    return shown(label).replace(" ", "")
+
+
+def text_script(label, cx, text=None):
+    """Just the parameters and the text, to measure the text's outline quickly."""
+    st = steps(label, cx, 1, True, text)
+    return {"commands": st[0][1] + label_commands(label)}
+
+
+def script(label, cx=1, cy=1, magnets=True, text=None):
+    return {"commands": [c for _, cs in steps(label, cx, cy, magnets, text) for c in cs]}
+
+
+def defects(result):
+    """Problems in a `solidcraft-cli eval` result: timeline errors and warnings, booleans the kernel
+    had to nudge, and bodies other than Bin and Label. Empty when the design is clean."""
+    out = []
+    for t in result["timeline"]:
+        name = t.get("name") or t.get("command")
+        for key in ("errors", "warnings", "warning"):
+            if t.get(key):
+                out.append(f"{name}: {key} {t[key]}")
+        for e in (t.get("boolean_diagnostics") or {}).get("events") or []:
+            if e.get("strategy") not in ("refined_tolerance", "planar_fallback"):
+                out.append(f"{name}: boolean {e.get('strategy')}")
+    bodies = sorted(b["name"] for b in result["bodies"])
+    if bodies != ["Bin", "Label"]:
+        out.append(f"bodies {bodies}, expected Bin and Label")
+    return out
 
 
 if __name__ == "__main__":

@@ -1,7 +1,10 @@
 """Rebuilds every print file from build.py: per label the parametric design cad/<label>.solidcraft,
-the STLs of the bin and its text in stl/ and a one-bin project orca/bins/<label>.3mf, and
-orca/Gridfinity_Bolt_Bins.3mf with all bins on one plate. In the 3MFs each bin is one object of two
-parts: the bin on filament 1, the text on filament 2.
+the STLs of the bin and its text in stl/ and a one-bin project orca/bins/<label>.3mf, then
+orca/Gridfinity_Bolt_Bins.3mf with all bins on one plate and the pictures in images/. In the 3MFs
+each bin is one object of two parts: the bin on filament 1, the text on filament 2.
+
+Stops with an error when a design has a kernel defect (build.defects), when a label's text does not
+keep build.TEXT_CLEAR from the lip, or when OrcaSlicer fails.
 
 Usage: python -I make.py   (from anywhere; needs solidcraft-cli and orca-slicer on the PATH)
 """
@@ -47,15 +50,58 @@ def run(script, save=None):
     subprocess.run(cmd, check=True)
 
 
+def evaluate(path):
+    """`solidcraft-cli eval` of a script or design file."""
+    out = os.path.join(WORK, "eval.json")
+    subprocess.run(["solidcraft-cli", "eval", path, "--json-out", out], check=True, stdout=subprocess.DEVNULL)
+    return json.load(open(out))
+
+
+def text_box(label, cx, text=None):
+    """Outline (min, max) of the label's text body."""
+    path = os.path.join(WORK, "text.json")
+    json.dump(build.text_script(label, cx, text), open(path, "w"))
+    b = next(b for b in evaluate(path)["bodies"] if b["name"] == "Label")["bbox"]
+    return b["min"], b["max"]
+
+
+def fit_text(label, cx):
+    """Text overrides that centre the text on the ledge by its measured outline, shrinking the
+    capital height only when the text would come nearer than TEXT_CLEAR to the lip."""
+    V = build.values(cx, 1)
+    c = build.TEXT_CLEAR
+    target = (V["text_x"], V["D"] / 2 - V["wall_t"] - V["ledge_d"] / 2)
+    half_w = min(target[0] - (-V["W"] / 2 + V["lip_in"] + c), V["W"] / 2 - V["lip_in"] - c - target[0])
+    half_h = min(V["D"] / 2 - V["lip_in"] - c - target[1], target[1] - (V["D"] / 2 - V["wall_t"] - V["ledge_d"] + c))
+    lo, hi = text_box(label, cx)
+    scale = min(1.0, 2 * half_w / (hi[0] - lo[0]), 2 * half_h / (hi[1] - lo[1]))
+    h = math.floor(V["text_h"] * scale * 100) / 100
+    lo, hi = text_box(label, cx, {"text_h": f"{h} mm"})
+    dx, dy = target[0] - (lo[0] + hi[0]) / 2, target[1] - (lo[1] + hi[1]) / 2
+    return {"text_h": f"{h} mm", "text_dx": f"{dx:.4f} mm", "text_dy": f"{dy:.4f} mm"}, target, (half_w, half_h)
+
+
 def export_bin(label):
-    """One SolidCraft run: the label's design and its two STLs. Returns its cell count."""
+    """The label's design, checked, and its two STLs. Returns its cell count."""
     cx = build.cells_for(label)
-    d = build.script(label, cx)
+    text, target, (half_w, half_h) = fit_text(label, cx)
+    d = build.script(label, cx, text=text)
     for body, suffix in (("Bin", ""), ("Label", "_text")):
         d["commands"].append({"command": "file.export",
                               "params": {"path": os.path.join(ROOT, "stl", f"{stem(label)}{suffix}.stl"), "bodies": [body]}})
-    run(d, save=os.path.join(ROOT, "cad", f"{stem(label)}.solidcraft"))
-    print(label, f"{cx}x1", flush=True)
+    design = os.path.join(ROOT, "cad", f"{stem(label)}.solidcraft")
+    run(d, save=design)
+    result = evaluate(design)
+    problems = build.defects(result)
+    b = next(b for b in result["bodies"] if b["name"] == "Label")["bbox"]
+    centre = [(b["min"][k] + b["max"][k]) / 2 for k in (0, 1)]
+    if max(abs(centre[0] - target[0]), abs(centre[1] - target[1])) > 0.01:
+        problems.append(f"text centre {centre} is not {target}")
+    if (b["max"][0] - b["min"][0]) / 2 > half_w + 1e-6 or (b["max"][1] - b["min"][1]) / 2 > half_h + 1e-6:
+        problems.append(f"text {b} closer than {build.TEXT_CLEAR} mm to the lip")
+    if problems:
+        raise SystemExit(f"{label}: " + "; ".join(problems))
+    print(f"{label}: 1x{cx}, text {text['text_h']}, eval clean", flush=True)
     return cx
 
 
@@ -86,9 +132,11 @@ def orca(placed, out_path, plate_name):
     settings = os.path.join(ROOT, "orca", "settings")
     json.dump({"plates": [plate]}, open(os.path.join(settings, "assemble.json"), "w"), indent=1)
     with tempfile.TemporaryDirectory() as out:
-        subprocess.run(["orca-slicer", "--load-settings", "machine.json;process.json", "--load-filaments", "pla_grey.json;pla_white.json",
-                        "--load-assemble-list", "assemble.json", "--outputdir", out, "--export-3mf", "out.3mf"],
-                       check=True, cwd=settings, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        r = subprocess.run(["orca-slicer", "--load-settings", "machine.json;process.json", "--load-filaments", "pla_grey.json;pla_white.json",
+                            "--load-assemble-list", "assemble.json", "--outputdir", out, "--export-3mf", "out.3mf"],
+                           cwd=settings, capture_output=True, text=True)
+        if r.returncode != 0 or not os.path.exists(os.path.join(out, "out.3mf")):
+            raise SystemExit(f"orca-slicer failed for {out_path} ({r.returncode}):\n{r.stdout[-3000:]}\n{r.stderr[-3000:]}")
         shutil.move(os.path.join(out, "out.3mf"), out_path)
     os.remove(os.path.join(settings, "assemble.json"))
     for f in os.listdir(settings):
@@ -104,3 +152,8 @@ if __name__ == "__main__":
         w = cx * 42 - 0.5
         orca([(label, cx, (256 - w) / 2, (256 - 41.5) / 2)], os.path.join(ROOT, "orca", "bins", f"{stem(label)}.3mf"), label)
     orca(layout(bins), os.path.join(ROOT, "orca", "Gridfinity_Bolt_Bins.3mf"), "Gridfinity Bolt Bins")
+    for label, name in (("M5x10", "bin_1x1"), ("M5x30", "bin_1x2")):
+        shot = os.path.join(WORK, f"{name}.png")
+        subprocess.run(["solidcraft-cli", "snapshot", os.path.join(ROOT, "cad", f"{stem(label)}.solidcraft"), "--out", shot,
+                        "--width", "1200", "--height", "900", "--view", "iso", "--no-grid", "--no-axes"], check=True, stdout=subprocess.DEVNULL)
+        subprocess.run(["magick", shot, "-trim", "-resize", "700x", os.path.join(ROOT, "images", f"{name}.png")], check=True)
