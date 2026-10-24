@@ -48,7 +48,7 @@ None. Magnets are optional: 6 × 2 mm, pushed into the slots under each corner f
 
 ## Model
 
-`tools/build.py` is the source of truth: it writes the SolidCraft command list for one bin (`--label`, `--cells`, `--no-magnets`). Every length is a user parameter with a comment; the cell counts are `cx`/`cy`, the text is the editable sketch text of the last sketch. `tools/make.sh` rebuilds `cad/<label>.solidcraft`, the STLs in `stl/` (print orientation; `<label>.stl` the bin, `<label>_text.stl` the text in the same frame) every 3MF and `images/`; it stops on a kernel warning or nudged boolean in any design, on text nearer than 1 mm to the lip, and on an OrcaSlicer error. `tools/live.py` builds a bin step by step in a running SolidCraft GUI, with the same checks. `tools/flatten_profile.py` wrote the Orca profiles in `orca/settings`.
+`tools/build.py` is the source of truth: it writes the SolidCraft command list for one bin (`--label`, `--cells`, `--no-magnets`). Every length is a user parameter with a comment; the cell counts are `cx`/`cy`, the text is the editable sketch text of the last sketch. `tools/make.sh` rebuilds `cad/<label>.solidcraft`, the STLs in `stl/` (print orientation; `<label>.stl` the bin, `<label>_text.stl` the text in the same frame) every 3MF and `images/`; it stops on a kernel warning or nudged boolean in any design, on text nearer than 1 mm to the lip, and on an OrcaSlicer error. `tools/live.py` builds a bin step by step in a running SolidCraft GUI and stops on a kernel warning or nudged boolean; the full checks run only in `make.sh`. `tools/flatten_profile.py` wrote the Orca profiles in `orca/settings`.
 
 Differences from the original bins (measured on its meshes):
 

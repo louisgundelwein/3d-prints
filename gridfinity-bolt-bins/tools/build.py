@@ -317,15 +317,19 @@ def script(label, cx=1, cy=1, magnets=True, text=None):
 
 
 def defects(result):
-    """Problems in a `solidcraft-cli eval` result: timeline errors and warnings, booleans the kernel
-    had to nudge, and bodies other than Bin and Label. Empty when the design is clean."""
+    """Problems in a `solidcraft-cli eval` result: timeline errors and warnings, rolled-back steps,
+    booleans the kernel had to nudge or truncated, and bodies other than Bin and Label.
+    Empty when the design is clean."""
     out = []
     for t in result["timeline"]:
         name = t.get("name") or t.get("command")
-        for key in ("errors", "warnings", "warning"):
+        for key in ("error", "errors", "warnings", "warning", "rolled_back"):
             if t.get(key):
                 out.append(f"{name}: {key} {t[key]}")
-        for e in (t.get("boolean_diagnostics") or {}).get("events") or []:
+        diagnostics = t.get("boolean_diagnostics") or {}
+        if diagnostics.get("truncated"):
+            out.append(f"{name}: boolean diagnostics truncated")
+        for e in diagnostics.get("events") or []:
             if e.get("strategy") not in ("refined_tolerance", "planar_fallback"):
                 out.append(f"{name}: boolean {e.get('strategy')}")
     bodies = sorted(b["name"] for b in result["bodies"])
