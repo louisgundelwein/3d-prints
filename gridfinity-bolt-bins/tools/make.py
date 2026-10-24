@@ -132,7 +132,7 @@ def orca(placed, out_path, plate_name):
     settings = os.path.join(ROOT, "orca", "settings")
     json.dump({"plates": [plate]}, open(os.path.join(settings, "assemble.json"), "w"), indent=1)
     with tempfile.TemporaryDirectory() as out:
-        r = subprocess.run(["orca-slicer", "--load-settings", "machine.json;process.json", "--load-filaments", "pla_grey.json;pla_white.json",
+        r = subprocess.run(["orca-slicer", "--load-settings", "machine.json;process.json", "--load-filaments", "petg_hf_grey.json;petg_hf_white.json",
                             "--load-assemble-list", "assemble.json", "--outputdir", out, "--export-3mf", "out.3mf"],
                            cwd=settings, capture_output=True, text=True)
         if r.returncode != 0 or not os.path.exists(os.path.join(out, "out.3mf")):

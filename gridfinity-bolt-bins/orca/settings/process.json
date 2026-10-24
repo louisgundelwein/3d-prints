@@ -298,5 +298,6 @@
  "wipe_tower_y": [
   "200"
  ],
- "brim_type": "no_brim"
+ "brim_type": "no_brim",
+ "curr_bed_type": "Textured PEI Plate"
 }

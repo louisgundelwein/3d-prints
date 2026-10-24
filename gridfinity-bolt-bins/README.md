@@ -9,36 +9,36 @@ Labelled Gridfinity bins for M5 and M6 socket head screws and for M3 to M6 heat-
 
 A screw lies flat on the floor along the bin's width. A bin gets as many cells as needed for length + head height (ISO 4762: head height = d) + 2 mm to fit the flat floor (34.18 mm in a 1x1, 76.18 mm in a 1x2). `tools/build.py` computes this per label (`cells_for`).
 
-| Label | Size | Design | Print (one bin) | Time | PLA grey + white |
+| Label | Size | Design | Print (one bin) | Time | PETG HF grey + white |
 | --- | --- | --- | --- | --- | --- |
-| M5x8 | 1x1 | `cad/M5x8.solidcraft` | `orca/bins/M5x8.3mf` | 55m 36s | 21.05 g + 0.75 g |
-| M5x10 | 1x1 | `cad/M5x10.solidcraft` | `orca/bins/M5x10.3mf` | 55m 31s | 21.04 g + 0.77 g |
-| M5x12 | 1x1 | `cad/M5x12.solidcraft` | `orca/bins/M5x12.3mf` | 55m 21s | 21.05 g + 0.76 g |
-| M5x14 | 1x1 | `cad/M5x14.solidcraft` | `orca/bins/M5x14.3mf` | 55m 14s | 21.04 g + 0.76 g |
-| M5x16 | 1x1 | `cad/M5x16.solidcraft` | `orca/bins/M5x16.3mf` | 55m 41s | 21.05 g + 0.76 g |
-| M5x18 | 1x1 | `cad/M5x18.solidcraft` | `orca/bins/M5x18.3mf` | 55m 33s | 21.05 g + 0.77 g |
-| M5x20 | 1x1 | `cad/M5x20.solidcraft` | `orca/bins/M5x20.3mf` | 55m 50s | 21.04 g + 0.77 g |
-| M5x25 | 1x1 | `cad/M5x25.solidcraft` | `orca/bins/M5x25.3mf` | 55m 15s | 21.04 g + 0.77 g |
-| M5x30 | 1x2 | `cad/M5x30.solidcraft` | `orca/bins/M5x30.3mf` | 1h 11m 28s | 33.99 g + 0.77 g |
-| M6x8 | 1x1 | `cad/M6x8.solidcraft` | `orca/bins/M6x8.3mf` | 55m 40s | 21.05 g + 0.75 g |
-| M6x10 | 1x1 | `cad/M6x10.solidcraft` | `orca/bins/M6x10.3mf` | 55m 45s | 21.05 g + 0.77 g |
-| M6x12 | 1x1 | `cad/M6x12.solidcraft` | `orca/bins/M6x12.3mf` | 55m 21s | 21.05 g + 0.76 g |
-| M6x14 | 1x1 | `cad/M6x14.solidcraft` | `orca/bins/M6x14.3mf` | 55m 32s | 21.05 g + 0.76 g |
-| M6x16 | 1x1 | `cad/M6x16.solidcraft` | `orca/bins/M6x16.3mf` | 55m 45s | 21.05 g + 0.77 g |
-| M6x18 | 1x1 | `cad/M6x18.solidcraft` | `orca/bins/M6x18.3mf` | 55m 22s | 21.05 g + 0.77 g |
-| M6x20 | 1x1 | `cad/M6x20.solidcraft` | `orca/bins/M6x20.3mf` | 55m 45s | 21.05 g + 0.77 g |
-| M6x25 | 1x1 | `cad/M6x25.solidcraft` | `orca/bins/M6x25.3mf` | 55m 47s | 21.05 g + 0.77 g |
-| M6x30 | 1x2 | `cad/M6x30.solidcraft` | `orca/bins/M6x30.3mf` | 1h 11m 32s | 33.99 g + 0.78 g |
-| M3 HSI | 1x1 | `cad/M3_HSI.solidcraft` | `orca/bins/M3_HSI.3mf` | 55m 18s | 21.04 g + 0.76 g |
-| M4 HSI | 1x1 | `cad/M4_HSI.solidcraft` | `orca/bins/M4_HSI.3mf` | 55m 38s | 21.05 g + 0.76 g |
-| M5 HSI | 1x1 | `cad/M5_HSI.solidcraft` | `orca/bins/M5_HSI.3mf` | 55m 30s | 21.04 g + 0.76 g |
-| M6 HSI | 1x1 | `cad/M6_HSI.solidcraft` | `orca/bins/M6_HSI.3mf` | 55m 16s | 21.05 g + 0.77 g |
+| M5x8 | 1x1 | `cad/M5x8.solidcraft` | `orca/bins/M5x8.3mf` | 1h 2m 30s | 20.90 g + 0.76 g |
+| M5x10 | 1x1 | `cad/M5x10.solidcraft` | `orca/bins/M5x10.3mf` | 1h 2m 28s | 20.90 g + 0.77 g |
+| M5x12 | 1x1 | `cad/M5x12.solidcraft` | `orca/bins/M5x12.3mf` | 1h 2m 21s | 20.90 g + 0.77 g |
+| M5x14 | 1x1 | `cad/M5x14.solidcraft` | `orca/bins/M5x14.3mf` | 1h 2m 15s | 20.90 g + 0.77 g |
+| M5x16 | 1x1 | `cad/M5x16.solidcraft` | `orca/bins/M5x16.3mf` | 1h 2m 35s | 20.90 g + 0.77 g |
+| M5x18 | 1x1 | `cad/M5x18.solidcraft` | `orca/bins/M5x18.3mf` | 1h 2m 30s | 20.90 g + 0.77 g |
+| M5x20 | 1x1 | `cad/M5x20.solidcraft` | `orca/bins/M5x20.3mf` | 1h 2m 41s | 20.90 g + 0.78 g |
+| M5x25 | 1x1 | `cad/M5x25.solidcraft` | `orca/bins/M5x25.3mf` | 1h 2m 19s | 20.90 g + 0.78 g |
+| M5x30 | 1x2 | `cad/M5x30.solidcraft` | `orca/bins/M5x30.3mf` | 1h 14m 2s | 33.64 g + 0.78 g |
+| M6x8 | 1x1 | `cad/M6x8.solidcraft` | `orca/bins/M6x8.3mf` | 1h 2m 34s | 20.90 g + 0.76 g |
+| M6x10 | 1x1 | `cad/M6x10.solidcraft` | `orca/bins/M6x10.3mf` | 1h 2m 39s | 20.90 g + 0.78 g |
+| M6x12 | 1x1 | `cad/M6x12.solidcraft` | `orca/bins/M6x12.3mf` | 1h 2m 21s | 20.90 g + 0.77 g |
+| M6x14 | 1x1 | `cad/M6x14.solidcraft` | `orca/bins/M6x14.3mf` | 1h 2m 29s | 20.90 g + 0.77 g |
+| M6x16 | 1x1 | `cad/M6x16.solidcraft` | `orca/bins/M6x16.3mf` | 1h 2m 38s | 20.90 g + 0.77 g |
+| M6x18 | 1x1 | `cad/M6x18.solidcraft` | `orca/bins/M6x18.3mf` | 1h 2m 22s | 20.90 g + 0.78 g |
+| M6x20 | 1x1 | `cad/M6x20.solidcraft` | `orca/bins/M6x20.3mf` | 1h 2m 38s | 20.90 g + 0.78 g |
+| M6x25 | 1x1 | `cad/M6x25.solidcraft` | `orca/bins/M6x25.3mf` | 1h 2m 41s | 20.90 g + 0.78 g |
+| M6x30 | 1x2 | `cad/M6x30.solidcraft` | `orca/bins/M6x30.3mf` | 1h 14m 6s | 33.64 g + 0.78 g |
+| M3 HSI | 1x1 | `cad/M3_HSI.solidcraft` | `orca/bins/M3_HSI.3mf` | 1h 2m 18s | 20.90 g + 0.77 g |
+| M4 HSI | 1x1 | `cad/M4_HSI.solidcraft` | `orca/bins/M4_HSI.3mf` | 1h 2m 31s | 20.90 g + 0.77 g |
+| M5 HSI | 1x1 | `cad/M5_HSI.solidcraft` | `orca/bins/M5_HSI.3mf` | 1h 2m 25s | 20.90 g + 0.77 g |
+| M6 HSI | 1x1 | `cad/M6_HSI.solidcraft` | `orca/bins/M6_HSI.3mf` | 1h 2m 16s | 20.90 g + 0.77 g |
 
 HSI = heat-set inserts.
 
 ## Print
 
-`orca/Gridfinity_Bolt_Bins.3mf`: all bins on one plate, Bambu Lab P1S, 0.20 mm Standard, Bambu PLA Basic, AMS with grey in slot 1 and white in slot 2. One plate, 22 bins: 10 h 35 min, 372.7 g grey and 3.7 g white (OrcaSlicer estimate).
+`orca/Gridfinity_Bolt_Bins.3mf`: all bins on one plate, Bambu Lab P1S, 0.20 mm Standard, Bambu PETG HF on the Textured PEI Plate (assumption: the plate in use), AMS with grey in slot 1 and white in slot 2. One plate, 22 bins: 10 h 28 min, 367.2 g grey and 3.7 g white (OrcaSlicer estimate).
 
 `orca/bins/<label>.3mf` holds a single bin. In every 3MF a bin is one object of two parts: the bin on filament 1, the text on filament 2, so it prints in one go and changes colour only for the 5 text layers. No supports; no brim.
 
