@@ -33,7 +33,7 @@ STLs in `stl/`: `<key>.stl` and `mount.stl`.
 
 ## Hardware
 
-Per number: 2 countersunk wood screws 3.5 mm (e.g. 3.5 × 30 mm, head 7 mm) and 2 wall plugs 5 mm. The holes are 12 mm apart, one above the other. Assumption: that is enough for 5 mm plugs in solid walls; in plasterboard use plasterboard screws without plugs.
+Per number: 2 countersunk wood screws 3.5 mm (e.g. 3.5 × 30 mm, head 7 mm) and 2 wall plugs 5 mm. The holes are 11 mm apart, one above the other. Assumption: that is enough for 5 mm plugs in solid walls; in plasterboard use plasterboard screws without plugs.
 
 ## Mounting
 
@@ -44,7 +44,7 @@ Per number: 2 countersunk wood screws 3.5 mm (e.g. 3.5 × 30 mm, head 7 mm) and 
 
 ## Model
 
-`tools/build.py` is the source of truth: it writes the SolidCraft command list for one key, with number and mount in their hanging position. Every length is a user parameter with a comment. Font: Noto Sans Black (`fonts/`, SIL Open Font License), 115 mm high; each digit is its own text and extrude. `make.py` overlaps each pair of digits just far enough (0.5 mm steps) that they share at least 150 mm², so every joint is about equally strong (237: 7 and 13.5 mm).
+`tools/build.py` is the source of truth: it writes the SolidCraft command list for one key, with number and mount in their hanging position. Every length is a user parameter with a comment. Font: Noto Sans Black (`fonts/`, SIL Open Font License), 115 mm high; each digit is its own text and extrude. `make.py` overlaps each pair of digits just far enough (0.5 mm steps) that they share at least 150 mm² (237: 7 and 13.5 mm); the narrowest joint, 3 to 7, is still 20 mm wide.
 
 `tools/make.sh` rebuilds `cad/`, `stl/`, `templates/`, `orca/eMudhra_Keys.3mf` and `images/numbers.png`. Per key it checks that the digits are one piece, places the slot where it fits inside the digits with 2.5 mm of wall, as near the centre of mass as it can, and stops on a kernel warning or nudged boolean, on number and mount overlapping, and on mounts that differ between the keys. `tools/animate.py` renders `images/mount.mp4` and `images/mount.gif`; `tools/live.py` builds one key step by step in a running SolidCraft GUI.
 

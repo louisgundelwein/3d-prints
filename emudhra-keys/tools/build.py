@@ -36,8 +36,8 @@ P = {
     "rail_l": ("21 mm", "rail length: the longest that fits inside 237"),
     "rail_w": ("11 mm", "rail width at the wall, at its bottom end"),
     "rail_h": ("4 mm", "rail height off the wall"),
-    "hole_y1": ("4.5 mm", "lower screw hole above the rail's bottom end"),
-    "hole_y2": ("16.5 mm", "upper screw hole above the rail's bottom end: 12 mm apart"),
+    "hole_y1": ("5 mm", "lower screw hole above the rail's bottom end (its countersink keeps 1.25 mm from the end)"),
+    "hole_y2": ("16 mm", "upper screw hole above the rail's bottom end: 11 mm apart"),
     "hole_d": ("4 mm", "screw clearance hole, for 3.5 mm countersunk wood screws"),
     "cs_d": ("7.5 mm", "countersink diameter (90 degrees), for a 3.5 mm screw head of 7 mm"),
     # slot in the number

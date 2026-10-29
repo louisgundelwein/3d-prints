@@ -23,7 +23,8 @@ os.makedirs(WORK, exist_ok=True)
 g = Gui()
 if new:
     g.call("new_design", {"name": f"eMudhra key {key}"})
-over = {"mx": "0 mm", "my0": "0 mm", **find_joins(key)}
+over = {"mx": "0 mm", "my0": "0 mm"}
+over.update(find_joins(key, over))
 mx, my0, _ = place(key, over)
 over.update({"mx": f"{mx} mm", "my0": f"{my0} mm"})
 for n, (name, cmds) in enumerate(steps(key, over)):

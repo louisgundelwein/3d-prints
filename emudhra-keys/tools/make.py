@@ -73,11 +73,10 @@ def walk(node):
             yield from walk(v)
 
 
-def glyph(d):
+def glyph(d, over):
     """One digit, its outline centred on X = 0 (as build.centres places a lone digit), as a boolean array on a fixed grid (rows along Y,
     X and Y from -GRID to GRID)."""
     stl = os.path.join(WORK, f"glyph_{d}.stl")
-    over = {"mx": "0 mm", "my0": "0 mm"}
     cmds = build.text_script(int(d), over)["commands"]
     cmds.append({"command": "file.export", "params": {"path": stl, "bodies": ["Number"]}})
     run({"commands": cmds})
@@ -92,14 +91,14 @@ def glyph(d):
 GRID = 80.0   # mm half size of a glyph's raster
 
 
-def find_joins(key):
+def find_joins(key, over):
     """Per pair of digits the smallest overlap of their outlines (0.5 mm steps) at which they share
-    JOIN_AREA, as parameter overrides."""
+    JOIN_AREA, as parameter overrides. over: the key's other overrides."""
     digits = str(key)
-    V = build.values()
+    V = build.values(over)
     out = {}
     for name, a, b in zip(build.joins(key), digits, digits[1:]):
-        A, B = glyph(a), glyph(b)
+        A, B = glyph(a, over), glyph(b, over)
         # distance of the outlines' centres with the outlines just touching
         apart = (build.INK[a][1] - build.INK[a][0] + build.INK[b][1] - build.INK[b][0]) / 2 * V["text_h"]
         for k in range(int(JOIN_MAX / 0.5) + 1):
@@ -157,7 +156,8 @@ def place(key, over):
 
 def export_key(key):
     """The key's design, checked, and its STLs. Returns the mount STL's hash."""
-    over = {"mx": "0 mm", "my0": "0 mm", **find_joins(key)}
+    over = {"mx": "0 mm", "my0": "0 mm"}
+    over.update(find_joins(key, over))
     mx, my0, com_x = place(key, over)
     over.update({"mx": f"{mx} mm", "my0": f"{my0} mm"})
     d = build.script(key, over)
