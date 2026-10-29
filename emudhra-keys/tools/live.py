@@ -1,4 +1,4 @@
-"""Builds a key's sign in the running SolidCraft GUI, one named step of build.py at a time, so the
+"""Builds a key's number and mount in the running SolidCraft GUI, one named step of build.py at a time, so the
 window shows it grow. Saves a screenshot per step into SHOTS; stops on any warning or nudged boolean.
 
 Usage: python -I live.py SHOTS [KEY] [--new]
@@ -10,7 +10,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 from build import steps  # noqa: E402
-from make import WORK, fit_text, walk  # noqa: E402
+from make import WORK, place, walk  # noqa: E402
 from gui import Gui  # noqa: E402
 
 args = sys.argv[1:]
@@ -23,7 +23,8 @@ os.makedirs(WORK, exist_ok=True)
 g = Gui()
 if new:
     g.call("new_design", {"name": f"eMudhra key {key}"})
-for n, (name, cmds) in enumerate(steps(key, fit_text(key))):
+mx, my0, _ = place(key, {})
+for n, (name, cmds) in enumerate(steps(key, {"mx": f"{mx} mm", "my0": f"{my0} mm"})):
     out = g.call("batch", {"commands": cmds})
     found = []
     for c in out:

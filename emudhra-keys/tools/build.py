@@ -1,73 +1,66 @@
-"""Generates the SolidCraft script for one wall sign of a leaked eMudhra CA private key: a plaque
-with the key's number raised on its front (second colour), and the wall mount it slides onto.
-The mount is the same for every key: a plate held by two countersunk screws, with a dovetail rail
-running up the wall. The plaque has the matching slot in its back, open at the bottom and closed
-at the top: lowered onto the rail, it rests on the rail's top end.
+"""Generates the SolidCraft script for one wall number of a leaked eMudhra CA private key: the
+key's digits as one solid piece, and the wall mount it hangs on. The mount is the same for every
+key: a short dovetail rail held by two countersunk screws. Its plan narrows towards the top, so
+the number wedges tight as it slides down and hangs without play, even off its centre of mass.
+The slot hides behind the digits: a pocket in the number's back takes the rail, then the number
+slides down until the rail wedges in the dovetail part above the pocket.
 
-Usage: python -I build.py OUT.json KEY
-       (as a module: steps(key) gives the commands in named steps)
+Usage: python -I build.py OUT.json KEY MX MY0
+       MX, MY0: the rail's centre X and bottom Y on the number (make.py finds them)
+       (as a module: steps(key, over) gives the commands in named steps)
 
-Coordinates: the assembly as it hangs. The plaque's back lies on Z = 0 (its print orientation,
-front up), +Y points up the wall, the plaque is centred on X/Y = 0. The mount lies behind it
-(Z < 0), its rail reaching into the slot, centred on the plaque when hanging.
-Bodies: "Plaque", "Number" (the raised digits), "Mount".
+Coordinates: the number as it hangs, back on Z = 0 (its print orientation, front up), +Y up the
+wall, the digits' outline centred on X = 0, the text's height on Y = 0. The mount lies seated in the slot (Z 0 … rail_h).
+Bodies: "Number", "Mount".
 """
 import json
 import math
+import os
 import re
 import sys
 
 KEYS = [4, 56, 66, 115, 155, 156, 230, 237]   # the eight private keys, all below 256
-FONT = "JetBrainsMono Nerd Font"   # its bold face; installed on this machine
-DT_ANGLE = 30.0   # dovetail flank angle from vertical (deg); build.py derives tan_a and sec_a from it
+FONT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "fonts", "NotoSans-Black.ttf")   # SIL Open Font License
+FLANK = 20.0   # dovetail flank angle from vertical (deg)
+TAPER = 3.0    # the rail's plan narrows by this angle on each side towards the top (deg)
+# each digit's outline left and right of where the font centres it, per mm of text_h (measured)
+INK = {"0": (-0.3613, 0.3613), "1": (-0.3529, 0.2339), "2": (-0.3796, 0.3571), "3": (-0.3627, 0.3529), "4": (-0.3866, 0.3894),
+       "5": (-0.3459, 0.3459), "6": (-0.3627, 0.3669), "7": (-0.3571, 0.3641), "8": (-0.3641, 0.3655), "9": (-0.3669, 0.3627)}
 
 P = {
-    # plaque
-    "digits": ("1", "number of digits"),
-    "digit_w": ("58 mm", "plaque width per digit (the font's advance at text_h, measured)"),
-    "pad": ("15 mm", "plaque width beyond the digits on each side"),
-    "plaque_w": ("digits * digit_w + 2 * pad", "plaque width"),
-    "plaque_h": ("120 mm", "plaque height, the same for every key"),
-    "plaque_t": ("9 mm", "plaque thickness"),
-    "plaque_r": ("10 mm", "plaque corner radius"),
-    "edge_r": ("2 mm", "rounding of the plaque's front edge"),
-    "text_h": ("70 mm", "digit height"),
-    "text_t": ("1.6 mm", "raised height of the digits (8 layers of 0.2 mm)"),
-    "text_dx": ("0 mm", "digit shift along X, set by make.py so their measured outline is centred"),
-    "text_dy": ("0 mm", "digit shift along Y, set by make.py so their measured outline is centred"),
-    # wall mount
-    "plate_w": ("60 mm", "mount plate width"),
-    "plate_h": ("50 mm", "mount plate height = rail length"),
-    "plate_t": ("5 mm", "mount plate thickness"),
-    "plate_r": ("5 mm", "mount plate corner radius"),
-    "rail_w": ("14 mm", "rail width at its root"),
-    "rail_h": ("5 mm", "rail height above the plate"),
-    "root_r": ("1 mm", "rounding where the rail leaves the plate"),
-    "hole_dx": ("20 mm", "screw hole centre from the middle"),
-    "hole_d": ("4.5 mm", "screw clearance hole, for 4 mm countersunk wood screws"),
-    "cs_d": ("8.5 mm", "countersink diameter (90 degrees), for a 4 mm screw head of 8 mm"),
-    # joint
-    "c": ("0.25 mm", "clearance of the slot to the rail, square to every face (PETG)"),
+    # number
+    "text_h": ("115 mm", "digit height; 3 digits fill the 256 mm bed"),
+    "overlap": ("5 mm", "neighbouring digits' outlines overlap this far, so the number is one piece"),
+    "num_t": ("10 mm", "thickness of the number"),
+    # wall mount: a dovetail rail, its root on the wall
+    "rail_l": ("20 mm", "rail length"),
+    "rail_w": ("11 mm", "rail width at the wall, at its bottom end"),
+    "rail_h": ("5 mm", "rail height off the wall"),
+    "hole_y1": ("4.5 mm", "lower screw hole above the rail's bottom end"),
+    "hole_y2": ("14 mm", "upper screw hole above the rail's bottom end"),
+    "hole_d": ("4 mm", "screw clearance hole, for 3.5 mm countersunk wood screws"),
+    "cs_d": ("7.5 mm", "countersink diameter (90 degrees), for a 3.5 mm screw head of 7 mm"),
+    # slot in the number
+    "c": ("0.25 mm", "clearance of the pocket around the rail and above it (PETG)"),
+    "e": ("3 mm", "room above the rail's top end: where it wedges shifts by 1 / (2 tan_t) per mm of slot width"),
+    "wall_m": ("2.5 mm", "wall the slot keeps from the digits' edge at least (make.py)"),
+    "mx": ("0 mm", "rail centre X on the number, set by make.py"),
+    "my0": ("0 mm", "rail bottom end Y on the number when it hangs, set by make.py"),
+    "ext": ("2 mm", "the rail's plan runs on this far before its ends are cut square"),
     "eps": ("0.5 mm", "overshoot of cuts"),
 }
 
 
 def derived():
-    """Parameters fixed by DT_ANGLE: the generator writes their numbers, as the expressions have no trig."""
-    a = math.radians(DT_ANGLE)
+    """Parameters fixed by FLANK and TAPER: the generator writes their numbers, as the expressions have no trig."""
     return {
-        "tan_a": (f"{math.tan(a):.6f}", f"tan of the dovetail flank angle ({DT_ANGLE:g} degrees from vertical)"),
-        "sec_a": (f"{1 / math.cos(a):.6f}", "1 / cos of the flank angle"),
-        "sin_a": (f"{math.sin(a):.6f}", "sin of the flank angle"),
-        "cos_a": (f"{math.cos(a):.6f}", "cos of the flank angle"),
-        # a rounding of root_r in the corner of angle 90 - a between plate and flank touches both this far from the corner
-        "root_t": (f"root_r * {1 / math.tan(math.radians(90 - DT_ANGLE) / 2):.6f}", "rail root rounding: tangent length"),
-        "mouth": ("root_t + 2 * c", "slot mouth chamfer, clears the rail's root rounding along both faces"),
+        "tan_a": (f"{math.tan(math.radians(FLANK)):.6f}", f"tan of the flank angle ({FLANK:g} degrees from vertical)"),
+        "tan_t": (f"{math.tan(math.radians(TAPER)):.6f}", f"tan of the plan taper ({TAPER:g} degrees each side)"),
+        "pocket_w": ("rail_w + 2 * rail_h * tan_a + 2 * c", "pocket width: the rail's widest part plus clearance"),
     }
 
 
-UNITLESS = {"digits", "tan_a", "sec_a", "sin_a", "cos_a"}
-XZ = {"origin": [0, 0, 0], "x_dir": [1, 0, 0], "y_dir": [0, 0, 1]}   # (x, y) = world (X, Z), normal -Y
+UNITLESS = {"tan_a", "tan_t"}
 
 
 def params():
@@ -80,12 +73,18 @@ def ev(expr, V):
     return eval(e, {"__builtins__": {}, "sqrt": math.sqrt, "min": min}, V)
 
 
-def values(key, text=None):
-    over = {"digits": str(len(str(key))), **(text or {})}
+def values(over=None):
     V = {}
     for k, (e, _) in params().items():
-        V[k] = ev(over.get(k, e), V)
+        V[k] = ev((over or {}).get(k, e), V)
     return V
+
+
+def footprint(V):
+    """The slot's outline on the number's back relative to the rail's bottom centre, grown by the
+    wall_m: (x0, x1, y0, y1). make.py fits it inside the digits."""
+    hw = V["pocket_w"] / 2 + V["wall_m"]
+    return -hw, hw, -V["rail_l"] - 2 * V["c"] - V["wall_m"], V["rail_l"] + V["e"] + V["wall_m"]
 
 
 class Steps:
@@ -99,117 +98,104 @@ class Steps:
         self.steps[-1][1].append({"command": command, "params": params})
 
 
-def rrect(s, x0, y0, x1, y1, r):
-    """Closed rounded rectangle in the active sketch (expressions); first line id must be l1."""
-    s.add("sketch.line", points=[[x0, y0], [x1, y0], [x1, y1], [x0, y1]], closed=True, infer=False)
-    s.add("sketch.fillet", points=["l1.end", "l2.end", "l3.end", "l4.end"], radius=r)
+def rail_half(y):
+    """Half width of the rail's root at height y (expression)."""
+    return f"rail_w / 2 - (({y}) - my0) * tan_t"
 
 
-def mirrored(half):
-    """Closed polygon from its right half [(x, y)…] listed bottom to top, mirrored to the left."""
-    return half + [[f"0 mm - ({x})", y] for x, y in reversed(half)]
+def plan(s, y0, y1, depth):
+    """The rail's root plan from y0 to y1, each end run on by ext, narrowed by the flank as if
+    `depth` below the root, as a closed polygon in the active sketch."""
+    ya, yb = f"({y0}) - ext", f"({y1}) + ext"
+    ha, hb = (f"({rail_half(y)}) - ({depth}) * tan_a" for y in (ya, yb))
+    s.add("sketch.line", points=[[f"mx - ({ha})", ya], [f"mx + ({ha})", ya], [f"mx + ({hb})", yb], [f"mx - ({hb})", yb]],
+          closed=True, infer=False)
 
 
-def steps(key, text=None):
-    """Named command steps for one key's plaque and the mount. text: overrides for text_dx, text_dy."""
-    over = {"digits": str(len(str(key))), **(text or {})}
-    V = values(key, text)
+def steps(key, over=None):
+    """Named command steps for one key. over: parameter overrides (make.py sets mx, my0)."""
     s = Steps()
 
     s.step("Parameters")
     for k, (e, comment) in params().items():
-        s.add("parameters.add", name=k, expression=over.get(k, e), comment=comment, **({"unit": ""} if k in UNITLESS else {}))
-
-    s.step("Plaque")
-    s.add("sketch.create", plane="XY")
-    rrect(s, "0 mm - plaque_w / 2", "0 mm - plaque_h / 2", "plaque_w / 2", "plaque_h / 2", "plaque_r")
-    s.add("sketch.finish")
-    s.add("solid.extrude", distance="plaque_t", operation="new", body_name="Plaque", name="Plaque")
-
-    # the slot: the rail's section offset by c, with a chamfered mouth that clears the rail's root rounding;
-    # from below the plaque up to where the rail's top rests when the mount is centred
-    s.step("Slot")
-    a = "rail_w / 2 + c * sec_a"   # half width of the slot at the plaque's back
-    s.add("sketch.create", plane=XZ)
-    s.add("sketch.line", points=mirrored([
-        [f"{a} + mouth", "0 mm - eps"],
-        [f"{a} + mouth", "0 mm"],
-        [f"{a} + mouth * sin_a", "mouth * cos_a"],
-        [f"{a} + (rail_h + c) * tan_a", "rail_h + c"],
-    ]), closed=True, infer=False)
-    s.add("sketch.finish")
-    # the sketch normal is -Y: direction negative runs along +Y from start_offset (along -Y)
-    s.add("solid.extrude", distance="plaque_h / 2 + eps + plate_h / 2", direction="negative", start_offset="plaque_h / 2 + eps",
-          operation="cut", targets=["Plaque"], name="Slot")
-
-    s.step("Edge")
-    x, y, r, z = V["plaque_w"] / 2, V["plaque_h"] / 2, V["plaque_r"], V["plaque_t"]
-    k = r * (1 - math.cos(math.pi / 4))
-    edges = [[0, y, z], [0, -y, z], [x, 0, z], [-x, 0, z]] + [[sx * (x - k), sy * (y - k), z] for sx in (1, -1) for sy in (1, -1)]
-    s.add("solid.fillet", body="Plaque", radius="edge_r", edges=edges, name="Front_edge")
+        s.add("parameters.add", name=k, expression=(over or {}).get(k, e), comment=comment, **({"unit": ""} if k in UNITLESS else {}))
 
     s.step("Number")
     for c in number_commands(key):
         s.add(c["command"], **c["params"])
 
-    # the mount as one section (plate and rail with its root roundings) along the rail
-    s.step("Mount")
-    s.add("sketch.create", plane=XZ)
-    s.add("sketch.line", points=mirrored([
-        ["plate_w / 2", "0 mm - plate_t"],
-        ["plate_w / 2", "0 mm"],
-        ["rail_w / 2", "0 mm"],
-        ["rail_w / 2 + rail_h * tan_a", "rail_h"],
-    ]), closed=True, infer=False)
-    # polygon vertices v1…v8; line n ends at v(n+1): the rail roots are v3 and v6
-    s.add("sketch.fillet", points=["l2.end", "l5.end"], radius="root_r")
+    # the dovetail part: the rail's own flanks (it wedges against them), e above its top end,
+    # c deeper than the rail; started below the back so the cut ends in air. The tapered
+    # extrude leans the ends too: the box cuts them square.
+    s.step("Slot")
+    s.add("sketch.create", plane="XY", offset="0 mm - eps")
+    plan(s, "my0", "my0 + rail_l + e", "eps")
     s.add("sketch.finish")
-    s.add("solid.extrude", distance="plate_h", direction="symmetric", operation="new", body_name="Mount", name="Mount")
+    s.add("solid.extrude", distance="eps + rail_h + c", taper=f"{FLANK} deg", operation="new", body_name="Slot", name="Slot_dovetail")
+    s.add("solid.box", length="pocket_w + 4 * ext", width="rail_l + e", height="rail_h + c + 3 * eps",
+          corner=["mx - pocket_w / 2 - 2 * ext", "my0", "0 mm - 2 * eps"], operation="intersect", targets=["Slot"], name="Slot_ends")
+    # the pocket below it takes the whole rail when the number goes onto the wall
+    s.add("solid.box", length="pocket_w", width="rail_l + 2 * c + eps", height="2 * eps + rail_h + 2 * c",
+          corner=["mx - pocket_w / 2", "my0 - rail_l - 2 * c", "0 mm - 2 * eps"], operation="new", body_name="Pocket", name="Pocket")
+    s.add("solid.combine", target="Slot", tools=["Pocket"], operation="join")
+    s.add("solid.combine", target="Number", tools=["Slot"], operation="cut")
+
+    s.step("Mount")
+    s.add("sketch.create", plane="XY")
+    plan(s, "my0", "my0 + rail_l", "0 mm")
+    s.add("sketch.finish")
+    s.add("solid.extrude", distance="rail_h", taper=f"{FLANK} deg", operation="new", body_name="Mount", name="Rail")
+    s.add("solid.box", length="pocket_w + 4 * ext", width="rail_l", height="rail_h + 2 * eps",
+          corner=["mx - pocket_w / 2 - 2 * ext", "my0", "0 mm - eps"], operation="intersect", targets=["Mount"], name="Rail_ends")
 
     s.step("Screw holes")
-    for sx in ("", "0 mm - "):
-        s.add("solid.hole", position=[f"{sx}hole_dx", "0 mm", "0 mm"], diameter="hole_d", type="countersink", cs_diameter="cs_d",
+    for y in ("hole_y1", "hole_y2"):
+        s.add("solid.hole", position=["mx", f"my0 + {y}", "rail_h"], diameter="hole_d", type="countersink", cs_diameter="cs_d",
               cs_angle="90 deg", targets=["Mount"])
 
-    s.step("Corners")
-    px, py, pz = V["plate_w"] / 2, V["plate_h"] / 2, -V["plate_t"] / 2
-    s.add("solid.fillet", body="Mount", radius="plate_r", edges=[[sx * px, sy * py, pz] for sx in (1, -1) for sy in (1, -1)], name="Mount_corners")
-
-    s.add("appearance.assign", bodies=["Plaque", "Mount"], color="#1d1f22")
-    s.add("appearance.assign", bodies=["Number"], color="#f2f2f2")
+    s.add("appearance.assign", bodies=["Number", "Mount"], color="#1d1f22")
     return s.steps
 
 
+def centres(key):
+    """Where the font centres each digit (expressions): each outline overlaps the one before by
+    `overlap`, the whole outline centred on X = 0."""
+    digits = str(key)
+    xs = [0.0]
+    for a, b in zip(digits, digits[1:]):
+        xs.append(xs[-1] + INK[a][1] - INK[b][0])   # in text_h, before the overlaps
+    mid = (xs[0] + INK[digits[0]][0] + xs[-1] + INK[digits[-1]][1]) / 2
+    n = len(digits) - 1
+    return [f"{x - mid:.6f} * text_h - ({i} - {n / 2}) * overlap" for i, x in enumerate(xs)]
+
+
 def number_commands(key):
-    """The raised digits on the plaque's front as body "Number", centred by text_dx/text_dy."""
-    return [
-        {"command": "sketch.create", "params": {"plane": "XY", "offset": "plaque_t"}},
-        {"command": "sketch.text", "params": {"text": str(key), "at": ["text_dx", "text_dy - text_h / 2"], "height": "text_h",
-                                              "font": FONT, "bold": True, "align": "center"}},
-        {"command": "sketch.finish", "params": {}},
-        {"command": "solid.extrude", "params": {"distance": "text_t", "operation": "new", "body_name": "Number", "profiles": "all", "name": "Number"}},
-    ] + ([] if pieces(key) < 2 else [
-        {"command": "solid.combine", "params": {"target": "Number", "tools": [f"Number ({k})" for k in range(2, pieces(key) + 1)], "operation": "join"}}])
+    """The digits as body "Number", one sketch and extrude per digit, each joined to the ones before
+    (overlapping glyphs extruded together stay separate lumps)."""
+    out = []
+    for i, (d, x) in enumerate(zip(str(key), centres(key))):
+        out += [
+            {"command": "sketch.create", "params": {"plane": "XY"}},
+            {"command": "sketch.text", "params": {"text": d, "at": [x, "0 mm - text_h / 2"], "height": "text_h", "font": FONT, "align": "center"}},
+            {"command": "sketch.finish", "params": {}},
+            {"command": "solid.extrude", "params": {"distance": "num_t", "name": f"Digit_{i + 1}",
+                                                    **({"operation": "new", "body_name": "Number"} if i == 0 else {"operation": "join", "targets": ["Number"]})}},
+        ]
+    return out
 
 
-def pieces(key):
-    """Separate pieces the digits come out as: one per digit, and the dot inside this font's zero."""
-    return len(str(key)) + str(key).count("0")
+def text_script(key, over=None):
+    """Just the parameters and the digits, to measure them quickly."""
+    return {"commands": steps(key, over)[0][1] + number_commands(key)}
 
 
-def text_script(key, text=None):
-    """Just the parameters and the digits, to measure their outline quickly."""
-    st = steps(key, text)
-    return {"commands": st[0][1] + number_commands(key)}
-
-
-def script(key, text=None):
-    return {"commands": [c for _, cs in steps(key, text) for c in cs]}
+def script(key, over=None):
+    return {"commands": [c for _, cs in steps(key, over) for c in cs]}
 
 
 def defects(result):
     """Problems in a `solidcraft-cli eval` result: timeline errors and warnings, rolled-back steps,
-    booleans the kernel had to nudge or truncated, and bodies other than the three.
+    booleans the kernel had to nudge or truncated, and bodies other than Number and Mount.
     Empty when the design is clean."""
     out = []
     for t in result["timeline"]:
@@ -224,12 +210,13 @@ def defects(result):
             if e.get("strategy") not in ("refined_tolerance", "planar_fallback"):
                 out.append(f"{name}: boolean {e.get('strategy')}")
     bodies = sorted(b["name"] for b in result["bodies"])
-    if bodies != ["Mount", "Number", "Plaque"]:
-        out.append(f"bodies {bodies}, expected Mount, Number and Plaque")
+    if bodies != ["Mount", "Number"]:
+        out.append(f"bodies {bodies}, expected Mount and Number")
     return out
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
+    if len(sys.argv) != 5:
         raise SystemExit(__doc__)
-    json.dump(script(int(sys.argv[2])), open(sys.argv[1], "w"), indent=1)
+    key, mx, my0 = int(sys.argv[2]), float(sys.argv[3]), float(sys.argv[4])
+    json.dump(script(key, {"mx": f"{mx} mm", "my0": f"{my0} mm"}), open(sys.argv[1], "w"), indent=1)
