@@ -5,8 +5,9 @@ the number wedges tight as it slides down and hangs without play, even off its c
 The slot hides behind the digits: a pocket in the number's back takes the rail, then the number
 slides down until the rail wedges in the dovetail part above the pocket.
 
-Usage: python -I build.py OUT.json KEY MX MY0
-       MX, MY0: the rail's centre X and bottom Y on the number (make.py finds them)
+Usage: python -I build.py OUT.json KEY MX MY0 [JOIN…]
+       MX, MY0: the rail's centre X and bottom Y on the number; JOIN: per pair of digits, how far
+       their outlines overlap (mm); make.py finds them all
        (as a module: steps(key, over) gives the commands in named steps)
 
 Coordinates: the number as it hangs, back on Z = 0 (its print orientation, front up), +Y up the
@@ -30,14 +31,13 @@ INK = {"0": (-0.3613, 0.3613), "1": (-0.3529, 0.2339), "2": (-0.3796, 0.3571), "
 P = {
     # number
     "text_h": ("115 mm", "digit height; 3 digits fill the 256 mm bed"),
-    "overlap": ("5 mm", "neighbouring digits' outlines overlap this far, so the number is one piece"),
     "num_t": ("10 mm", "thickness of the number"),
     # wall mount: a dovetail rail, its root on the wall
-    "rail_l": ("20 mm", "rail length"),
+    "rail_l": ("21 mm", "rail length: the longest that fits inside 237"),
     "rail_w": ("11 mm", "rail width at the wall, at its bottom end"),
-    "rail_h": ("5 mm", "rail height off the wall"),
+    "rail_h": ("4 mm", "rail height off the wall"),
     "hole_y1": ("4.5 mm", "lower screw hole above the rail's bottom end"),
-    "hole_y2": ("14 mm", "upper screw hole above the rail's bottom end"),
+    "hole_y2": ("16.5 mm", "upper screw hole above the rail's bottom end: 12 mm apart"),
     "hole_d": ("4 mm", "screw clearance hole, for 3.5 mm countersunk wood screws"),
     "cs_d": ("7.5 mm", "countersink diameter (90 degrees), for a 3.5 mm screw head of 7 mm"),
     # slot in the number
@@ -112,13 +112,16 @@ def plan(s, y0, y1, depth):
           closed=True, infer=False)
 
 
-def steps(key, over=None):
-    """Named command steps for one key. over: parameter overrides (make.py sets mx, my0)."""
+def steps(key, over):
+    """Named command steps for one key. over: parameter overrides; make.py sets mx, my0 and the
+    joins, which have no default."""
     s = Steps()
 
     s.step("Parameters")
     for k, (e, comment) in params().items():
         s.add("parameters.add", name=k, expression=(over or {}).get(k, e), comment=comment, **({"unit": ""} if k in UNITLESS else {}))
+    for i, k in enumerate(joins(key), start=1):
+        s.add("parameters.add", name=k, expression=over[k], comment=f"digit {i} and {i + 1}'s outlines overlap this far (make.py)")
 
     s.step("Number")
     for c in number_commands(key):
@@ -157,16 +160,23 @@ def steps(key, over=None):
     return s.steps
 
 
+def joins(key):
+    """Names of the parameters by which each digit's outline overlaps the one before (join_1 is
+    between the first and second digit); make.py sets them so each pair shares enough area."""
+    return [f"join_{i}" for i in range(1, len(str(key)))]
+
+
 def centres(key):
-    """Where the font centres each digit (expressions): each outline overlaps the one before by
-    `overlap`, the whole outline centred on X = 0."""
+    """Where the font centres each digit (expressions): each outline overlaps the one before by its
+    join_i, the whole outline centred on X = 0."""
     digits = str(key)
     xs = [0.0]
     for a, b in zip(digits, digits[1:]):
         xs.append(xs[-1] + INK[a][1] - INK[b][0])   # in text_h, before the overlaps
     mid = (xs[0] + INK[digits[0]][0] + xs[-1] + INK[digits[-1]][1]) / 2
-    n = len(digits) - 1
-    return [f"{x - mid:.6f} * text_h - ({i} - {n / 2}) * overlap" for i, x in enumerate(xs)]
+    j = joins(key)
+    half = " + ".join(j) or "0 mm"
+    return [f"{x - mid:.6f} * text_h - ({' + '.join(j[:i]) or '0 mm'}) + ({half}) / 2" for i, x in enumerate(xs)]
 
 
 def number_commands(key):
@@ -184,12 +194,12 @@ def number_commands(key):
     return out
 
 
-def text_script(key, over=None):
+def text_script(key, over):
     """Just the parameters and the digits, to measure them quickly."""
     return {"commands": steps(key, over)[0][1] + number_commands(key)}
 
 
-def script(key, over=None):
+def script(key, over):
     return {"commands": [c for _, cs in steps(key, over) for c in cs]}
 
 
@@ -216,7 +226,8 @@ def defects(result):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 5:
+    if len(sys.argv) < 5 or len(sys.argv) != 5 + len(str(sys.argv[2])) - 1:
         raise SystemExit(__doc__)
     key, mx, my0 = int(sys.argv[2]), float(sys.argv[3]), float(sys.argv[4])
-    json.dump(script(key, {"mx": f"{mx} mm", "my0": f"{my0} mm"}), open(sys.argv[1], "w"), indent=1)
+    over = {"mx": f"{mx} mm", "my0": f"{my0} mm", **{k: f"{float(v)} mm" for k, v in zip(joins(key), sys.argv[5:])}}
+    json.dump(script(key, over), open(sys.argv[1], "w"), indent=1)

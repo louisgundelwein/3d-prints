@@ -10,7 +10,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 from build import steps  # noqa: E402
-from make import WORK, place, walk  # noqa: E402
+from make import WORK, find_joins, place, walk  # noqa: E402
 from gui import Gui  # noqa: E402
 
 args = sys.argv[1:]
@@ -23,8 +23,10 @@ os.makedirs(WORK, exist_ok=True)
 g = Gui()
 if new:
     g.call("new_design", {"name": f"eMudhra key {key}"})
-mx, my0, _ = place(key, {})
-for n, (name, cmds) in enumerate(steps(key, {"mx": f"{mx} mm", "my0": f"{my0} mm"})):
+over = {"mx": "0 mm", "my0": "0 mm", **find_joins(key)}
+mx, my0, _ = place(key, over)
+over.update({"mx": f"{mx} mm", "my0": f"{my0} mm"})
+for n, (name, cmds) in enumerate(steps(key, over)):
     out = g.call("batch", {"commands": cmds})
     found = []
     for c in out:
