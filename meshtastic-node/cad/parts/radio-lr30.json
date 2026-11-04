@@ -1,0 +1,227 @@
+{
+  "status": "final",
+  "units": "mm",
+  "coordinates": "PCB centred at origin; PCB bottom z=0; SMA toward +X; pins toward -Z",
+  "bbox_board_only": {
+    "min": [
+      -15.5,
+      -8.0,
+      -10.0
+    ],
+    "max": [
+      20.5,
+      8.0,
+      4.6
+    ],
+    "size": [
+      36.0,
+      16.0,
+      14.6
+    ]
+  },
+  "bbox_with_antenna": {
+    "min": [
+      -15.5,
+      -8.0,
+      -10.0
+    ],
+    "max": [
+      98.5,
+      9.0,
+      7.8
+    ],
+    "size": [
+      114.0,
+      17.0,
+      17.8
+    ]
+  },
+  "header": {
+    "pitch": 2.54,
+    "pin_size": 0.64,
+    "row_near_module_x": -11.69,
+    "row_at_board_end_x": -14.23,
+    "mapping_source": "docs/photos/6c839258-0b00-4c20-998e-2db7314894de.jpg",
+    "pin_positions_estimated": true,
+    "pins": {
+      "VCC": {
+        "xy": [
+          -11.69,
+          -6.35
+        ],
+        "tip_z": -10.0
+      },
+      "GND": {
+        "xy": [
+          -14.23,
+          -6.35
+        ],
+        "tip_z": -10.0
+      },
+      "NSS": {
+        "xy": [
+          -11.69,
+          -3.81
+        ],
+        "tip_z": -10.0
+      },
+      "NRST": {
+        "xy": [
+          -14.23,
+          -3.81
+        ],
+        "tip_z": -10.0
+      },
+      "MOSI": {
+        "xy": [
+          -11.69,
+          -1.27
+        ],
+        "tip_z": -10.0
+      },
+      "SCK": {
+        "xy": [
+          -14.23,
+          -1.27
+        ],
+        "tip_z": -10.0
+      },
+      "DIO1": {
+        "xy": [
+          -11.69,
+          1.27
+        ],
+        "tip_z": -10.0
+      },
+      "MISO": {
+        "xy": [
+          -14.23,
+          1.27
+        ],
+        "tip_z": -10.0
+      },
+      "DIO2": {
+        "xy": [
+          -11.69,
+          3.81
+        ],
+        "tip_z": -10.0
+      },
+      "BUSY": {
+        "xy": [
+          -14.23,
+          3.81
+        ],
+        "tip_z": -10.0
+      },
+      "RXEN": {
+        "xy": [
+          -11.69,
+          6.35
+        ],
+        "tip_z": -10.0
+      },
+      "TXEN": {
+        "xy": [
+          -14.23,
+          6.35
+        ],
+        "tip_z": -10.0
+      }
+    }
+  },
+  "sma": {
+    "axis": [
+      1,
+      0,
+      0
+    ],
+    "centre_at_pcb_edge": [
+      15.5,
+      2,
+      0.8
+    ],
+    "nominal_thread": "1/4-36",
+    "thread_diameter": 6.35,
+    "thread_length_beyond_pcb_edge": 5,
+    "geometry": "smooth barrel, thread omitted",
+    "flange_outline": {
+      "x": [
+        12.5,
+        15.5
+      ],
+      "y": [
+        -1.5,
+        5.5
+      ],
+      "z": [
+        -2,
+        4.6
+      ]
+    }
+  },
+  "antenna": {
+    "coupling_seating_face_x": 18.5,
+    "black_base_face_x": 20.5,
+    "base_diameter": 14,
+    "stick_diameter": 10,
+    "black_body_length": 78,
+    "overall_length_including_coupling": 80
+  },
+  "estimates": {
+    "source": "Dimensions other than user measurements, module manual and nominal thread are estimates from photos or generic component proportions; confirm against hardware before fitting.",
+    "board_thickness": 1.6,
+    "header_pitch": "2.54 nominal; position estimated",
+    "pin_width": 0.64,
+    "pin_tip_z": -10,
+    "pin_stub_height": 0.8,
+    "spacer_thickness": 2.5,
+    "unused_hole_diameter": 1,
+    "unused_hole_centres": [
+      [
+        13.5,
+        -6
+      ],
+      [
+        13.5,
+        -3.46
+      ]
+    ],
+    "module_substrate_thickness": 0.6,
+    "shield_size": [
+      16.5,
+      11,
+      1.7
+    ],
+    "ufl_diameter": 2.5,
+    "ufl_height": 0.8,
+    "sma_centre_yz": [
+      2,
+      0.8
+    ],
+    "sma_length": 5,
+    "sma_flange_dimensions": [
+      3,
+      7,
+      6.6
+    ],
+    "antenna_length": 78,
+    "antenna_base_length": 12,
+    "antenna_tip_radius": 4.5,
+    "nut_radius": 4.25,
+    "nut_bore": 6.5,
+    "nut_length": 2
+  },
+  "sources": {
+    "board_and_antenna_diameters": "user measurements: board 31 x 16, antenna base ~14, stick ~10",
+    "module_manual": "https://ae-pic-a1.aliexpress-media.com/kf/S4f002eea95384325bf342c6686636924r.pdf",
+    "photo_top": "docs/photos/ea3729e1-4466-4dd9-914f-76298fb9ac3e.jpg",
+    "photo_bottom": "docs/photos/6c839258-0b00-4c20-998e-2db7314894de.jpg"
+  },
+  "verification": {
+    "interference_count": 0,
+    "timeline_errors": 0,
+    "timeline_warnings": 0,
+    "notes": "Pin positions, connector placement and physical fit are estimated. Header pins and upper stubs are separate solids through the spacer and PCB."
+  }
+}

@@ -1,0 +1,92 @@
+{
+ "commands": [
+  {
+   "command": "timeline.redefine",
+   "params": {
+    "feature": "ESP hold-down 1",
+    "command": "solid.box",
+    "params": {
+     "length": "2.5 mm",
+     "width": "2.5 mm",
+     "height": "base_height+0.5 mm-(plate_top+1.6 mm+holddown_gap)",
+     "corner": [
+      "esp32_x-13.7 mm",
+      "esp32_y-21.3 mm",
+      "plate_top+1.6 mm+holddown_gap"
+     ],
+     "operation": "join",
+     "targets": [
+      "case.lid"
+     ],
+     "name": "ESP hold-down 1"
+    }
+   }
+  },
+  {
+   "command": "timeline.redefine",
+   "params": {
+    "feature": "ESP hold-down 2",
+    "command": "solid.box",
+    "params": {
+     "length": "2.5 mm",
+     "width": "2.5 mm",
+     "height": "base_height+0.5 mm-(plate_top+1.6 mm+holddown_gap)",
+     "corner": [
+      "esp32_x+11.2 mm",
+      "esp32_y-21.3 mm",
+      "plate_top+1.6 mm+holddown_gap"
+     ],
+     "operation": "join",
+     "targets": [
+      "case.lid"
+     ],
+     "name": "ESP hold-down 2"
+    }
+   }
+  },
+  {
+   "command": "timeline.redefine",
+   "params": {
+    "feature": "ESP hold-down 3",
+    "command": "solid.box",
+    "params": {
+     "length": "2.5 mm",
+     "width": "2.5 mm",
+     "height": "base_height+0.5 mm-(plate_top+1.6 mm+holddown_gap)",
+     "corner": [
+      "esp32_x-13.7 mm",
+      "esp32_y+18.8 mm",
+      "plate_top+1.6 mm+holddown_gap"
+     ],
+     "operation": "join",
+     "targets": [
+      "case.lid"
+     ],
+     "name": "ESP hold-down 3"
+    }
+   }
+  },
+  {
+   "command": "timeline.redefine",
+   "params": {
+    "feature": "ESP hold-down 4",
+    "command": "solid.box",
+    "params": {
+     "length": "2.5 mm",
+     "width": "2.5 mm",
+     "height": "base_height+0.5 mm-(plate_top+1.6 mm+holddown_gap)",
+     "corner": [
+      "esp32_x+11.2 mm",
+      "esp32_y+18.8 mm",
+      "plate_top+1.6 mm+holddown_gap"
+     ],
+     "operation": "join",
+     "targets": [
+      "case.lid"
+     ],
+     "name": "ESP hold-down 4"
+    }
+   }
+  }
+ ]
+}

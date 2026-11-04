@@ -1,0 +1,443 @@
+{
+  "status": "final",
+  "units": "mm",
+  "frame": "PCB bottom Z=0, USB toward -X",
+  "bbox": {
+    "pcb": {
+      "min": [
+        -25.5,
+        -14,
+        0
+      ],
+      "max": [
+        25.5,
+        14,
+        1.6
+      ]
+    },
+    "overall": {
+      "min": [
+        -28.5,
+        -14,
+        -8.5
+      ],
+      "max": [
+        25.5,
+        14,
+        4.86
+      ]
+    }
+  },
+  "holes": [
+    {
+      "center": [
+        -23,
+        -11.5
+      ],
+      "diameter": 3,
+      "status": "estimate"
+    },
+    {
+      "center": [
+        -23,
+        11.5
+      ],
+      "diameter": 3,
+      "status": "estimate"
+    },
+    {
+      "center": [
+        23,
+        -11.5
+      ],
+      "diameter": 3,
+      "status": "estimate"
+    },
+    {
+      "center": [
+        23,
+        11.5
+      ],
+      "diameter": 3,
+      "status": "estimate"
+    }
+  ],
+  "pins": [
+    {
+      "row": "left",
+      "label": "EN",
+      "xy": [
+        17.78,
+        12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "left",
+      "label": "VP",
+      "xy": [
+        15.24,
+        12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "left",
+      "label": "VN",
+      "xy": [
+        12.7,
+        12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "left",
+      "label": "D34",
+      "xy": [
+        10.16,
+        12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "left",
+      "label": "D35",
+      "xy": [
+        7.62,
+        12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "left",
+      "label": "D32",
+      "xy": [
+        5.08,
+        12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "left",
+      "label": "D33",
+      "xy": [
+        2.54,
+        12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "left",
+      "label": "D25",
+      "xy": [
+        0.0,
+        12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "left",
+      "label": "D26",
+      "xy": [
+        -2.54,
+        12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "left",
+      "label": "D27",
+      "xy": [
+        -5.08,
+        12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "left",
+      "label": "D14",
+      "xy": [
+        -7.62,
+        12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "left",
+      "label": "D12",
+      "xy": [
+        -10.16,
+        12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "left",
+      "label": "D13",
+      "xy": [
+        -12.7,
+        12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "left",
+      "label": "GND",
+      "xy": [
+        -15.24,
+        12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "left",
+      "label": "VIN",
+      "xy": [
+        -17.78,
+        12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "right",
+      "label": "D23",
+      "xy": [
+        17.78,
+        -12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "right",
+      "label": "D22",
+      "xy": [
+        15.24,
+        -12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "right",
+      "label": "TX0",
+      "xy": [
+        12.7,
+        -12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "right",
+      "label": "RX0",
+      "xy": [
+        10.16,
+        -12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "right",
+      "label": "D21",
+      "xy": [
+        7.62,
+        -12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "right",
+      "label": "D19",
+      "xy": [
+        5.08,
+        -12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "right",
+      "label": "D18",
+      "xy": [
+        2.54,
+        -12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "right",
+      "label": "D5",
+      "xy": [
+        0.0,
+        -12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "right",
+      "label": "D17",
+      "xy": [
+        -2.54,
+        -12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "right",
+      "label": "D16",
+      "xy": [
+        -5.08,
+        -12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "right",
+      "label": "D4",
+      "xy": [
+        -7.62,
+        -12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "right",
+      "label": "D2",
+      "xy": [
+        -10.16,
+        -12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "right",
+      "label": "D15",
+      "xy": [
+        -12.7,
+        -12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "right",
+      "label": "GND",
+      "xy": [
+        -15.24,
+        -12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    },
+    {
+      "row": "right",
+      "label": "3V3",
+      "xy": [
+        -17.78,
+        -12
+      ],
+      "tip_z": -8.5,
+      "status": "estimate position and tip"
+    }
+  ],
+  "usb_c": {
+    "axis": [
+      -1,
+      0,
+      0
+    ],
+    "centre": [
+      -28.5,
+      0,
+      3.23
+    ],
+    "outline_yz": [
+      -4.47,
+      4.47,
+      1.6,
+      4.86
+    ],
+    "face": "-X",
+    "protrusion": 3,
+    "depth": 7.3,
+    "status": "dimensions from task; position and protrusion estimated from photo"
+  },
+  "sources": {
+    "pcb_size": "user measurement",
+    "pcb_thickness": "estimate",
+    "pin_pitch": "user instruction",
+    "pin_labels": "DESIGN.md user-confirmed",
+    "module": "https://documentation.espressif.com/esp32_wroom-32_datasheet_en.pdf",
+    "placement": "docs/photos/fc13d36d-00bd-42c0-a593-bf28c3575f57.jpg",
+    "usb_c": "user-specified dimensions and docs/photos/fc13d36d-00bd-42c0-a593-bf28c3575f57.jpg",
+    "geometry": "SolidCraft inspect_design and measure"
+  },
+  "estimates": [
+    "hx",
+    "hy",
+    "hole_d",
+    "row_y",
+    "pin_start",
+    "usb_overhang",
+    "module_x",
+    "module_board_t",
+    "can_l",
+    "can_w",
+    "usb_l",
+    "usb_w",
+    "usb_h",
+    "button_size",
+    "button_h",
+    "button_x",
+    "button_y",
+    "chip_l",
+    "chip_w",
+    "chip_h",
+    "chip_x",
+    "reg_l",
+    "reg_w",
+    "reg_x",
+    "reg_y",
+    "spacer_w",
+    "spacer_h",
+    "pin_w",
+    "pin_tip",
+    "pin_top",
+    "led_size",
+    "led_h",
+    "component positions",
+    "antenna trace",
+    "mounting holes",
+    "connector protrusion",
+    "PCB thickness"
+  ],
+  "limitations": [
+    "Component positions, mounting holes and pin tip are photo estimates and need physical measurement for case fit.",
+    "Small component leads and solder pads are simplified representations; antenna trace is indicative, not an electrical layout.",
+    "The connector shell is a continuous hollow profile with an approximate tongue."
+  ]
+}

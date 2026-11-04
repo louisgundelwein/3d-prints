@@ -1,0 +1,782 @@
+{
+ "commands": [
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.54 mm",
+    "width": "2.54 mm",
+    "height": "14 mm",
+    "corner": [
+     37.23,
+     12.45,
+     6.5
+    ],
+    "operation": "new",
+    "body_name": "dupont.vcc.esp",
+    "name": "dupont.vcc.esp"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "0.9 mm",
+    "width": "0.9 mm",
+    "height": "9 mm",
+    "corner": [
+     38.05,
+     13.27,
+     12.0
+    ],
+    "operation": "cut",
+    "targets": [
+     "dupont.vcc.esp"
+    ],
+    "name": "dupont.vcc.esp pin socket"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.54 mm",
+    "width": "2.54 mm",
+    "height": "14 mm",
+    "corner": [
+     47.54,
+     22.38,
+     6.5
+    ],
+    "operation": "new",
+    "body_name": "dupont.vcc.radio",
+    "name": "dupont.vcc.radio"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "0.9 mm",
+    "width": "0.9 mm",
+    "height": "9 mm",
+    "corner": [
+     48.36,
+     23.2,
+     12.0
+    ],
+    "operation": "cut",
+    "targets": [
+     "dupont.vcc.radio"
+    ],
+    "name": "dupont.vcc.radio pin socket"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.54 mm",
+    "width": "2.54 mm",
+    "height": "14 mm",
+    "corner": [
+     37.23,
+     14.99,
+     6.5
+    ],
+    "operation": "new",
+    "body_name": "dupont.gnd.esp",
+    "name": "dupont.gnd.esp"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "0.9 mm",
+    "width": "0.9 mm",
+    "height": "9 mm",
+    "corner": [
+     38.05,
+     15.81,
+     12.0
+    ],
+    "operation": "cut",
+    "targets": [
+     "dupont.gnd.esp"
+    ],
+    "name": "dupont.gnd.esp pin socket"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.54 mm",
+    "width": "2.54 mm",
+    "height": "14 mm",
+    "corner": [
+     45.0,
+     22.38,
+     6.5
+    ],
+    "operation": "new",
+    "body_name": "dupont.gnd.radio",
+    "name": "dupont.gnd.radio"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "0.9 mm",
+    "width": "0.9 mm",
+    "height": "9 mm",
+    "corner": [
+     45.82,
+     23.2,
+     12.0
+    ],
+    "operation": "cut",
+    "targets": [
+     "dupont.gnd.radio"
+    ],
+    "name": "dupont.gnd.radio pin socket"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.54 mm",
+    "width": "2.54 mm",
+    "height": "14 mm",
+    "corner": [
+     37.23,
+     30.23,
+     6.5
+    ],
+    "operation": "new",
+    "body_name": "dupont.sck.esp",
+    "name": "dupont.sck.esp"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "0.9 mm",
+    "width": "0.9 mm",
+    "height": "9 mm",
+    "corner": [
+     38.05,
+     31.05,
+     12.0
+    ],
+    "operation": "cut",
+    "targets": [
+     "dupont.sck.esp"
+    ],
+    "name": "dupont.sck.esp pin socket"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.54 mm",
+    "width": "2.54 mm",
+    "height": "14 mm",
+    "corner": [
+     45.0,
+     27.46,
+     6.5
+    ],
+    "operation": "new",
+    "body_name": "dupont.sck.radio",
+    "name": "dupont.sck.radio"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "0.9 mm",
+    "width": "0.9 mm",
+    "height": "9 mm",
+    "corner": [
+     45.82,
+     28.28,
+     12.0
+    ],
+    "operation": "cut",
+    "targets": [
+     "dupont.sck.radio"
+    ],
+    "name": "dupont.sck.radio pin socket"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.54 mm",
+    "width": "2.54 mm",
+    "height": "14 mm",
+    "corner": [
+     37.23,
+     35.31,
+     6.5
+    ],
+    "operation": "new",
+    "body_name": "dupont.miso.esp",
+    "name": "dupont.miso.esp"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "0.9 mm",
+    "width": "0.9 mm",
+    "height": "9 mm",
+    "corner": [
+     38.05,
+     36.13,
+     12.0
+    ],
+    "operation": "cut",
+    "targets": [
+     "dupont.miso.esp"
+    ],
+    "name": "dupont.miso.esp pin socket"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.54 mm",
+    "width": "2.54 mm",
+    "height": "14 mm",
+    "corner": [
+     45.0,
+     30.0,
+     6.5
+    ],
+    "operation": "new",
+    "body_name": "dupont.miso.radio",
+    "name": "dupont.miso.radio"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "0.9 mm",
+    "width": "0.9 mm",
+    "height": "9 mm",
+    "corner": [
+     45.82,
+     30.82,
+     12.0
+    ],
+    "operation": "cut",
+    "targets": [
+     "dupont.miso.radio"
+    ],
+    "name": "dupont.miso.radio pin socket"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.54 mm",
+    "width": "2.54 mm",
+    "height": "14 mm",
+    "corner": [
+     37.23,
+     32.77,
+     6.5
+    ],
+    "operation": "new",
+    "body_name": "dupont.nss.esp",
+    "name": "dupont.nss.esp"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "0.9 mm",
+    "width": "0.9 mm",
+    "height": "9 mm",
+    "corner": [
+     38.05,
+     33.59,
+     12.0
+    ],
+    "operation": "cut",
+    "targets": [
+     "dupont.nss.esp"
+    ],
+    "name": "dupont.nss.esp pin socket"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.54 mm",
+    "width": "2.54 mm",
+    "height": "14 mm",
+    "corner": [
+     47.54,
+     24.92,
+     6.5
+    ],
+    "operation": "new",
+    "body_name": "dupont.nss.radio",
+    "name": "dupont.nss.radio"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "0.9 mm",
+    "width": "0.9 mm",
+    "height": "9 mm",
+    "corner": [
+     48.36,
+     25.74,
+     12.0
+    ],
+    "operation": "cut",
+    "targets": [
+     "dupont.nss.radio"
+    ],
+    "name": "dupont.nss.radio pin socket"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.54 mm",
+    "width": "2.54 mm",
+    "height": "14 mm",
+    "corner": [
+     37.23,
+     48.01,
+     6.5
+    ],
+    "operation": "new",
+    "body_name": "dupont.nrst.esp",
+    "name": "dupont.nrst.esp"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "0.9 mm",
+    "width": "0.9 mm",
+    "height": "9 mm",
+    "corner": [
+     38.05,
+     48.83,
+     12.0
+    ],
+    "operation": "cut",
+    "targets": [
+     "dupont.nrst.esp"
+    ],
+    "name": "dupont.nrst.esp pin socket"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.54 mm",
+    "width": "2.54 mm",
+    "height": "14 mm",
+    "corner": [
+     45.0,
+     24.92,
+     6.5
+    ],
+    "operation": "new",
+    "body_name": "dupont.nrst.radio",
+    "name": "dupont.nrst.radio"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "0.9 mm",
+    "width": "0.9 mm",
+    "height": "9 mm",
+    "corner": [
+     45.82,
+     25.74,
+     12.0
+    ],
+    "operation": "cut",
+    "targets": [
+     "dupont.nrst.radio"
+    ],
+    "name": "dupont.nrst.radio pin socket"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.54 mm",
+    "width": "2.54 mm",
+    "height": "14 mm",
+    "corner": [
+     13.23,
+     25.15,
+     6.5
+    ],
+    "operation": "new",
+    "body_name": "dupont.mosi.esp",
+    "name": "dupont.mosi.esp"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "0.9 mm",
+    "width": "0.9 mm",
+    "height": "9 mm",
+    "corner": [
+     14.05,
+     25.97,
+     12.0
+    ],
+    "operation": "cut",
+    "targets": [
+     "dupont.mosi.esp"
+    ],
+    "name": "dupont.mosi.esp pin socket"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.54 mm",
+    "width": "2.54 mm",
+    "height": "14 mm",
+    "corner": [
+     47.54,
+     27.46,
+     6.5
+    ],
+    "operation": "new",
+    "body_name": "dupont.mosi.radio",
+    "name": "dupont.mosi.radio"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "0.9 mm",
+    "width": "0.9 mm",
+    "height": "9 mm",
+    "corner": [
+     48.36,
+     28.28,
+     12.0
+    ],
+    "operation": "cut",
+    "targets": [
+     "dupont.mosi.radio"
+    ],
+    "name": "dupont.mosi.radio pin socket"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.54 mm",
+    "width": "2.54 mm",
+    "height": "14 mm",
+    "corner": [
+     13.23,
+     32.77,
+     6.5
+    ],
+    "operation": "new",
+    "body_name": "dupont.dio1.esp",
+    "name": "dupont.dio1.esp"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "0.9 mm",
+    "width": "0.9 mm",
+    "height": "9 mm",
+    "corner": [
+     14.05,
+     33.59,
+     12.0
+    ],
+    "operation": "cut",
+    "targets": [
+     "dupont.dio1.esp"
+    ],
+    "name": "dupont.dio1.esp pin socket"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.54 mm",
+    "width": "2.54 mm",
+    "height": "14 mm",
+    "corner": [
+     47.54,
+     30.0,
+     6.5
+    ],
+    "operation": "new",
+    "body_name": "dupont.dio1.radio",
+    "name": "dupont.dio1.radio"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "0.9 mm",
+    "width": "0.9 mm",
+    "height": "9 mm",
+    "corner": [
+     48.36,
+     30.82,
+     12.0
+    ],
+    "operation": "cut",
+    "targets": [
+     "dupont.dio1.radio"
+    ],
+    "name": "dupont.dio1.radio pin socket"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.54 mm",
+    "width": "2.54 mm",
+    "height": "14 mm",
+    "corner": [
+     13.23,
+     35.31,
+     6.5
+    ],
+    "operation": "new",
+    "body_name": "dupont.busy.esp",
+    "name": "dupont.busy.esp"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "0.9 mm",
+    "width": "0.9 mm",
+    "height": "9 mm",
+    "corner": [
+     14.05,
+     36.13,
+     12.0
+    ],
+    "operation": "cut",
+    "targets": [
+     "dupont.busy.esp"
+    ],
+    "name": "dupont.busy.esp pin socket"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.54 mm",
+    "width": "2.54 mm",
+    "height": "14 mm",
+    "corner": [
+     45.0,
+     32.54,
+     6.5
+    ],
+    "operation": "new",
+    "body_name": "dupont.busy.radio",
+    "name": "dupont.busy.radio"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "0.9 mm",
+    "width": "0.9 mm",
+    "height": "9 mm",
+    "corner": [
+     45.82,
+     33.36,
+     12.0
+    ],
+    "operation": "cut",
+    "targets": [
+     "dupont.busy.radio"
+    ],
+    "name": "dupont.busy.radio pin socket"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.54 mm",
+    "width": "2.54 mm",
+    "height": "14 mm",
+    "corner": [
+     13.23,
+     17.53,
+     6.5
+    ],
+    "operation": "new",
+    "body_name": "dupont.txen.esp",
+    "name": "dupont.txen.esp"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "0.9 mm",
+    "width": "0.9 mm",
+    "height": "9 mm",
+    "corner": [
+     14.05,
+     18.35,
+     12.0
+    ],
+    "operation": "cut",
+    "targets": [
+     "dupont.txen.esp"
+    ],
+    "name": "dupont.txen.esp pin socket"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.54 mm",
+    "width": "2.54 mm",
+    "height": "14 mm",
+    "corner": [
+     45.0,
+     35.08,
+     6.5
+    ],
+    "operation": "new",
+    "body_name": "dupont.txen.radio",
+    "name": "dupont.txen.radio"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "0.9 mm",
+    "width": "0.9 mm",
+    "height": "9 mm",
+    "corner": [
+     45.82,
+     35.9,
+     12.0
+    ],
+    "operation": "cut",
+    "targets": [
+     "dupont.txen.radio"
+    ],
+    "name": "dupont.txen.radio pin socket"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.54 mm",
+    "width": "2.54 mm",
+    "height": "14 mm",
+    "corner": [
+     13.23,
+     22.61,
+     6.5
+    ],
+    "operation": "new",
+    "body_name": "dupont.rxen.esp",
+    "name": "dupont.rxen.esp"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "0.9 mm",
+    "width": "0.9 mm",
+    "height": "9 mm",
+    "corner": [
+     14.05,
+     23.43,
+     12.0
+    ],
+    "operation": "cut",
+    "targets": [
+     "dupont.rxen.esp"
+    ],
+    "name": "dupont.rxen.esp pin socket"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.54 mm",
+    "width": "2.54 mm",
+    "height": "14 mm",
+    "corner": [
+     47.54,
+     35.08,
+     6.5
+    ],
+    "operation": "new",
+    "body_name": "dupont.rxen.radio",
+    "name": "dupont.rxen.radio"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "0.9 mm",
+    "width": "0.9 mm",
+    "height": "9 mm",
+    "corner": [
+     48.36,
+     35.9,
+     12.0
+    ],
+    "operation": "cut",
+    "targets": [
+     "dupont.rxen.radio"
+    ],
+    "name": "dupont.rxen.radio pin socket"
+   }
+  },
+  {
+   "command": "appearance.assign",
+   "params": {
+    "bodies": [
+     "dupont.vcc.esp",
+     "dupont.vcc.radio",
+     "dupont.gnd.esp",
+     "dupont.gnd.radio",
+     "dupont.sck.esp",
+     "dupont.sck.radio",
+     "dupont.miso.esp",
+     "dupont.miso.radio",
+     "dupont.nss.esp",
+     "dupont.nss.radio",
+     "dupont.nrst.esp",
+     "dupont.nrst.radio",
+     "dupont.mosi.esp",
+     "dupont.mosi.radio",
+     "dupont.dio1.esp",
+     "dupont.dio1.radio",
+     "dupont.busy.esp",
+     "dupont.busy.radio",
+     "dupont.txen.esp",
+     "dupont.txen.radio",
+     "dupont.rxen.esp",
+     "dupont.rxen.radio"
+    ],
+    "color": "#25282d"
+   }
+  }
+ ]
+}

@@ -1,0 +1,5 @@
+{"commands": [
+ {"command": "browser.visibility", "params": {"folder": "origin", "visible": false}},
+ {"command": "component.insert_design", "params": {"path": "/Users/louisgundelwein/Code/3d-prints/meshtastic-case/cad/parts/esp32-devkit.sc", "name": "ESP32", "translate": [26.5, 31.5, 23]}},
+ {"command": "component.insert_design", "params": {"path": "/Users/louisgundelwein/Code/3d-prints/meshtastic-case/cad/parts/radio-lr30.sc", "name": "Radio", "translate": [58.5, 30, 23]}}
+]}

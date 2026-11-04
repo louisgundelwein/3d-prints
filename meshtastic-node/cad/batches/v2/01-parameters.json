@@ -1,0 +1,258 @@
+{
+ "commands": [
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "case_length",
+    "expression": "77 mm"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "case_width",
+    "expression": "60 mm"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "base_height",
+    "expression": "30.5 mm"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "wall",
+    "expression": "2.4 mm",
+    "comment": "three 0.8 mm lines"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "corner_radius",
+    "expression": "6 mm",
+    "comment": "outer corner; concentric with the corner column"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "col_off",
+    "expression": "6 mm",
+    "comment": "corner column centre from both outer faces"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "col_r",
+    "expression": "5.5 mm",
+    "comment": "corner column radius inside the cavity"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "col_fillet",
+    "expression": "1.5 mm",
+    "comment": "blend between column and wall"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "insert_hole_d",
+    "expression": "5.6 mm",
+    "comment": "M4 x 8.1 heat-set insert hole"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "insert_len",
+    "expression": "8.1 mm"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "m4_clear_d",
+    "expression": "4.5 mm"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "m4_cb_d",
+    "expression": "8.2 mm",
+    "comment": "ISO 7380 M4 head 7.6"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "m4_cb_depth",
+    "expression": "2.3 mm"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "lid_t",
+    "expression": "4 mm"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "fit_gap",
+    "expression": "0.3 mm",
+    "comment": "play between loose parts per side"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "plate_t",
+    "expression": "2.4 mm",
+    "comment": "mounting plate; fits inside the 2.5 mm header spacers"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "plate_top",
+    "expression": "23 mm",
+    "comment": "= PCB bottom of both boards"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "ledge_w",
+    "expression": "1.5 mm",
+    "comment": "wall ledge the plate rests on"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "pocket_rim_t",
+    "expression": "1.6 mm"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "pocket_rim_h",
+    "expression": "1.2 mm",
+    "comment": "below the 1.6 mm PCB top"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "lip_t",
+    "expression": "1.6 mm"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "lip_h",
+    "expression": "2 mm"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "holddown_gap",
+    "expression": "-0.3 mm",
+    "comment": "negative: lid fingers press 0.3 mm into the boards (TPU preload)"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "esp32_x",
+    "expression": "26.5 mm",
+    "comment": "PCB centre; board turned 90 deg, USB to the front wall"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "esp32_y",
+    "expression": "31.5 mm"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "radio_x",
+    "expression": "58.5 mm",
+    "comment": "PCB centre; SMA to the right wall"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "radio_y",
+    "expression": "30 mm"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "usb_axis_z",
+    "expression": "plate_top+3.23 mm"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "usb_open_w",
+    "expression": "13.5 mm"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "usb_open_bottom",
+    "expression": "usb_axis_z-3.75 mm"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "sma_axis_y",
+    "expression": "radio_y+2 mm"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "sma_axis_z",
+    "expression": "plate_top+0.8 mm"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "sma_hole_d",
+    "expression": "9.5 mm",
+    "comment": "coupling nut enters the wall"
+   }
+  },
+  {
+   "command": "parameters.add",
+   "params": {
+    "name": "wire_d",
+    "expression": "1.1 mm"
+   }
+  }
+ ]
+}

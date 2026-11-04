@@ -1,0 +1,470 @@
+{
+ "commands": [
+  {
+   "command": "sketch.create",
+   "params": {
+    "plane": "XY",
+    "offset": "plate_top-plate_t",
+    "name": "Plate outline"
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     2.7,
+     12.6776
+    ],
+    "through": [
+     3.1901,
+     11.7101
+    ],
+    "end": [
+     4.26,
+     11.5328
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     4.26,
+     11.5328
+    ],
+    "through": [
+     10.1012,
+     10.1012
+    ],
+    "end": [
+     11.5328,
+     4.26
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     11.5328,
+     4.26
+    ],
+    "through": [
+     11.7101,
+     3.1901
+    ],
+    "end": [
+     12.6776,
+     2.7
+    ]
+   }
+  },
+  {
+   "command": "sketch.line",
+   "params": {
+    "points": [
+     [
+      12.6776,
+      2.7
+     ],
+     [
+      66.3224,
+      2.7
+     ]
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     66.3224,
+     2.7
+    ],
+    "through": [
+     67.2899,
+     3.1901
+    ],
+    "end": [
+     67.4672,
+     4.26
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     67.4672,
+     4.26
+    ],
+    "through": [
+     68.8988,
+     10.1012
+    ],
+    "end": [
+     74.74,
+     11.5328
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     74.74,
+     11.5328
+    ],
+    "through": [
+     75.8099,
+     11.7101
+    ],
+    "end": [
+     76.3,
+     12.6776
+    ]
+   }
+  },
+  {
+   "command": "sketch.line",
+   "params": {
+    "points": [
+     [
+      76.3,
+      12.6776
+     ],
+     [
+      76.3,
+      47.3224
+     ]
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     76.3,
+     47.3224
+    ],
+    "through": [
+     75.8099,
+     48.2899
+    ],
+    "end": [
+     74.74,
+     48.4672
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     74.74,
+     48.4672
+    ],
+    "through": [
+     68.8988,
+     49.8988
+    ],
+    "end": [
+     67.4672,
+     55.74
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     67.4672,
+     55.74
+    ],
+    "through": [
+     67.2899,
+     56.8099
+    ],
+    "end": [
+     66.3224,
+     57.3
+    ]
+   }
+  },
+  {
+   "command": "sketch.line",
+   "params": {
+    "points": [
+     [
+      66.3224,
+      57.3
+     ],
+     [
+      12.6776,
+      57.3
+     ]
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     12.6776,
+     57.3
+    ],
+    "through": [
+     11.7101,
+     56.8099
+    ],
+    "end": [
+     11.5328,
+     55.74
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     11.5328,
+     55.74
+    ],
+    "through": [
+     10.1012,
+     49.8988
+    ],
+    "end": [
+     4.26,
+     48.4672
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     4.26,
+     48.4672
+    ],
+    "through": [
+     3.1901,
+     48.2899
+    ],
+    "end": [
+     2.7,
+     47.3224
+    ]
+   }
+  },
+  {
+   "command": "sketch.line",
+   "params": {
+    "points": [
+     [
+      2.7,
+      47.3224
+     ],
+     [
+      2.7,
+      12.6776
+     ]
+    ]
+   }
+  },
+  {
+   "command": "sketch.finish",
+   "params": {}
+  },
+  {
+   "command": "solid.extrude",
+   "params": {
+    "sketch": "Plate outline",
+    "distance": "plate_t",
+    "operation": "new",
+    "body_name": "case.plate",
+    "name": "Mounting plate"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "3.2 mm",
+    "width": "39.8 mm",
+    "height": "plate_t+2 mm",
+    "corner": [
+     "esp32_x-12 mm-1.6 mm",
+     "esp32_y-19.9 mm",
+     "plate_top-plate_t-1 mm"
+    ],
+    "operation": "cut",
+    "targets": [
+     "case.plate"
+    ],
+    "name": "ESP header window left"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "3.2 mm",
+    "width": "39.8 mm",
+    "height": "plate_t+2 mm",
+    "corner": [
+     "esp32_x+12 mm-1.6 mm",
+     "esp32_y-19.9 mm",
+     "plate_top-plate_t-1 mm"
+    ],
+    "operation": "cut",
+    "targets": [
+     "case.plate"
+    ],
+    "name": "ESP header window right"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "5.5 mm",
+    "width": "15.9 mm",
+    "height": "plate_t+2 mm",
+    "corner": [
+     "radio_x-15.6 mm",
+     "radio_y-7.95 mm",
+     "plate_top-plate_t-1 mm"
+    ],
+    "operation": "cut",
+    "targets": [
+     "case.plate"
+    ],
+    "name": "Radio header window"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "5 mm",
+    "width": "7.6 mm",
+    "height": "plate_t+2 mm",
+    "corner": [
+     "radio_x+12.2 mm",
+     "radio_y-1.8 mm",
+     "plate_top-plate_t-1 mm"
+    ],
+    "operation": "cut",
+    "targets": [
+     "case.plate"
+    ],
+    "name": "SMA flange notch"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "pocket_rim_t",
+    "width": "39 mm",
+    "height": "pocket_rim_h+0.5 mm",
+    "corner": [
+     "esp32_x-14 mm-fit_gap-pocket_rim_t",
+     "esp32_y-19.5 mm",
+     "plate_top-0.5 mm"
+    ],
+    "operation": "join",
+    "targets": [
+     "case.plate"
+    ],
+    "name": "ESP pocket left"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "pocket_rim_t",
+    "width": "39 mm",
+    "height": "pocket_rim_h+0.5 mm",
+    "corner": [
+     "esp32_x+14 mm+fit_gap",
+     "esp32_y-19.5 mm",
+     "plate_top-0.5 mm"
+    ],
+    "operation": "join",
+    "targets": [
+     "case.plate"
+    ],
+    "name": "ESP pocket right"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "24 mm",
+    "width": "pocket_rim_t",
+    "height": "pocket_rim_h+0.5 mm",
+    "corner": [
+     "esp32_x-12 mm",
+     "esp32_y-25.5 mm-fit_gap-pocket_rim_t",
+     "plate_top-0.5 mm"
+    ],
+    "operation": "join",
+    "targets": [
+     "case.plate"
+    ],
+    "name": "ESP pocket front"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "26 mm",
+    "width": "pocket_rim_t",
+    "height": "pocket_rim_h+0.5 mm",
+    "corner": [
+     "radio_x-14.5 mm",
+     "radio_y-8 mm-fit_gap-pocket_rim_t",
+     "plate_top-0.5 mm"
+    ],
+    "operation": "join",
+    "targets": [
+     "case.plate"
+    ],
+    "name": "Radio pocket front"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "26 mm",
+    "width": "pocket_rim_t",
+    "height": "pocket_rim_h+0.5 mm",
+    "corner": [
+     "radio_x-14.5 mm",
+     "radio_y+8 mm+fit_gap",
+     "plate_top-0.5 mm"
+    ],
+    "operation": "join",
+    "targets": [
+     "case.plate"
+    ],
+    "name": "Radio pocket back"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "pocket_rim_t",
+    "width": "12 mm",
+    "height": "pocket_rim_h+0.5 mm",
+    "corner": [
+     "radio_x-15.5 mm-fit_gap-pocket_rim_t",
+     "radio_y-6 mm",
+     "plate_top-0.5 mm"
+    ],
+    "operation": "join",
+    "targets": [
+     "case.plate"
+    ],
+    "name": "Radio pocket header end"
+   }
+  }
+ ]
+}
