@@ -1,0 +1,247 @@
+{
+ "commands": [
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "diameter": "6.3 mm",
+    "height": "insert_len",
+    "base": [
+     6,
+     6,
+     "base_height-insert_len-0.1 mm"
+    ],
+    "operation": "new",
+    "body_name": "hardware.m4_insert-1",
+    "name": "M4 heat-set insert 1"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "diameter": "4 mm",
+    "height": "insert_len+2 mm",
+    "base": [
+     6,
+     6,
+     "base_height-insert_len-1 mm"
+    ],
+    "operation": "cut",
+    "targets": [
+     "hardware.m4_insert-1"
+    ],
+    "name": "M4 insert bore 1"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "diameter": "6.3 mm",
+    "height": "insert_len",
+    "base": [
+     73.0,
+     6,
+     "base_height-insert_len-0.1 mm"
+    ],
+    "operation": "new",
+    "body_name": "hardware.m4_insert-2",
+    "name": "M4 heat-set insert 2"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "diameter": "4 mm",
+    "height": "insert_len+2 mm",
+    "base": [
+     73.0,
+     6,
+     "base_height-insert_len-1 mm"
+    ],
+    "operation": "cut",
+    "targets": [
+     "hardware.m4_insert-2"
+    ],
+    "name": "M4 insert bore 2"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "diameter": "6.3 mm",
+    "height": "insert_len",
+    "base": [
+     6,
+     54.0,
+     "base_height-insert_len-0.1 mm"
+    ],
+    "operation": "new",
+    "body_name": "hardware.m4_insert-3",
+    "name": "M4 heat-set insert 3"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "diameter": "4 mm",
+    "height": "insert_len+2 mm",
+    "base": [
+     6,
+     54.0,
+     "base_height-insert_len-1 mm"
+    ],
+    "operation": "cut",
+    "targets": [
+     "hardware.m4_insert-3"
+    ],
+    "name": "M4 insert bore 3"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "diameter": "6.3 mm",
+    "height": "insert_len",
+    "base": [
+     73.0,
+     54.0,
+     "base_height-insert_len-0.1 mm"
+    ],
+    "operation": "new",
+    "body_name": "hardware.m4_insert-4",
+    "name": "M4 heat-set insert 4"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "diameter": "4 mm",
+    "height": "insert_len+2 mm",
+    "base": [
+     73.0,
+     54.0,
+     "base_height-insert_len-1 mm"
+    ],
+    "operation": "cut",
+    "targets": [
+     "hardware.m4_insert-4"
+    ],
+    "name": "M4 insert bore 4"
+   }
+  },
+  {
+   "command": "parts.insert",
+   "params": {
+    "family": "button_head_cap_screw",
+    "size": "M4",
+    "length": 10,
+    "point": [
+     6,
+     6,
+     32.2
+    ],
+    "direction": [
+     0,
+     0,
+     1
+    ],
+    "name": "Lid screw 1"
+   }
+  },
+  {
+   "command": "parts.insert",
+   "params": {
+    "family": "button_head_cap_screw",
+    "size": "M4",
+    "length": 10,
+    "point": [
+     73.0,
+     6,
+     32.2
+    ],
+    "direction": [
+     0,
+     0,
+     1
+    ],
+    "name": "Lid screw 2"
+   }
+  },
+  {
+   "command": "parts.insert",
+   "params": {
+    "family": "button_head_cap_screw",
+    "size": "M4",
+    "length": 10,
+    "point": [
+     6,
+     54.0,
+     32.2
+    ],
+    "direction": [
+     0,
+     0,
+     1
+    ],
+    "name": "Lid screw 3"
+   }
+  },
+  {
+   "command": "parts.insert",
+   "params": {
+    "family": "button_head_cap_screw",
+    "size": "M4",
+    "length": 10,
+    "point": [
+     73.0,
+     54.0,
+     32.2
+    ],
+    "direction": [
+     0,
+     0,
+     1
+    ],
+    "name": "Lid screw 4"
+   }
+  },
+  {
+   "command": "appearance.assign",
+   "params": {
+    "bodies": [
+     "case.base"
+    ],
+    "color": "#3d4248"
+   }
+  },
+  {
+   "command": "appearance.assign",
+   "params": {
+    "bodies": [
+     "case.plate"
+    ],
+    "color": "#7d8a94"
+   }
+  },
+  {
+   "command": "appearance.assign",
+   "params": {
+    "bodies": [
+     "case.lid"
+    ],
+    "color": "#dc6c24"
+   }
+  },
+  {
+   "command": "appearance.assign",
+   "params": {
+    "bodies": [
+     "hardware.m4_insert-1",
+     "hardware.m4_insert-2",
+     "hardware.m4_insert-3",
+     "hardware.m4_insert-4"
+    ],
+    "color": "#bb9447"
+   }
+  }
+ ]
+}

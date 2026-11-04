@@ -1,0 +1,94 @@
+{
+  "firmware_variant": "esp32 diy/v1 (candidate; RF switch compatibility unverified)",
+  "wires": [
+    {
+      "signal": "Power",
+      "radio_pin": "VCC",
+      "esp32_label": "3V3",
+      "gpio": null,
+      "color_hex": "#FF0000",
+      "color_name": "red"
+    },
+    {
+      "signal": "Ground",
+      "radio_pin": "GND",
+      "esp32_label": "GND (beside 3V3)",
+      "gpio": null,
+      "color_hex": "#000000",
+      "color_name": "black"
+    },
+    {
+      "signal": "SCK",
+      "radio_pin": "SCK",
+      "esp32_label": "D5",
+      "gpio": 5,
+      "color_hex": "#FFFF00",
+      "color_name": "yellow"
+    },
+    {
+      "signal": "MISO",
+      "radio_pin": "MISO",
+      "esp32_label": "D19",
+      "gpio": 19,
+      "color_hex": "#008000",
+      "color_name": "green"
+    },
+    {
+      "signal": "MOSI",
+      "radio_pin": "MOSI",
+      "esp32_label": "D27",
+      "gpio": 27,
+      "color_hex": "#0000FF",
+      "color_name": "blue"
+    },
+    {
+      "signal": "NSS",
+      "radio_pin": "NSS",
+      "esp32_label": "D18",
+      "gpio": 18,
+      "color_hex": "#FFA500",
+      "color_name": "orange"
+    },
+    {
+      "signal": "Reset",
+      "radio_pin": "NRST",
+      "esp32_label": "D23",
+      "gpio": 23,
+      "color_hex": "#800080",
+      "color_name": "purple"
+    },
+    {
+      "signal": "DIO1",
+      "radio_pin": "DIO1",
+      "esp32_label": "D33",
+      "gpio": 33,
+      "color_hex": "#FFFFFF",
+      "color_name": "white"
+    },
+    {
+      "signal": "Busy",
+      "radio_pin": "BUSY",
+      "esp32_label": "D32",
+      "gpio": 32,
+      "color_hex": "#808080",
+      "color_name": "grey"
+    },
+    {
+      "signal": "TX enable (unverified)",
+      "radio_pin": "TXEN",
+      "esp32_label": "D13",
+      "gpio": 13,
+      "color_hex": "#A52A2A",
+      "color_name": "brown"
+    },
+    {
+      "signal": "RX enable (reserved, unverified)",
+      "radio_pin": "RXEN",
+      "esp32_label": "D14",
+      "gpio": 14,
+      "color_hex": "#FF69B4",
+      "color_name": "pink"
+    }
+  ],
+  "note": "RXEN wire is reserved so any RF-switch scheme fits without rewiring; final use is decided at the firmware step. DIO2 not wired."
+}

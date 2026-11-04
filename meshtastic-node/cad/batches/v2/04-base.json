@@ -1,0 +1,748 @@
+{
+ "commands": [
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "case_length",
+    "width": "case_width",
+    "height": "base_height",
+    "corner": [
+     0,
+     0,
+     0
+    ],
+    "operation": "new",
+    "body_name": "case.base",
+    "name": "Base blank"
+   }
+  },
+  {
+   "command": "solid.fillet",
+   "params": {
+    "body": "case.base",
+    "edges": [
+     [
+      0,
+      0,
+      15
+     ],
+     [
+      79.0,
+      0,
+      15
+     ],
+     [
+      0,
+      60.0,
+      15
+     ],
+     [
+      79.0,
+      60.0,
+      15
+     ]
+    ],
+    "radius": "corner_radius",
+    "name": "Base corners"
+   }
+  },
+  {
+   "command": "sketch.create",
+   "params": {
+    "plane": "XY",
+    "offset": "plate_top-plate_t",
+    "name": "Upper cavity outline"
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     2.4,
+     12.6776
+    ],
+    "through": [
+     3.0126,
+     11.4682
+    ],
+    "end": [
+     4.35,
+     11.2467
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     4.35,
+     11.2467
+    ],
+    "through": [
+     9.8891,
+     9.8891
+    ],
+    "end": [
+     11.2467,
+     4.35
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     11.2467,
+     4.35
+    ],
+    "through": [
+     11.4682,
+     3.0126
+    ],
+    "end": [
+     12.6776,
+     2.4
+    ]
+   }
+  },
+  {
+   "command": "sketch.line",
+   "params": {
+    "points": [
+     [
+      12.6776,
+      2.4
+     ],
+     [
+      66.3224,
+      2.4
+     ]
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     66.3224,
+     2.4
+    ],
+    "through": [
+     67.5318,
+     3.0126
+    ],
+    "end": [
+     67.7533,
+     4.35
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     67.7533,
+     4.35
+    ],
+    "through": [
+     69.1109,
+     9.8891
+    ],
+    "end": [
+     74.65,
+     11.2467
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     74.65,
+     11.2467
+    ],
+    "through": [
+     75.9874,
+     11.4682
+    ],
+    "end": [
+     76.6,
+     12.6776
+    ]
+   }
+  },
+  {
+   "command": "sketch.line",
+   "params": {
+    "points": [
+     [
+      76.6,
+      12.6776
+     ],
+     [
+      76.6,
+      47.3224
+     ]
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     76.6,
+     47.3224
+    ],
+    "through": [
+     75.9874,
+     48.5318
+    ],
+    "end": [
+     74.65,
+     48.7533
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     74.65,
+     48.7533
+    ],
+    "through": [
+     69.1109,
+     50.1109
+    ],
+    "end": [
+     67.7533,
+     55.65
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     67.7533,
+     55.65
+    ],
+    "through": [
+     67.5318,
+     56.9874
+    ],
+    "end": [
+     66.3224,
+     57.6
+    ]
+   }
+  },
+  {
+   "command": "sketch.line",
+   "params": {
+    "points": [
+     [
+      66.3224,
+      57.6
+     ],
+     [
+      12.6776,
+      57.6
+     ]
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     12.6776,
+     57.6
+    ],
+    "through": [
+     11.4682,
+     56.9874
+    ],
+    "end": [
+     11.2467,
+     55.65
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     11.2467,
+     55.65
+    ],
+    "through": [
+     9.8891,
+     50.1109
+    ],
+    "end": [
+     4.35,
+     48.7533
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     4.35,
+     48.7533
+    ],
+    "through": [
+     3.0126,
+     48.5318
+    ],
+    "end": [
+     2.4,
+     47.3224
+    ]
+   }
+  },
+  {
+   "command": "sketch.line",
+   "params": {
+    "points": [
+     [
+      2.4,
+      47.3224
+     ],
+     [
+      2.4,
+      12.6776
+     ]
+    ]
+   }
+  },
+  {
+   "command": "sketch.finish",
+   "params": {}
+  },
+  {
+   "command": "solid.extrude",
+   "params": {
+    "sketch": "Upper cavity outline",
+    "distance": "base_height-(plate_top-plate_t)+1 mm",
+    "operation": "cut",
+    "targets": [
+     "case.base"
+    ],
+    "name": "Upper cavity"
+   }
+  },
+  {
+   "command": "sketch.create",
+   "params": {
+    "plane": "XY",
+    "offset": "wall",
+    "name": "Lower cavity outline"
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     3.9,
+     14.4788
+    ],
+    "through": [
+     4.3775,
+     13.3813
+    ],
+    "end": [
+     5.5059,
+     12.9825
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     5.5059,
+     12.9825
+    ],
+    "through": [
+     10.9497,
+     10.9497
+    ],
+    "end": [
+     12.9825,
+     5.5059
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     12.9825,
+     5.5059
+    ],
+    "through": [
+     13.3813,
+     4.3775
+    ],
+    "end": [
+     14.4788,
+     3.9
+    ]
+   }
+  },
+  {
+   "command": "sketch.line",
+   "params": {
+    "points": [
+     [
+      14.4788,
+      3.9
+     ],
+     [
+      64.5212,
+      3.9
+     ]
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     64.5212,
+     3.9
+    ],
+    "through": [
+     65.6187,
+     4.3775
+    ],
+    "end": [
+     66.0175,
+     5.5059
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     66.0175,
+     5.5059
+    ],
+    "through": [
+     68.0503,
+     10.9497
+    ],
+    "end": [
+     73.4941,
+     12.9825
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     73.4941,
+     12.9825
+    ],
+    "through": [
+     74.6225,
+     13.3813
+    ],
+    "end": [
+     75.1,
+     14.4788
+    ]
+   }
+  },
+  {
+   "command": "sketch.line",
+   "params": {
+    "points": [
+     [
+      75.1,
+      14.4788
+     ],
+     [
+      75.1,
+      45.5212
+     ]
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     75.1,
+     45.5212
+    ],
+    "through": [
+     74.6225,
+     46.6187
+    ],
+    "end": [
+     73.4941,
+     47.0175
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     73.4941,
+     47.0175
+    ],
+    "through": [
+     68.0503,
+     49.0503
+    ],
+    "end": [
+     66.0175,
+     54.4941
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     66.0175,
+     54.4941
+    ],
+    "through": [
+     65.6187,
+     55.6225
+    ],
+    "end": [
+     64.5212,
+     56.1
+    ]
+   }
+  },
+  {
+   "command": "sketch.line",
+   "params": {
+    "points": [
+     [
+      64.5212,
+      56.1
+     ],
+     [
+      14.4788,
+      56.1
+     ]
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     14.4788,
+     56.1
+    ],
+    "through": [
+     13.3813,
+     55.6225
+    ],
+    "end": [
+     12.9825,
+     54.4941
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     12.9825,
+     54.4941
+    ],
+    "through": [
+     10.9497,
+     49.0503
+    ],
+    "end": [
+     5.5059,
+     47.0175
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     5.5059,
+     47.0175
+    ],
+    "through": [
+     4.3775,
+     46.6187
+    ],
+    "end": [
+     3.9,
+     45.5212
+    ]
+   }
+  },
+  {
+   "command": "sketch.line",
+   "params": {
+    "points": [
+     [
+      3.9,
+      45.5212
+     ],
+     [
+      3.9,
+      14.4788
+     ]
+    ]
+   }
+  },
+  {
+   "command": "sketch.finish",
+   "params": {}
+  },
+  {
+   "command": "solid.extrude",
+   "params": {
+    "sketch": "Lower cavity outline",
+    "distance": "plate_top-plate_t-wall+0.5 mm",
+    "operation": "cut",
+    "targets": [
+     "case.base"
+    ],
+    "name": "Lower cavity"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "diameter": "insert_hole_d",
+    "height": "insert_len+2 mm",
+    "base": [
+     "col_off",
+     "col_off",
+     "base_height-insert_len-1 mm"
+    ],
+    "operation": "cut",
+    "targets": [
+     "case.base"
+    ],
+    "name": "Insert hole 1"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "diameter": "insert_hole_d",
+    "height": "insert_len+2 mm",
+    "base": [
+     "case_length-col_off",
+     "col_off",
+     "base_height-insert_len-1 mm"
+    ],
+    "operation": "cut",
+    "targets": [
+     "case.base"
+    ],
+    "name": "Insert hole 2"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "diameter": "insert_hole_d",
+    "height": "insert_len+2 mm",
+    "base": [
+     "col_off",
+     "case_width-col_off",
+     "base_height-insert_len-1 mm"
+    ],
+    "operation": "cut",
+    "targets": [
+     "case.base"
+    ],
+    "name": "Insert hole 3"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "diameter": "insert_hole_d",
+    "height": "insert_len+2 mm",
+    "base": [
+     "case_length-col_off",
+     "case_width-col_off",
+     "base_height-insert_len-1 mm"
+    ],
+    "operation": "cut",
+    "targets": [
+     "case.base"
+    ],
+    "name": "Insert hole 4"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "usb_open_w",
+    "width": "wall+2 mm",
+    "height": "base_height-usb_open_bottom+1 mm",
+    "corner": [
+     "esp32_x-usb_open_w/2",
+     "-1 mm",
+     "usb_open_bottom"
+    ],
+    "operation": "cut",
+    "targets": [
+     "case.base"
+    ],
+    "name": "USB opening"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "diameter": "sma_hole_d",
+    "height": "wall+2 mm",
+    "base": [
+     "case_length-wall-1 mm",
+     "sma_axis_y",
+     "sma_axis_z"
+    ],
+    "axis": "X",
+    "operation": "cut",
+    "targets": [
+     "case.base"
+    ],
+    "name": "SMA slot round"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "wall+2 mm",
+    "width": "sma_hole_d",
+    "height": "base_height-sma_axis_z+1 mm",
+    "corner": [
+     "case_length-wall-1 mm",
+     "sma_axis_y-sma_hole_d/2",
+     "sma_axis_z"
+    ],
+    "operation": "cut",
+    "targets": [
+     "case.base"
+    ],
+    "name": "SMA slot open top"
+   }
+  }
+ ]
+}

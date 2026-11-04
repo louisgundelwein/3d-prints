@@ -1,0 +1,772 @@
+{
+ "commands": [
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "case_length",
+    "width": "case_width",
+    "height": "lid_t",
+    "corner": [
+     0,
+     0,
+     "base_height"
+    ],
+    "operation": "new",
+    "body_name": "case.lid",
+    "name": "Lid blank"
+   }
+  },
+  {
+   "command": "solid.fillet",
+   "params": {
+    "body": "case.lid",
+    "edges": [
+     [
+      0,
+      0,
+      32.5
+     ],
+     [
+      79.0,
+      0,
+      32.5
+     ],
+     [
+      0,
+      60.0,
+      32.5
+     ],
+     [
+      79.0,
+      60.0,
+      32.5
+     ]
+    ],
+    "radius": "corner_radius",
+    "name": "Lid corners"
+   }
+  },
+  {
+   "command": "sketch.create",
+   "params": {
+    "plane": "XY",
+    "offset": "base_height-lip_h",
+    "name": "Lid rim outline"
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     2.7,
+     12.6776
+    ],
+    "through": [
+     3.1901,
+     11.7101
+    ],
+    "end": [
+     4.26,
+     11.5328
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     4.26,
+     11.5328
+    ],
+    "through": [
+     10.1012,
+     10.1012
+    ],
+    "end": [
+     11.5328,
+     4.26
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     11.5328,
+     4.26
+    ],
+    "through": [
+     11.7101,
+     3.1901
+    ],
+    "end": [
+     12.6776,
+     2.7
+    ]
+   }
+  },
+  {
+   "command": "sketch.line",
+   "params": {
+    "points": [
+     [
+      12.6776,
+      2.7
+     ],
+     [
+      66.3224,
+      2.7
+     ]
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     66.3224,
+     2.7
+    ],
+    "through": [
+     67.2899,
+     3.1901
+    ],
+    "end": [
+     67.4672,
+     4.26
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     67.4672,
+     4.26
+    ],
+    "through": [
+     68.8988,
+     10.1012
+    ],
+    "end": [
+     74.74,
+     11.5328
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     74.74,
+     11.5328
+    ],
+    "through": [
+     75.8099,
+     11.7101
+    ],
+    "end": [
+     76.3,
+     12.6776
+    ]
+   }
+  },
+  {
+   "command": "sketch.line",
+   "params": {
+    "points": [
+     [
+      76.3,
+      12.6776
+     ],
+     [
+      76.3,
+      47.3224
+     ]
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     76.3,
+     47.3224
+    ],
+    "through": [
+     75.8099,
+     48.2899
+    ],
+    "end": [
+     74.74,
+     48.4672
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     74.74,
+     48.4672
+    ],
+    "through": [
+     68.8988,
+     49.8988
+    ],
+    "end": [
+     67.4672,
+     55.74
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     67.4672,
+     55.74
+    ],
+    "through": [
+     67.2899,
+     56.8099
+    ],
+    "end": [
+     66.3224,
+     57.3
+    ]
+   }
+  },
+  {
+   "command": "sketch.line",
+   "params": {
+    "points": [
+     [
+      66.3224,
+      57.3
+     ],
+     [
+      12.6776,
+      57.3
+     ]
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     12.6776,
+     57.3
+    ],
+    "through": [
+     11.7101,
+     56.8099
+    ],
+    "end": [
+     11.5328,
+     55.74
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     11.5328,
+     55.74
+    ],
+    "through": [
+     10.1012,
+     49.8988
+    ],
+    "end": [
+     4.26,
+     48.4672
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     4.26,
+     48.4672
+    ],
+    "through": [
+     3.1901,
+     48.2899
+    ],
+    "end": [
+     2.7,
+     47.3224
+    ]
+   }
+  },
+  {
+   "command": "sketch.line",
+   "params": {
+    "points": [
+     [
+      2.7,
+      47.3224
+     ],
+     [
+      2.7,
+      12.6776
+     ]
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     4.3,
+     13.2021
+    ],
+    "through": [
+     11.2326,
+     11.2326
+    ],
+    "end": [
+     13.2021,
+     4.3
+    ]
+   }
+  },
+  {
+   "command": "sketch.line",
+   "params": {
+    "points": [
+     [
+      13.2021,
+      4.3
+     ],
+     [
+      65.7979,
+      4.3
+     ]
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     65.7979,
+     4.3
+    ],
+    "through": [
+     67.7674,
+     11.2326
+    ],
+    "end": [
+     74.7,
+     13.2021
+    ]
+   }
+  },
+  {
+   "command": "sketch.line",
+   "params": {
+    "points": [
+     [
+      74.7,
+      13.2021
+     ],
+     [
+      74.7,
+      46.7979
+     ]
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     74.7,
+     46.7979
+    ],
+    "through": [
+     67.7674,
+     48.7674
+    ],
+    "end": [
+     65.7979,
+     55.7
+    ]
+   }
+  },
+  {
+   "command": "sketch.line",
+   "params": {
+    "points": [
+     [
+      65.7979,
+      55.7
+     ],
+     [
+      13.2021,
+      55.7
+     ]
+    ]
+   }
+  },
+  {
+   "command": "sketch.arc.three_point",
+   "params": {
+    "start": [
+     13.2021,
+     55.7
+    ],
+    "through": [
+     11.2326,
+     48.7674
+    ],
+    "end": [
+     4.3,
+     46.7979
+    ]
+   }
+  },
+  {
+   "command": "sketch.line",
+   "params": {
+    "points": [
+     [
+      4.3,
+      46.7979
+     ],
+     [
+      4.3,
+      13.2021
+     ]
+    ]
+   }
+  },
+  {
+   "command": "sketch.finish",
+   "params": {}
+  },
+  {
+   "command": "solid.extrude",
+   "params": {
+    "sketch": "Lid rim outline",
+    "distance": "lip_h+0.5 mm",
+    "operation": "new",
+    "body_name": "case.lid_rim",
+    "name": "Lid rim"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "usb_open_w",
+    "width": "wall+fit_gap+lip_t+2 mm",
+    "height": "lip_h+2 mm",
+    "corner": [
+     "esp32_x-usb_open_w/2",
+     "-1 mm",
+     "base_height-lip_h-1 mm"
+    ],
+    "operation": "cut",
+    "targets": [
+     "case.lid_rim"
+    ],
+    "name": "Lid rim USB plug gap"
+   }
+  },
+  {
+   "command": "solid.combine",
+   "params": {
+    "target": "case.lid",
+    "tools": [
+     "case.lid_rim"
+    ],
+    "operation": "join"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "diameter": "m4_clear_d",
+    "height": "lid_t+2 mm",
+    "base": [
+     "col_off",
+     "col_off",
+     "base_height-1 mm"
+    ],
+    "operation": "cut",
+    "targets": [
+     "case.lid"
+    ],
+    "name": "Lid screw hole 1"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "diameter": "m4_cb_d",
+    "height": "m4_cb_depth+1 mm",
+    "base": [
+     "col_off",
+     "col_off",
+     "base_height+lid_t-m4_cb_depth"
+    ],
+    "operation": "cut",
+    "targets": [
+     "case.lid"
+    ],
+    "name": "Lid counterbore 1"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "diameter": "m4_clear_d",
+    "height": "lid_t+2 mm",
+    "base": [
+     "case_length-col_off",
+     "col_off",
+     "base_height-1 mm"
+    ],
+    "operation": "cut",
+    "targets": [
+     "case.lid"
+    ],
+    "name": "Lid screw hole 2"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "diameter": "m4_cb_d",
+    "height": "m4_cb_depth+1 mm",
+    "base": [
+     "case_length-col_off",
+     "col_off",
+     "base_height+lid_t-m4_cb_depth"
+    ],
+    "operation": "cut",
+    "targets": [
+     "case.lid"
+    ],
+    "name": "Lid counterbore 2"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "diameter": "m4_clear_d",
+    "height": "lid_t+2 mm",
+    "base": [
+     "col_off",
+     "case_width-col_off",
+     "base_height-1 mm"
+    ],
+    "operation": "cut",
+    "targets": [
+     "case.lid"
+    ],
+    "name": "Lid screw hole 3"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "diameter": "m4_cb_d",
+    "height": "m4_cb_depth+1 mm",
+    "base": [
+     "col_off",
+     "case_width-col_off",
+     "base_height+lid_t-m4_cb_depth"
+    ],
+    "operation": "cut",
+    "targets": [
+     "case.lid"
+    ],
+    "name": "Lid counterbore 3"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "diameter": "m4_clear_d",
+    "height": "lid_t+2 mm",
+    "base": [
+     "case_length-col_off",
+     "case_width-col_off",
+     "base_height-1 mm"
+    ],
+    "operation": "cut",
+    "targets": [
+     "case.lid"
+    ],
+    "name": "Lid screw hole 4"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "diameter": "m4_cb_d",
+    "height": "m4_cb_depth+1 mm",
+    "base": [
+     "case_length-col_off",
+     "case_width-col_off",
+     "base_height+lid_t-m4_cb_depth"
+    ],
+    "operation": "cut",
+    "targets": [
+     "case.lid"
+    ],
+    "name": "Lid counterbore 4"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "wall-0.2 mm",
+    "width": "sma_hole_d-0.4 mm",
+    "height": "base_height+0.5 mm-(sma_axis_z+1.5 mm)",
+    "corner": [
+     "case_length-wall",
+     "sma_axis_y-sma_hole_d/2+0.2 mm",
+     "sma_axis_z+1.5 mm"
+    ],
+    "operation": "join",
+    "targets": [
+     "case.lid"
+    ],
+    "name": "SMA tongue"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "diameter": "sma_hole_d",
+    "height": "wall+1 mm",
+    "base": [
+     "case_length-wall",
+     "sma_axis_y",
+     "sma_axis_z"
+    ],
+    "axis": "X",
+    "operation": "cut",
+    "targets": [
+     "case.lid"
+    ],
+    "name": "SMA tongue arch"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.5 mm",
+    "width": "2.5 mm",
+    "height": "base_height+0.5 mm-(plate_top+1.6 mm+holddown_gap)",
+    "corner": [
+     "esp32_x-13.7 mm",
+     "esp32_y-21.3 mm",
+     "plate_top+1.6 mm+holddown_gap"
+    ],
+    "operation": "join",
+    "targets": [
+     "case.lid"
+    ],
+    "name": "ESP hold-down 1"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.5 mm",
+    "width": "2.5 mm",
+    "height": "base_height+0.5 mm-(plate_top+1.6 mm+holddown_gap)",
+    "corner": [
+     "esp32_x+11.2 mm",
+     "esp32_y-21.3 mm",
+     "plate_top+1.6 mm+holddown_gap"
+    ],
+    "operation": "join",
+    "targets": [
+     "case.lid"
+    ],
+    "name": "ESP hold-down 2"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.5 mm",
+    "width": "2.5 mm",
+    "height": "base_height+0.5 mm-(plate_top+1.6 mm+holddown_gap)",
+    "corner": [
+     "esp32_x-13.7 mm",
+     "esp32_y+18.8 mm",
+     "plate_top+1.6 mm+holddown_gap"
+    ],
+    "operation": "join",
+    "targets": [
+     "case.lid"
+    ],
+    "name": "ESP hold-down 3"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "2.5 mm",
+    "width": "2.5 mm",
+    "height": "base_height+0.5 mm-(plate_top+1.6 mm+holddown_gap)",
+    "corner": [
+     "esp32_x+11.2 mm",
+     "esp32_y+18.8 mm",
+     "plate_top+1.6 mm+holddown_gap"
+    ],
+    "operation": "join",
+    "targets": [
+     "case.lid"
+    ],
+    "name": "ESP hold-down 4"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "8 mm",
+    "width": "6 mm",
+    "height": "base_height+0.5 mm-(plate_top+3.9 mm+holddown_gap)",
+    "corner": [
+     "radio_x-5.75 mm",
+     "radio_y-3 mm",
+     "plate_top+3.9 mm+holddown_gap"
+    ],
+    "operation": "join",
+    "targets": [
+     "case.lid"
+    ],
+    "name": "Radio hold-down on shield"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": "1.8 mm",
+    "width": "15 mm",
+    "height": "base_height+0.5 mm-(plate_top+1.6 mm+holddown_gap)",
+    "corner": [
+     "radio_x+10.4 mm",
+     "radio_y-7.5 mm",
+     "plate_top+1.6 mm+holddown_gap"
+    ],
+    "operation": "join",
+    "targets": [
+     "case.lid"
+    ],
+    "name": "Radio hold-down rib at SMA"
+   }
+  }
+ ]
+}

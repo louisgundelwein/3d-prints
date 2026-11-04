@@ -1,0 +1,126 @@
+{
+ "commands": [
+  {
+   "command": "timeline.delete",
+   "params": {
+    "features": [
+     "Base blank",
+     "Base corners",
+     "Upper cavity outline",
+     "Upper cavity",
+     "Lower cavity outline",
+     "Lower cavity",
+     "Insert hole 1",
+     "Insert hole 2",
+     "Insert hole 3",
+     "Insert hole 4",
+     "USB opening",
+     "SMA slot round",
+     "SMA slot open top",
+     "Plate outline",
+     "Mounting plate",
+     "ESP header window left",
+     "ESP header window right",
+     "Radio header window",
+     "SMA flange notch",
+     "ESP pocket left",
+     "ESP pocket right",
+     "ESP pocket front",
+     "Radio pocket front",
+     "Radio pocket back",
+     "Radio pocket header end",
+     "Lid blank",
+     "Lid corners",
+     "Lid rim outline",
+     "Lid rim",
+     "Lid rim USB plug gap",
+     "Combine1",
+     "Lid screw hole 1",
+     "Lid counterbore 1",
+     "Lid screw hole 2",
+     "Lid counterbore 2",
+     "Lid screw hole 3",
+     "Lid counterbore 3",
+     "Lid screw hole 4",
+     "Lid counterbore 4",
+     "SMA tongue",
+     "SMA tongue arch",
+     "ESP hold-down 1",
+     "ESP hold-down 2",
+     "ESP hold-down 3",
+     "ESP hold-down 4",
+     "Radio hold-down on shield",
+     "Radio hold-down rib at SMA",
+     "M4 heat-set insert 1",
+     "M4 insert bore 1",
+     "M4 heat-set insert 2",
+     "M4 insert bore 2",
+     "M4 heat-set insert 3",
+     "M4 insert bore 3",
+     "M4 heat-set insert 4",
+     "M4 insert bore 4",
+     "Sketch1",
+     "Revolve1",
+     "Sketch2",
+     "Extrude1",
+     "Thread1",
+     "Sketch3",
+     "Revolve2",
+     "Sketch4",
+     "Extrude2",
+     "Thread2",
+     "Sketch5",
+     "Revolve3",
+     "Sketch6",
+     "Extrude3",
+     "Thread3",
+     "Sketch7",
+     "Revolve4",
+     "Sketch8",
+     "Extrude4",
+     "Thread4"
+    ]
+   }
+  },
+  {
+   "command": "parameters.change",
+   "params": {
+    "name": "case_length",
+    "expression": "79 mm"
+   }
+  },
+  {
+   "command": "parameters.change",
+   "params": {
+    "name": "radio_x",
+    "expression": "60.5 mm"
+   }
+  },
+  {
+   "command": "occurrence.ground",
+   "params": {
+    "occurrence": 5,
+    "grounded": false
+   }
+  },
+  {
+   "command": "occurrence.move",
+   "params": {
+    "occurrence": 5,
+    "space": "world",
+    "translate": [
+     2,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "command": "occurrence.ground",
+   "params": {
+    "occurrence": 5,
+    "grounded": true
+   }
+  }
+ ]
+}
