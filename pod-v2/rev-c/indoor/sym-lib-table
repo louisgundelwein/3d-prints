@@ -1,0 +1,1 @@
+(sym_lib_table (version 7) (lib (name "Pod")(type "KiCad")(uri "${KIPRJMOD}/Pod.kicad_sym")(options "")(descr "Rev A local symbols"))(lib(name "Indoor")(type "KiCad")(uri "${KIPRJMOD}/Indoor.kicad_sym")(options "")(descr "")))

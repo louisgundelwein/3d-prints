@@ -1,0 +1,24 @@
+References,Quantity,Part or specification,Footprint
+J1,1,"1x02 pin header, 2.54 mm",Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical
+U2,1,TSR 1-2433,Converter_DCDC:Converter_DCDC_TRACO_TSR-1_THT
+C1 C2,2,10uF X7R 16V,Capacitor_SMD:C_1206_3216Metric
+C3 C5 C18 C6 C7 C8 C9 C10 C11 C12 C13 C14 C15 C16 C17 C21,16,100nF X7R 16V,Capacitor_SMD:C_0805_2012Metric
+C4 C19,2,1uF X7R 16V,Capacitor_SMD:C_0805_2012Metric
+U1,1,ESP32-C3-MINI-1-N4X,Pod:ESP32-C3-MINI-1
+R1 R2 R3 R4 R9 R13,6,10k ohm 1%,Resistor_SMD:R_0805_2012Metric
+SW1 SW2 SW3,3,C&K KMR221G LFS,Button_Switch_SMD:SW_Push_1P1T_NO_CK_KMR2
+J2,1,Hirose FH12-12S-0.5SH(55),Connector_FFC-FPC:Hirose_FH12-12S-0.5SH_1x12-1MP_P0.50mm_Horizontal
+J5,1,JST SM08B-GHS-TB(LF)(SN),Connector_JST:JST_GH_SM08B-GHS-TB_1x08-1MP_P1.25mm_Horizontal
+R10 R11,2,2.2k ohm 1%,Resistor_SMD:R_0805_2012Metric
+U3,1,SN74AHCT1G125DBVR,Package_TO_SOT_SMD:SOT-23-5
+U4,1,SN74LV1T34DBVR,Package_TO_SOT_SMD:SOT-23-5
+D3 D4 D5 D6 D7 D8 D9 D10 D11 D12 D13 D14,12,WS2812B-Mini-V6,LED_SMD:LED_WS2812B-Mini_PLCC4_3.5x3.5mm
+J4,1,"1x03 pin header, 2.54 mm",Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical
+J3,1,"Phoenix Contact 1715734 (MKDS 1,5/3-5,08)","TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-3-5.08_1x03_P5.08mm_Horizontal"
+U6,1,THVD1410DR,Package_SO:SOIC-8_3.9x4.9mm_P1.27mm
+R8,1,120 ohm 1%,Resistor_SMD:R_0805_2012Metric
+R12,1,100 ohm 1%,Resistor_SMD:R_0805_2012Metric
+Assembly,1,Newland NLS-EM3080-W V2,Scanner cradle
+Assembly,1,"12-way 0.5 mm FFC, reinforced ends",J2 to scanner; verify exposure and length
+Assembly,1,ELECHOUSE PN7160 I2C module,Front antenna cradle
+Assembly,1,JST GHR-08V-S to supplied ELECHOUSE 8-way harness,J5 to module
