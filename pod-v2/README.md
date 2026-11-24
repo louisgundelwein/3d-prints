@@ -6,6 +6,7 @@ Rev A uses regulated 5 V bench power. The external scanner decodes QR images and
 
 ## Design files
 
+- [Rev B front board study](rev-b/) places the QR engine, RGB ring, NFC antenna, ESP32 and relay on one carrier.
 - [SolidCraft exploded assembly](cad/pod-v2-exploded.sc) shows the populated Rev A board, rear tray, scanner envelope and faceplate as separate solids. Rebuild with `python3 tools/build_exploded.py`. The case and scanner height are estimates for this view. Final fit, scanner retention and cable routing still need measurements.
 - [Editable SolidCraft model](cad/pod-v2-rev-a.sc) and [outline STEP](cad/pod-v2-rev-a.step) show the carrier and Wi-Fi module envelope. Rebuild with `python3 tools/build_cad.py` from this directory using SolidCraft 0.48.1. The carrier is 65 × 45 × 1.6 mm with four Ø3.2 mm holes inset 3.5 mm. The module antenna projects 5.4 mm past the board edge. Reserve clearance around it in a housing. [Espressif layout guide](https://docs.espressif.com/projects/esp-hardware-design-guidelines/en/latest/esp32c3/pcb-layout-design.html)
 - [KiCad project](pcb/Pod-A.kicad_pro) and [populated board STEP](pcb/Pod-A.step). Use the KiCad drawings and connector pin assignments in [PCB notes](pcb/README.md) when making the scanner and programming cables. The PCB also opens in SolidCraft 0.48.1.
