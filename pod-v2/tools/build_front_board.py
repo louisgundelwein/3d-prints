@@ -56,6 +56,9 @@ def commands():
         for y in ("4 mm", "pcb_h - 4 mm"):
             add("solid.cylinder", name="Montagebohrung", base=[x, y, -1], diameter=3.2,
                 height="pcb_z + 2 mm", operation="cut", targets=[board])
+    for x in (23.5, 48.5):
+        add("solid.cylinder", name="Bohrung Scannerhalter", base=[x, 70, -1], diameter=2.2,
+            height="pcb_z + 2 mm", operation="cut", targets=[board])
     color([board], "#176652")
 
     scanner = "QR-Scanner · EM3080-W V2"
@@ -88,6 +91,8 @@ def commands():
     box(module, ["36 mm - nfc_w / 2", "23.5 mm - nfc_h / 2", "pcb_z + nfc_offset"],
         ["nfc_w", "nfc_h", "pcb_z"])
     color([module], "#294a72")
+    box("NFC-Stecker · JST GH", [8, 47, "pcb_z"], [12, 4, 4.25])
+    color(["NFC-Stecker · JST GH"], "#e0e5eb")
     coils = []
     for turn in range(3):
         inset = turn * 1.9
