@@ -23,13 +23,16 @@ def commands():
         "pcb_w": ("72 mm", "Estimate: front board width"),
         "pcb_h": ("100 mm", "Estimate: front board height"),
         "pcb_z": ("1.6 mm", "Nominal PCB thickness"),
-        "scan_w": ("21.15 mm", "Honeywell N4680 envelope width"),
-        "scan_h": ("11.5 mm", "Honeywell N4680 envelope height"),
-        "scan_d": ("14.6 mm", "Honeywell N4680 envelope depth"),
-        "cut_w": ("23.5 mm", "Estimate: scanner clearance width"),
-        "cut_h": ("14 mm", "Estimate: scanner clearance height"),
+        "scan_w": ("15.5 mm", "Newland EM3080-W V2 envelope width"),
+        "scan_h": ("9.7 mm", "Newland EM3080-W V2 envelope height"),
+        "scan_d": ("13.9 mm", "Newland EM3080-W V2 envelope depth"),
+        "cut_w": ("17.5 mm", "Rev B KiCad optical window width"),
+        "cut_h": ("12 mm", "Rev B KiCad optical window height"),
         "led_w": ("3.5 mm", "Estimate: RGB package width"),
         "led_z": ("1 mm", "Estimate: RGB package height"),
+        "nfc_w": ("42.7 mm", "ELECHOUSE PN7160 module width"),
+        "nfc_h": ("40.1 mm", "ELECHOUSE PN7160 module height"),
+        "nfc_offset": ("3 mm", "Estimate: module elevation above host board"),
     }
 
     def add(command, **params):
@@ -55,12 +58,14 @@ def commands():
                 height="pcb_z + 2 mm", operation="cut", targets=[board])
     color([board], "#176652")
 
-    scanner = "QR-Scanner · N4680 Bauraum"
+    scanner = "QR-Scanner · EM3080-W V2"
     box(scanner, ["36 mm - scan_w / 2", "70 mm - scan_h / 2", "pcb_z + 0.6 mm - scan_d"],
         ["scan_w", "scan_h", "scan_d"])
-    box("Optik · Position geschätzt", [31, 67.6, "pcb_z + 0.6 mm"], [10, 4.8, 0.2])
+    box("QR-Optik", [36, 67.1, "pcb_z + 0.6 mm"], [4.8, 3.8, 0.2])
+    box("Scanner-Beleuchtung", [30, 67.1, "pcb_z + 0.6 mm"], [3.5, 3.8, 0.2])
     color([scanner], "#263047")
-    color(["Optik · Position geschätzt"], "#111b2b")
+    color(["QR-Optik"], "#111b2b")
+    color(["Scanner-Beleuchtung"], "#fff4bc")
 
     leds = []
     for index in range(LED_COUNT):
@@ -79,29 +84,33 @@ def commands():
         diameter=31, height=3.8, operation="cut", targets=[diffuser])
     add("appearance.assign", bodies=[diffuser], color="#80ebdf", opacity=0.33)
 
+    module = "NFC-Modul · ELECHOUSE PN7160"
+    box(module, ["36 mm - nfc_w / 2", "23.5 mm - nfc_h / 2", "pcb_z + nfc_offset"],
+        ["nfc_w", "nfc_h", "pcb_z"])
+    color([module], "#294a72")
     coils = []
     for turn in range(3):
         inset = turn * 1.9
-        x, y = 16 + inset, 9 + inset
-        width, depth = 40 - 2 * inset, 29 - 2 * inset
+        x, y = 19 + inset, 8 + inset
+        width, depth = 34 - 2 * inset, 30 - 2 * inset
         name = f"NFC-Antennenzone · Windung {turn + 1}"
-        box(name, [x, y, "pcb_z"], [width, depth, 0.08])
-        box(f"Antennenöffnung {turn + 1}", [x + 0.6, y + 0.6, "pcb_z - 0.1 mm"],
+        box(name, [x, y, "2 * pcb_z + nfc_offset"], [width, depth, 0.08])
+        box(f"Antennenöffnung {turn + 1}", [x + 0.6, y + 0.6, "2 * pcb_z + nfc_offset - 0.1 mm"],
             [width - 1.2, depth - 1.2, 0.3], [name])
-        box(f"Antennenanschluss {turn + 1}", [33, y - 0.1, "pcb_z - 0.1 mm"], [6, 0.85, 0.3], [name])
+        box(f"Antennenanschluss {turn + 1}", [33, y - 0.1, "2 * pcb_z + nfc_offset - 0.1 mm"],
+            [6, 0.85, 0.3], [name])
         coils.append(name)
     color(coils, "#e5a461")
 
     box("ESP32-C3 · Funkmodul", [29.4, 88.8, -2.4], [13.2, 16.6, 2.4])
     box("WLAN-Antenne · Modulüberstand", [29.4, 100, -2.65], [13.2, 5.4, 0.25])
     box("Relais · G5V-1", [53, 44, -10], [12.5, 7.5, 10])
-    box("NFC-IC · PN7160", [23, 44, -0.8], [4, 4, 0.8])
-    box("Scanner-Flexanschluss · Platzhalter", [31, 55, -2], [10, 4, 2])
+    box("Scanner-Flexanschluss · Hirose", [32, 55, -2], [8, 4, 2])
     box("Versorgung · Platzhalter", [7, 44, -3], [11, 10, 3])
     box("5 V und Türkontakt · Platzhalter", [60, 12, -7], [10, 6, 7])
     color(["ESP32-C3 · Funkmodul"], "#a5b1bf")
     color(["WLAN-Antenne · Modulüberstand"], "#cc995e")
-    color(["Relais · G5V-1", "NFC-IC · PN7160", "Scanner-Flexanschluss · Platzhalter"], "#262e3e")
+    color(["Relais · G5V-1", "Scanner-Flexanschluss · Hirose"], "#262e3e")
     color(["5 V und Türkontakt · Platzhalter"], "#4e86a2")
     add("view.save", name="Vorderseite", camera=FRONT)
     add("view.save", name="Rückseite", camera=REAR)
