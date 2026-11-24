@@ -524,12 +524,12 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		
-		
+
+
 		(property "Reference" "U"
 			(at -25.4 26.924 0)
-			
-			
+
+
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -539,8 +539,8 @@
 		)
 		(property "Value" "ESP32-C3-MINI-1"
 			(at 25.4 26.924 0)
-			
-			
+
+
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -550,8 +550,8 @@
 		)
 		(property "Footprint" "Pod:ESP32-C3-MINI-1"
 			(at 0 -35.56 0)
-			
-			
+
+
 			(effects (hide yes)
 				(font
 					(size 1.27 1.27)
@@ -560,8 +560,8 @@
 		)
 		(property "Datasheet" "https://www.espressif.com/sites/default/files/documentation/esp32-c3-mini-1_datasheet_en.pdf"
 			(at 0 -38.1 0)
-			
-			
+
+
 			(effects (hide yes)
 				(font
 					(size 1.27 1.27)
@@ -570,8 +570,8 @@
 		)
 		(property "Description" "Ultra-low-power 2.4 GHz Wi-Fi and Bluetooth LE module with onboard PCB antenna"
 			(at 0 -40.64 0)
-			
-			
+
+
 			(effects (hide yes)
 				(font
 					(size 1.27 1.27)
@@ -580,8 +580,8 @@
 		)
 		(property "ki_keywords" "esp32-c3"
 			(at 0 0 0)
-			
-			
+
+
 			(effects (hide yes)
 				(font
 					(size 1.27 1.27)
@@ -590,8 +590,8 @@
 		)
 		(property "ki_fp_filters" "ESP32?C3?MINI?1*"
 			(at 0 0 0)
-			
-			
+
+
 			(effects (hide yes)
 				(font
 					(size 1.27 1.27)
