@@ -23,7 +23,7 @@ Order from [BOM.csv](BOM.csv). Populate all relay-option parts together for the 
 | --- | --- |
 | ESP32-C3-MINI-1-N4X | Pad 3 = 3.3 V, 8 = EN. Pads 12/13/16 = GPIO0/1/10 for red/green/blue. Pads 18/19 = GPIO4/5 for scanner TX/RX. Pad 6 = GPIO3 relay. Pads 5/22/23 = GPIO2/8/9. Pads 31/30 = GPIO21/20 for programming TX/RX. Ground pads 1, 2, 11, 14 and 36–53 connect to GND. |
 | TSR 1-2433 | 1 = +5 V, 2 = GND, 3 = +3.3 V. The 1 A buck supplies the controller. J2 draws directly from J1. Size the supply and harness for scanner peak current plus controller and relay demand. |
-| RGB LED | 1 = red, 2 = common cathode, 3 = blue, 4 = green. Each color turns on with a high GPIO. Form the 1.27 mm pitch leads to the 2.159 mm pitch footprint with mechanical support and at least 3 mm from the lens base to the bend. Set the final lens height using the enclosure. |
+| RGB LED | 1 = red, 2 = common cathode, 3 = blue, 4 = green. Each color turns on with a high GPIO. Before placing the LED on the PCB, support the leads and form them from 1.27 mm to 2.159 mm pitch. Keep each bend at least 3 mm from the lens base. Set the final lens height using the enclosure. |
 | G5V-1 DC5 | Coil 2/9, common 5/6, normally open 10, normally closed 1 left open. The 5 V coil draws 30 mA nominal. |
 | AO3400A / 1N4148W | MOSFET gate/source/drain = 1/2/3. Diode band = cathode, pad 1, +5 V. |
 
