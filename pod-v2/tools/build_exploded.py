@@ -51,8 +51,9 @@ def commands():
             height="wall / 2 + 5 mm", operation="cut", targets=[rear])
     add("appearance.assign", bodies=[rear], color="#233246")
 
-    add("file.insert_step", path=str(POD / "pcb" / "Pod-A.step"), name="Rev A · bestückte Platine",
-        matrix=[1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, "board_z"])
+    pcb = "Rev A · bestückte Platine"
+    add("file.insert_step", path=str(POD / "pcb" / "Pod-A.step"), name=pcb)
+    add("occurrence.move", occurrence=pcb, translate=[0, 0, "board_z"], move_grounded=True)
     box(scanner, ["(65 mm - scanner_w) / 2", "-45 mm", "scanner_z"], ["scanner_w", "scanner_d", "scanner_h"])
     box("Optikfenster", ["24 mm", "-40 mm", "scanner_z + scanner_h"], ["17 mm", "11 mm", "0.8 mm"])
     add("appearance.assign", bodies=[scanner], color="#3c4653")
